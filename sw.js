@@ -1,11 +1,9 @@
-/* WIPULSCAN PRO — Service Worker v6.0
+/* WIPULSCAN PRO — Service Worker v7.0
    © Cobra Dynamics 2026 · Dennis Stein & Christoph Frick · Langen Germany
-   Offline-first caching · PWA / Play Store compliant */
+   Network-first for HTML · Cache-first for assets · PWA compliant */
 
 const CACHE = 'wipulscan-v7';
 const ASSETS = [
-  './',
-  './index.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
@@ -39,9 +37,10 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
-  /* Network-first for fonts/external, cache-first for app assets */
-  if (e.request.url.includes('fonts.googleapis.com') ||
-      e.request.url.includes('fonts.gstatic.com')) {
+  var url = e.request.url;
+
+  // Fonts: network-first with cache fallback
+  if (url.includes('fonts.googleapis.com') || url.includes('fonts.gstatic.com')) {
     e.respondWith(
       fetch(e.request).then(function(r) {
         var clone = r.clone();
@@ -53,6 +52,22 @@ self.addEventListener('fetch', function(e) {
     );
     return;
   }
+
+  // index.html: ALWAYS network-first — ensures latest version is served
+  if (url.endsWith('/') || url.includes('index.html') || url.split('?')[0].endsWith('/Wipulscan-professional/')) {
+    e.respondWith(
+      fetch(e.request, {cache: 'no-store'}).then(function(r) {
+        var clone = r.clone();
+        caches.open(CACHE).then(function(c) { c.put(e.request, clone); });
+        return r;
+      }).catch(function() {
+        return caches.match('./index.html');
+      })
+    );
+    return;
+  }
+
+  // Everything else: cache-first
   e.respondWith(
     caches.match(e.request).then(function(r) {
       return r || fetch(e.request).then(function(nr) {
