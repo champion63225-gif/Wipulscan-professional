@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
-<meta name="theme-color" content="#00001a"/>
+<meta name="theme-color" content="#000005"/>
 <meta name="application-name" content="WIPULSCAN PRO"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -12,11 +12,10 @@
 <meta name="description" content="Wipulscan PRO · Spatial WiFi Signal Scanner & AR Visualizer · Cobra Dynamics"/>
 <meta property="og:title" content="WIPULSCAN PRO"/>
 <meta property="og:description" content="Spatial WiFi Signal Scanner & AR Visualizer by Cobra Dynamics"/>
-<meta property="og:image" content="icon-512.svg"/>
+<meta property="og:image" content="icon-512.png"/>
 <meta property="og:type" content="website"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="WIPULSCAN PRO"/>
-<!-- App Store / Play Store compliance -->
 <meta name="rating" content="general"/>
 <meta name="revisit-after" content="7 days"/>
 <meta name="robots" content="index,follow"/>
@@ -24,21 +23,7 @@
 <meta name="copyright" content="© Cobra Dynamics 2026"/>
 <meta name="price" content="EUR 1.99"/>
 <meta name="google-play-app" content="app-id=com.cobradynamics.wipulscanpro"/>
-<!-- Structured Data für App Stores -->
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"MobileApplication",
-  "name":"WIPULSCAN PRO",
-  "operatingSystem":"ANDROID, IOS",
-  "applicationCategory":"UtilitiesApplication",
-  "offers":{"@type":"Offer","price":"1.99","priceCurrency":"EUR"},
-  "description":"Spatial WiFi Signal Scanner & AR Visualizer",
-  "author":{"@type":"Organization","name":"Cobra Dynamics","contactPoint":{"@type":"ContactPoint","email":"dennis.stein@cobradynamics.de"}},
-  "inLanguage":["de","en","zh"],
-  "aggregateRating":{"@type":"AggregateRating","ratingValue":"5","ratingCount":"1"}
-}
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"WIPULSCAN PRO","operatingSystem":"ANDROID, IOS","applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"1.99","priceCurrency":"EUR"},"description":"Spatial WiFi Signal Scanner & AR Visualizer","author":{"@type":"Organization","name":"Cobra Dynamics","contactPoint":{"@type":"ContactPoint","email":"dennis.stein@cobradynamics.de"}},"inLanguage":["de","en","zh"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5","ratingCount":"1"}}</script>
 <title>WIPULSCAN · PRO</title>
 <link rel="manifest" href="manifest.json"/>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
@@ -49,15 +34,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════════════════════════════
-   WIPULSCAN PRO v5.1 · © Cobra Dynamics 2026
+   WIPULSCAN PRO v5.2 · © Cobra Dynamics 2026
    Dennis Stein & Christoph Frick · Nördliche Ringstraße 75 · 63225 Langen
-   Real NetworkInformation API · DE/EN/ZH · 3.75s Intro Sync
+   Real NetworkInformation API · DE/EN/ZH · Bubble Network Viz
 ═══════════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
 :root{
   --gold:#d4af37;--gold-lt:#f5e070;--gold-dk:#7a5c10;
-  --deep:#00001a;--ink:#000010;
+  --deep:#000005;--ink:#000010;
   --green:#00ff88;--amber:#f07000;--red:#ff3333;--cyan:#00c8ff;
   --font-ui:'Space Grotesk',sans-serif;
   --font-data:'Space Mono',monospace;
@@ -72,7 +57,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
 
 /* ── INTRO ─────────────────────────────────────────────── */
 #intro{
-  position:fixed;inset:0;z-index:9000;background:#000008;
+  position:fixed;inset:0;z-index:9000;background:#000002;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   overflow:hidden;
 }
@@ -93,12 +78,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
   background:linear-gradient(150deg,var(--gold-lt) 0%,var(--gold) 45%,var(--gold-dk) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   position:relative;z-index:4;line-height:1;
-  /* Start invisible — shot out at last high note */
   opacity:0;transform:scale(0);
 }
-#il-brand.shoot{
-  animation:brand-shoot 1.1s cubic-bezier(.12,.8,.2,1) forwards;
-}
+#il-brand.shoot{animation:brand-shoot 1.1s cubic-bezier(.12,.8,.2,1) forwards;}
 @keyframes brand-shoot{
   0%  {opacity:0;transform:scale(0);filter:brightness(4) blur(2px);}
   12% {opacity:1;transform:scale(1.28);filter:brightness(3) blur(0);}
@@ -108,26 +90,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
   88% {transform:scale(1.03);filter:brightness(1.02);}
   100%{opacity:1;transform:scale(1);filter:brightness(1);}
 }
-
-/* Full-screen gold flash overlay */
 #intro-flash{
   position:absolute;inset:0;z-index:3;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 48%,
-    rgba(245,224,112,.95) 0%,
-    rgba(212,175,55,.55) 22%,
-    rgba(180,130,20,.15) 48%,
-    transparent 70%);
+  background:radial-gradient(ellipse at 50% 48%,rgba(245,224,112,.95) 0%,rgba(212,175,55,.55) 22%,rgba(180,130,20,.15) 48%,transparent 70%);
   opacity:0;
 }
-#intro-flash.burst{
-  animation:flash-burst 1.4s ease-out forwards;
-}
-@keyframes flash-burst{
-  0%  {opacity:0;}
-  6%  {opacity:1;}
-  28% {opacity:.35;}
-  100%{opacity:0;}
-}
+#intro-flash.burst{animation:flash-burst 1.4s ease-out forwards;}
+@keyframes flash-burst{0%{opacity:0;}6%{opacity:1;}28%{opacity:.35;}100%{opacity:0;}}
 #il-sub{
   font-family:var(--font-data);font-size:clamp(8px,1.9vw,11px);
   letter-spacing:.32em;color:rgba(212,175,55,.5);text-transform:uppercase;
@@ -156,15 +125,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
 /* ── CONSENT ────────────────────────────────────────────── */
 #consent{
   position:fixed;inset:0;z-index:8000;
-  background:rgba(0,0,16,.97);
-  display:none;align-items:center;justify-content:center;
-  padding:20px;
+  background:rgba(0,0,8,.97);
+  display:none;align-items:center;justify-content:center;padding:20px;
 }
 .cc{
-  background:linear-gradient(160deg,rgba(12,12,36,.99),rgba(0,0,18,.99));
+  background:linear-gradient(160deg,rgba(10,10,30,.99),rgba(0,0,14,.99));
   border:1px solid rgba(212,175,55,.2);border-radius:16px;
   padding:clamp(20px,5vw,34px);max-width:440px;width:100%;
-  box-shadow:0 0 80px rgba(0,0,0,.9),0 0 160px rgba(212,175,55,.03);
+  box-shadow:0 0 80px rgba(0,0,0,.95),0 0 160px rgba(212,175,55,.03);
 }
 .cc-logo{font-family:var(--font-ui);font-size:20px;font-weight:700;letter-spacing:.16em;
   background:linear-gradient(135deg,var(--gold-lt),var(--gold));
@@ -179,7 +147,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
   padding:5px 14px;border-radius:20px;border:1px solid rgba(212,175,55,.25);
   background:transparent;color:rgba(212,175,55,.5);cursor:pointer;transition:all .2s;text-transform:uppercase;}
 .lb.on,.lb:hover{background:rgba(212,175,55,.1);border-color:var(--gold);color:var(--gold);}
-.legal{max-height:120px;overflow-y:auto;background:rgba(0,0,0,.28);
+.legal{max-height:120px;overflow-y:auto;background:rgba(0,0,0,.3);
   border:1px solid rgba(212,175,55,.08);border-radius:10px;
   padding:10px 12px;margin-bottom:16px;font-size:9.5px;
   color:rgba(255,255,255,.32);line-height:1.75;white-space:pre-wrap;
@@ -196,29 +164,27 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
 
 /* ── APP ────────────────────────────────────────────────── */
 #app{position:fixed;inset:0;display:none;flex-direction:column;background:var(--deep);}
-#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;}
+#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;}
 
 /* TOP BAR */
 #topbar{
   position:absolute;top:0;left:0;right:0;z-index:100;
   padding:calc(var(--st) + 10px) 16px 10px;
   display:flex;align-items:center;justify-content:space-between;
-  background:linear-gradient(180deg,rgba(0,0,26,.92) 0%,transparent 100%);
+  background:linear-gradient(180deg,rgba(0,0,10,.96) 0%,transparent 100%);
   pointer-events:none;
 }
 #tb-logo{font-family:var(--font-ui);font-size:16px;font-weight:700;letter-spacing:.18em;
   background:linear-gradient(90deg,var(--gold-lt),var(--gold));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-#tb-conn{font-family:var(--font-data);font-size:8px;letter-spacing:.18em;
-  color:rgba(212,175,55,.4);text-transform:uppercase;}
+#tb-conn{font-family:var(--font-data);font-size:8px;letter-spacing:.18em;color:rgba(212,175,55,.4);text-transform:uppercase;}
 
 /* BADGE */
-#badge{position:absolute;top:0;left:50%;transform:translateX(-50%);
-  padding:calc(var(--st)+10px) 0 0;z-index:101;}
+#badge{position:absolute;top:0;left:50%;transform:translateX(-50%);padding:calc(var(--st)+10px) 0 0;z-index:101;}
 #badge-inner{
   font-family:var(--font-data);font-size:8px;letter-spacing:.28em;color:rgba(212,175,55,.45);
   text-transform:uppercase;padding:4px 14px;border-radius:20px;
-  border:1px solid rgba(212,175,55,.12);background:rgba(0,0,16,.55);
+  border:1px solid rgba(212,175,55,.12);background:rgba(0,0,10,.6);
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .4s;
 }
 #badge-inner.on{color:var(--gold);border-color:rgba(212,175,55,.32);}
@@ -230,17 +196,19 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
   bottom:calc(var(--sb) + 128px);
   width:clamp(130px,38vw,170px);height:clamp(130px,38vw,170px);
   border-radius:50%;border:none;cursor:pointer;z-index:110;
-  background:radial-gradient(ellipse at 36% 30%,rgba(245,224,112,.14) 0%,#000 65%);
-  box-shadow:0 0 0 1px rgba(212,175,55,.2),0 0 0 6px rgba(212,175,55,.04),0 8px 40px rgba(0,0,0,.75),inset 0 1px 0 rgba(212,175,55,.12);
+  background:radial-gradient(ellipse at 36% 30%,rgba(245,224,112,.12) 0%,#000 65%);
+  box-shadow:0 0 0 1px rgba(212,175,55,.2),0 0 0 6px rgba(212,175,55,.04),0 8px 40px rgba(0,0,0,.85),inset 0 1px 0 rgba(212,175,55,.12);
   transition:box-shadow .35s,transform .15s;-webkit-tap-highlight-color:transparent;
 }
 #scan-btn:active{transform:translateX(-50%) scale(.95);}
-@keyframes pulse-ring{0%{box-shadow:0 0 0 1px rgba(212,175,55,.5),0 0 0 6px rgba(212,175,55,.08),0 0 36px rgba(212,175,55,.16),0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(212,175,55,.18);}
-  60%{box-shadow:0 0 0 1px rgba(212,175,55,.4),0 0 0 18px rgba(212,175,55,.0),0 0 52px rgba(212,175,55,.12),0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(212,175,55,.18);}
-  100%{box-shadow:0 0 0 1px rgba(212,175,55,.5),0 0 0 6px rgba(212,175,55,.08),0 0 36px rgba(212,175,55,.16),0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(212,175,55,.18);}}
+@keyframes pulse-ring{
+  0%  {box-shadow:0 0 0 1px rgba(212,175,55,.5),0 0 0 6px rgba(212,175,55,.08),0 0 36px rgba(212,175,55,.16),0 8px 40px rgba(0,0,0,.7),inset 0 1px 0 rgba(212,175,55,.18);}
+  60% {box-shadow:0 0 0 1px rgba(212,175,55,.4),0 0 0 18px rgba(212,175,55,.0),0 0 52px rgba(212,175,55,.12),0 8px 40px rgba(0,0,0,.7),inset 0 1px 0 rgba(212,175,55,.18);}
+  100%{box-shadow:0 0 0 1px rgba(212,175,55,.5),0 0 0 6px rgba(212,175,55,.08),0 0 36px rgba(212,175,55,.16),0 8px 40px rgba(0,0,0,.7),inset 0 1px 0 rgba(212,175,55,.18);}
+}
 #scan-btn.on{animation:pulse-ring 2.2s ease-in-out infinite;}
 #orb{position:absolute;inset:14px;border-radius:50%;overflow:hidden;
-  background:radial-gradient(ellipse at 38% 30%,rgba(245,224,112,.07) 0%,rgba(0,0,12,.96) 70%);
+  background:radial-gradient(ellipse at 38% 30%,rgba(245,224,112,.06) 0%,rgba(0,0,8,.97) 70%);
   border:1px solid rgba(212,175,55,.1);
   display:flex;flex-direction:column;align-items:center;justify-content:center;}
 #orb-val{font-family:var(--font-data);font-size:clamp(24px,7.5vw,32px);font-weight:700;color:var(--gold);line-height:1;}
@@ -254,17 +222,17 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
 #metrics{
   position:absolute;bottom:0;left:0;right:0;z-index:100;
   padding:12px 12px calc(var(--sb)+12px);
-  background:linear-gradient(0deg,rgba(0,0,26,.96) 0%,rgba(0,0,26,.65) 65%,transparent 100%);
+  background:linear-gradient(0deg,rgba(0,0,10,.97) 0%,rgba(0,0,10,.7) 60%,transparent 100%);
 }
 .mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
 .mc{
-  background:rgba(255,255,255,.025);border:1px solid rgba(212,175,55,.08);
+  background:rgba(255,255,255,.022);border:1px solid rgba(212,175,55,.07);
   border-radius:10px;padding:9px 7px 7px;text-align:center;
   position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s;
 }
 .mc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(212,175,55,.25),transparent);}
-.mc.live{border-color:rgba(212,175,55,.24);box-shadow:0 0 14px rgba(212,175,55,.05);}
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,.22),transparent);}
+.mc.live{border-color:rgba(212,175,55,.22);box-shadow:0 0 12px rgba(212,175,55,.04);}
 .ml{font-family:var(--font-data);font-size:7.5px;letter-spacing:.22em;
   color:rgba(212,175,55,.4);text-transform:uppercase;margin-bottom:4px;}
 .mv{font-family:var(--font-data);font-size:clamp(17px,4.8vw,23px);font-weight:700;color:var(--gold);line-height:1;}
@@ -283,20 +251,130 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
   color:rgba(255,255,255,.38);letter-spacing:.05em;text-align:center;
   width:min(280px,76vw);pointer-events:none;transition:opacity .5s;}
 
-/* GEAR */
-#f-set{
-  position:absolute;left:14px;z-index:120;
+/* GEAR + INFO BUTTONS */
+#f-set,#info-btn{
+  position:absolute;z-index:120;
   width:42px;height:42px;border-radius:50%;
-  border:1px solid rgba(212,175,55,.18);background:rgba(0,0,18,.68);
+  border:1px solid rgba(212,175,55,.18);background:rgba(0,0,10,.72);
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   display:flex;align-items:center;justify-content:center;
-  font-size:17px;cursor:pointer;transition:border-color .2s,background .2s;
+  cursor:pointer;transition:border-color .2s,background .2s;
 }
-#f-set:hover,#f-set:active{border-color:rgba(212,175,55,.45);background:rgba(0,0,28,.9);}
+#f-set{left:14px;font-size:17px;}
+#info-btn{right:14px;font-family:var(--font-data);font-size:15px;font-weight:700;color:rgba(212,175,55,.65);}
+#f-set:hover,#f-set:active,#info-btn:hover,#info-btn:active{border-color:rgba(212,175,55,.45);background:rgba(0,0,22,.92);color:var(--gold);}
 
-/* SETTINGS PANEL */
+/* FILTER BAR */
+#filterbar{
+  position:absolute;left:50%;transform:translateX(-50%);z-index:108;
+  display:flex;gap:6px;
+  overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+  padding:0 6px;max-width:calc(100vw - 28px);
+}
+#filterbar::-webkit-scrollbar{display:none;}
+.fb{
+  font-family:var(--font-data);font-size:8px;letter-spacing:.14em;
+  padding:5px 12px;border-radius:20px;
+  border:1px solid rgba(212,175,55,.16);
+  background:rgba(0,0,10,.75);color:rgba(212,175,55,.4);
+  cursor:pointer;transition:all .2s;text-transform:uppercase;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  white-space:nowrap;flex-shrink:0;
+}
+.fb.on,.fb:active{background:rgba(212,175,55,.11);border-color:var(--gold);color:var(--gold);}
+
+/* CONN PANEL */
+#conn-panel{
+  position:absolute;top:calc(var(--st)+52px);right:12px;z-index:104;
+  background:rgba(0,0,10,.76);border:1px solid rgba(212,175,55,.1);
+  border-radius:10px;padding:8px 11px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  min-width:110px;
+}
+.cp-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:3px;}
+.cp-row:last-child{margin-bottom:0;}
+.cp-lbl{font-family:var(--font-data);font-size:7px;letter-spacing:.18em;color:rgba(212,175,55,.4);text-transform:uppercase;}
+.cp-val{font-family:var(--font-data);font-size:9px;color:rgba(255,255,255,.65);}
+
+/* TOAST */
+#toast{position:fixed;bottom:calc(var(--sb)+88px);left:50%;transform:translateX(-50%);
+  z-index:9999;font-family:var(--font-ui);font-size:11px;letter-spacing:.07em;
+  padding:9px 20px;border-radius:20px;background:rgba(4,4,20,.95);
+  border:1px solid rgba(212,175,55,.28);color:rgba(255,255,255,.75);
+  opacity:0;pointer-events:none;transition:opacity .35s;white-space:nowrap;}
+#toast.show{opacity:1;}
+
+/* PWA INSTALL */
+#pwa-install{
+  position:fixed;bottom:calc(var(--sb)+14px);right:14px;z-index:200;
+  display:none;align-items:center;gap:8px;padding:10px 16px 10px 12px;
+  border-radius:24px;border:1px solid rgba(212,175,55,.3);
+  background:rgba(0,0,12,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  cursor:pointer;box-shadow:0 4px 24px rgba(0,0,0,.6),0 0 0 1px rgba(212,175,55,.06);
+  transition:box-shadow .3s,transform .15s;
+  opacity:0;transform:translateY(12px) scale(.94);
+}
+#pwa-install.visible{
+  display:flex;
+  animation:pwa-entrance .8s cubic-bezier(.22,1,.36,1) forwards,pwa-glow 1.6s ease-out .8s 1 forwards;
+}
+#pwa-install:active{transform:scale(.96)!important;}
+@keyframes pwa-entrance{
+  0%  {opacity:0;transform:translateY(12px) scale(.94);}
+  60% {opacity:1;transform:translateY(-3px) scale(1.04);}
+  80% {transform:translateY(1px) scale(.99);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+@keyframes pwa-glow{
+  0%  {box-shadow:0 4px 24px rgba(0,0,0,.6),0 0 0 rgba(212,175,55,0);}
+  30% {box-shadow:0 4px 32px rgba(0,0,0,.4),0 0 28px rgba(212,175,55,.28),0 0 0 4px rgba(212,175,55,.12);}
+  70% {box-shadow:0 4px 28px rgba(0,0,0,.5),0 0 14px rgba(212,175,55,.12),0 0 0 2px rgba(212,175,55,.06);}
+  100%{box-shadow:0 4px 24px rgba(0,0,0,.6),0 0 0 rgba(212,175,55,0);}
+}
+.pwa-icon{font-size:18px;line-height:1;}
+.pwa-txt{display:flex;flex-direction:column;}
+.pwa-lbl{font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;}
+.pwa-sub{font-family:var(--font-data);font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.35);margin-top:1px;}
+
+/* ── BUBBLE DETAIL OVERLAY (bottom sheet) ───────────────── */
+#bdetail{
+  position:fixed;bottom:0;left:0;right:0;z-index:3000;
+  pointer-events:none;
+  transform:translateY(100%);transition:transform .42s cubic-bezier(.22,1,.36,1);
+}
+#bdetail.open{transform:translateY(0);pointer-events:all;}
+#bdetail-sheet{
+  background:linear-gradient(170deg,rgba(6,6,22,.99),rgba(0,0,10,.99));
+  border:1px solid rgba(212,175,55,.16);border-bottom:none;
+  border-radius:20px 20px 0 0;
+  padding:10px 18px calc(var(--sb) + 22px);
+  box-shadow:0 -8px 48px rgba(0,0,0,.85),0 0 0 1px rgba(212,175,55,.05);
+}
+#bdetail-drag{width:38px;height:3px;border-radius:2px;
+  background:rgba(212,175,55,.18);margin:0 auto 14px;cursor:grab;}
+#bdetail-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+#bdetail-name{font-family:var(--font-ui);font-size:15px;font-weight:700;letter-spacing:.1em;
+  background:linear-gradient(90deg,var(--gold-lt),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#bdetail-dbm{font-family:var(--font-data);font-size:9px;color:rgba(255,255,255,.32);margin-top:4px;}
+.bd-close{width:30px;height:30px;border-radius:50%;border:1px solid rgba(212,175,55,.18);
+  background:transparent;color:var(--gold);font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.bd-close:hover{background:rgba(212,175,55,.1);}
+#bdetail-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px;}
+.bd-cell{background:rgba(255,255,255,.025);border:1px solid rgba(212,175,55,.07);
+  border-radius:10px;padding:9px 10px;}
+.bd-lbl{font-family:var(--font-data);font-size:7px;letter-spacing:.22em;
+  color:rgba(212,175,55,.38);text-transform:uppercase;margin-bottom:4px;}
+.bd-val{font-family:var(--font-data);font-size:14px;font-weight:700;color:var(--gold);}
+.bd-note{font-size:8px;color:rgba(255,255,255,.26);margin-top:2px;}
+#bdetail-spark-lbl{font-family:var(--font-data);font-size:7px;letter-spacing:.22em;
+  color:rgba(212,175,55,.32);text-transform:uppercase;margin-bottom:7px;}
+#bdetail-spark{width:100%;height:46px;display:block;border-radius:6px;}
+
+/* ── SETTINGS PANEL ─────────────────────────────────────── */
 #settings{
-  position:fixed;inset:0;z-index:5000;background:rgba(0,0,14,.97);
+  position:fixed;inset:0;z-index:5000;background:rgba(0,0,8,.98);
   display:none;flex-direction:column;overflow-y:auto;
   padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);
 }
@@ -313,7 +391,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
 .sst{font-family:var(--font-data);font-size:8px;letter-spacing:.28em;color:rgba(212,175,55,.38);
   text-transform:uppercase;padding-bottom:7px;border-bottom:1px solid rgba(212,175,55,.07);margin-bottom:10px;}
 .sr{display:flex;align-items:center;justify-content:space-between;
-  padding:9px 0;border-bottom:1px solid rgba(255,255,255,.035);}
+  padding:9px 0;border-bottom:1px solid rgba(255,255,255,.03);}
 .srl{font-size:12.5px;color:rgba(255,255,255,.65);}
 .srs{font-size:9.5px;color:rgba(255,255,255,.28);margin-top:2px;}
 .tog{position:relative;width:42px;height:22px;flex-shrink:0;}
@@ -329,82 +407,25 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
   border-bottom:1px solid rgba(255,255,255,.03);display:flex;align-items:center;gap:9px;}
 .feat-list li::before{content:'◆';color:var(--gold-dk);font-size:6px;}
 
-/* REALTIME CONN PANEL */
-#conn-panel{
-  position:absolute;top:calc(var(--st)+52px);right:12px;z-index:104;
-  background:rgba(0,0,18,.72);border:1px solid rgba(212,175,55,.1);
-  border-radius:10px;padding:8px 11px;
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  min-width:110px;
+/* ── INFO OVERLAY ───────────────────────────────────────── */
+#info-overlay{
+  position:fixed;inset:0;z-index:6000;background:rgba(0,0,8,.99);
+  display:none;flex-direction:column;overflow-y:auto;
+  padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);
 }
-.cp-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:3px;}
-.cp-row:last-child{margin-bottom:0;}
-.cp-lbl{font-family:var(--font-data);font-size:7px;letter-spacing:.18em;color:rgba(212,175,55,.4);text-transform:uppercase;}
-.cp-val{font-family:var(--font-data);font-size:9px;color:rgba(255,255,255,.65);}
-
-/* TOAST */
-#toast{position:fixed;bottom:calc(var(--sb)+88px);left:50%;transform:translateX(-50%);
-  z-index:9999;font-family:var(--font-ui);font-size:11px;letter-spacing:.07em;
-  padding:9px 20px;border-radius:20px;background:rgba(8,8,28,.92);
-  border:1px solid rgba(212,175,55,.28);color:rgba(255,255,255,.75);
-  opacity:0;pointer-events:none;transition:opacity .35s;white-space:nowrap;}
-#toast.show{opacity:1;}
-
-/* ── PWA INSTALL BUTTON ─────────────────────────────── */
-#pwa-install{
-  position:fixed;bottom:calc(var(--sb)+14px);right:14px;z-index:200;
-  display:none;align-items:center;gap:8px;
-  padding:10px 16px 10px 12px;
-  border-radius:24px;border:1px solid rgba(212,175,55,.3);
-  background:rgba(0,0,20,.88);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  cursor:pointer;
-  box-shadow:0 4px 24px rgba(0,0,0,.5),0 0 0 1px rgba(212,175,55,.06);
-  transition:box-shadow .3s,transform .15s;
-  opacity:0;transform:translateY(12px) scale(.94);
-}
-#pwa-install.visible{
-  display:flex;
-  animation:pwa-entrance .8s cubic-bezier(.22,1,.36,1) forwards,
-            pwa-glow 1.6s ease-out .8s 1 forwards;
-}
-#pwa-install:active{transform:scale(.96)!important;}
-@keyframes pwa-entrance{
-  0%  {opacity:0;transform:translateY(12px) scale(.94);}
-  60% {opacity:1;transform:translateY(-3px) scale(1.04);}
-  80% {transform:translateY(1px) scale(.99);}
-  100%{opacity:1;transform:translateY(0) scale(1);}
-}
-@keyframes pwa-glow{
-  0%  {box-shadow:0 4px 24px rgba(0,0,0,.5),0 0 0 rgba(212,175,55,0);}
-  30% {box-shadow:0 4px 32px rgba(0,0,0,.4),0 0 28px rgba(212,175,55,.28),0 0 0 4px rgba(212,175,55,.12);}
-  70% {box-shadow:0 4px 28px rgba(0,0,0,.45),0 0 14px rgba(212,175,55,.12),0 0 0 2px rgba(212,175,55,.06);}
-  100%{box-shadow:0 4px 24px rgba(0,0,0,.5),0 0 0 rgba(212,175,55,0);}
-}
-.pwa-icon{font-size:18px;line-height:1;}
-.pwa-txt{display:flex;flex-direction:column;}
-.pwa-lbl{font-family:var(--font-ui);font-size:11px;font-weight:700;
-  letter-spacing:.12em;color:var(--gold);text-transform:uppercase;}
-.pwa-sub{font-family:var(--font-data);font-size:8px;letter-spacing:.12em;
-  color:rgba(255,255,255,.35);margin-top:1px;}
-
-/* Logo shake — triggered at last note of intro jingle */
-@keyframes logo-shake{
-  0%  {transform:translateX(0)  scale(1);}
-  8%  {transform:translateX(-6px) scale(1.04) rotate(-1.2deg);}
-  18% {transform:translateX(7px)  scale(1.06) rotate(1.4deg);}
-  28% {transform:translateX(-5px) scale(1.05) rotate(-1deg);}
-  38% {transform:translateX(5px)  scale(1.04) rotate(.8deg);}
-  48% {transform:translateX(-3px) scale(1.02) rotate(-.5deg);}
-  60% {transform:translateX(3px)  scale(1.03) rotate(.4deg);}
-  74% {transform:translateX(-2px) scale(1.01) rotate(-.2deg);}
-  88% {transform:translateX(1px)  scale(1.01);}
-  100%{transform:translateX(0)  scale(1);}
-}
-#il-brand.shake{
-  animation:logo-shake .72s cubic-bezier(.36,.07,.19,.97) forwards;
-  transform-origin:center;
-}
+#info-overlay.open{display:flex;}
+.io-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding-top:14px;}
+.io-title{font-family:var(--font-ui);font-size:17px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  background:linear-gradient(90deg,var(--gold-lt),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.io-sec{margin-bottom:22px;}
+.io-sec-title{font-family:var(--font-data);font-size:8px;letter-spacing:.28em;color:rgba(212,175,55,.38);
+  text-transform:uppercase;padding-bottom:7px;border-bottom:1px solid rgba(212,175,55,.07);margin-bottom:12px;}
+.io-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.io-icon{font-size:18px;width:28px;flex-shrink:0;text-align:center;line-height:1.4;}
+.io-body{}
+.io-item-title{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.82);margin-bottom:3px;}
+.io-item-desc{font-size:11px;color:rgba(255,255,255,.38);line-height:1.65;}
 
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -423,10 +444,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
   <div id="intro-flash"></div>
   <div id="il-pre"  class="il">COBRA DYNAMICS PRESENTS</div>
   <div id="il-brand">WIPULSCAN</div>
-  <div id="il-sub"  class="il">PRO EDITION · v5.1</div>
+  <div id="il-sub"  class="il">PRO EDITION · v5.2</div>
   <div id="il-desc" class="il">Spatial WiFi Signal Scanner &amp; AR Visualizer</div>
   <div id="intro-bar-wrap"><div id="intro-bar"></div></div>
-  <div id="intro-foot">© Cobra Dynamics 2026 · Dennis Stein & Christoph Frick · Langen, Germany</div>
+  <div id="intro-foot">© Cobra Dynamics 2026 · Dennis Stein &amp; Christoph Frick · Langen, Germany</div>
 </div>
 
 <!-- ══════════════════ CONSENT ════════════════════ -->
@@ -434,17 +455,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
   <div class="cc">
     <div class="cc-logo">WIPULSCAN PRO</div>
     <div class="cc-by">Cobra Dynamics · 2026</div>
-
     <div class="lang-row">
       <button class="lb on" data-lang="de" onclick="setLang('de')">DE</button>
       <button class="lb"    data-lang="en" onclick="setLang('en')">EN</button>
       <button class="lb"    data-lang="zh" onclick="setLang('zh')">中文</button>
     </div>
-
     <div class="cc-h"  id="c-eye"></div>
     <div class="cc-p"  id="c-sub"></div>
     <div class="legal" id="c-leg"></div>
-
     <div class="chk-row">
       <input type="checkbox" id="chk" onchange="document.getElementById('cta').disabled=!this.checked"/>
       <label for="chk" id="c-chk"></label>
@@ -466,7 +484,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
   <!-- BADGE -->
   <div id="badge"><div id="badge-inner">—</div></div>
 
-  <!-- CONN PANEL (real data) -->
+  <!-- CONN PANEL -->
   <div id="conn-panel">
     <div class="cp-row"><span class="cp-lbl">TYPE</span><span class="cp-val" id="cp-type">—</span></div>
     <div class="cp-row"><span class="cp-lbl">RTT</span> <span class="cp-val" id="cp-rtt">—</span></div>
@@ -474,8 +492,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
     <div class="cp-row"><span class="cp-lbl">4G/3G</span><span class="cp-val" id="cp-eff">—</span></div>
   </div>
 
-  <!-- GEAR -->
+  <!-- GEAR + INFO -->
   <div id="f-set" onclick="openSettings()">⚙</div>
+  <div id="info-btn" onclick="openInfo()">?</div>
 
   <!-- STATUS -->
   <div id="smsg"></div>
@@ -490,6 +509,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
     <span id="btn-icon">📡</span>
     <span id="btn-lbl"></span>
   </button>
+
+  <!-- FILTER BAR -->
+  <div id="filterbar">
+    <button class="fb on" data-f="all"      onclick="setFilter('all')">ALLE</button>
+    <button class="fb"    data-f="wifi"     onclick="setFilter('wifi')">WiFi</button>
+    <button class="fb"    data-f="cellular" onclick="setFilter('cellular')">LTE</button>
+    <button class="fb"    data-f="strong"   onclick="setFilter('strong')">≥ −70 dBm</button>
+    <button class="fb"    data-f="5ghz"     onclick="setFilter('5ghz')">5 GHz</button>
+  </div>
 
   <!-- METRICS -->
   <div id="metrics">
@@ -526,7 +554,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
       <div class="st" id="s-title">EINSTELLUNGEN</div>
       <button class="sx" onclick="closeSettings()">✕</button>
     </div>
-
     <div class="ss">
       <div class="sst">SPRACHE / LANGUAGE / 语言</div>
       <div class="lang-row" style="justify-content:flex-start;">
@@ -535,7 +562,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
         <button class="lb"    data-lang="zh" onclick="setLang('zh')">中文</button>
       </div>
     </div>
-
     <div class="ss">
       <div class="sst" id="s-opt">OPTIONEN</div>
       <div class="sr">
@@ -551,12 +577,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
         <label class="tog"><input type="checkbox" id="tog-mus" onchange="toggleBgMusic()"/><div class="tog-t"></div><div class="tog-k"></div></label>
       </div>
     </div>
-
     <div class="ss">
       <div class="sst" id="s-feat">FEATURES</div>
       <ul class="feat-list" id="feat-list"></ul>
     </div>
-
     <div class="ss">
       <div class="sst">DSGVO / GDPR / 数据保护</div>
       <div class="sr">
@@ -572,8 +596,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
         <button class="lb" onclick="openImpressum()">→</button>
       </div>
     </div>
-
-    <!-- PREIS & LIZENZ -->
     <div class="ss">
       <div class="sst">LIZENZ / LICENSE / 许可</div>
       <div class="sr">
@@ -586,20 +608,45 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
       </div>
       <div class="sr">
         <div><div class="srl">Version</div></div>
-        <span style="font-family:var(--font-data);font-size:10px;color:rgba(255,255,255,.4);">5.1.0</span>
+        <span style="font-family:var(--font-data);font-size:10px;color:rgba(255,255,255,.4);">5.2.0</span>
       </div>
     </div>
-
     <div style="text-align:center;margin-top:14px;">
-      <div style="font-family:var(--font-data);font-size:8px;letter-spacing:.2em;color:rgba(212,175,55,.2);text-transform:uppercase;">
-        WIPULSCAN PRO v5.1 · © Cobra Dynamics 2026<br/>Dennis Stein &amp; Christoph Frick · Langen, Germany
+      <div style="font-family:var(--font-data);font-size:8px;letter-spacing:.2em;color:rgba(212,175,55,.18);text-transform:uppercase;">
+        WIPULSCAN PRO v5.2 · © Cobra Dynamics 2026<br/>Dennis Stein &amp; Christoph Frick · Langen, Germany
       </div>
     </div>
   </div>
 </div>
 
+<!-- ══════ BUBBLE DETAIL OVERLAY ══════ -->
+<div id="bdetail">
+  <div id="bdetail-sheet">
+    <div id="bdetail-drag"></div>
+    <div id="bdetail-hdr">
+      <div>
+        <div id="bdetail-name">—</div>
+        <div id="bdetail-dbm">—</div>
+      </div>
+      <button class="bd-close" onclick="closeBubbleDetail()">✕</button>
+    </div>
+    <div id="bdetail-grid"></div>
+    <div id="bdetail-spark-lbl">SIGNAL · VERLAUF</div>
+    <canvas id="bdetail-spark"></canvas>
+  </div>
+</div>
+
+<!-- ══════ INFO OVERLAY ══════ -->
+<div id="info-overlay">
+  <div class="io-hdr">
+    <div class="io-title" id="io-title">FUNKTIONEN</div>
+    <button class="sx" onclick="closeInfo()">✕</button>
+  </div>
+  <div id="io-content"></div>
+</div>
+
 <!-- ══════ PRIVACY POLICY OVERLAY ══════ -->
-<div id="privacy-overlay" style="position:fixed;inset:0;z-index:7000;background:rgba(0,0,14,.98);display:none;flex-direction:column;padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);overflow-y:auto;">
+<div id="privacy-overlay" style="position:fixed;inset:0;z-index:7000;background:rgba(0,0,8,.99);display:none;flex-direction:column;padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);overflow-y:auto;">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:14px;">
     <div style="font-family:var(--font-ui);font-size:16px;font-weight:700;letter-spacing:.1em;background:linear-gradient(90deg,var(--gold-lt),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">DATENSCHUTZ</div>
     <button class="sx" onclick="closePrivacy()">✕</button>
@@ -609,7 +656,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
 </div>
 
 <!-- ══════ IMPRESSUM OVERLAY ══════ -->
-<div id="impressum-overlay" style="position:fixed;inset:0;z-index:7000;background:rgba(0,0,14,.98);display:none;flex-direction:column;padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);overflow-y:auto;">
+<div id="impressum-overlay" style="position:fixed;inset:0;z-index:7000;background:rgba(0,0,8,.99);display:none;flex-direction:column;padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);overflow-y:auto;">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:14px;">
     <div style="font-family:var(--font-ui);font-size:16px;font-weight:700;letter-spacing:.1em;background:linear-gradient(90deg,var(--gold-lt),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">IMPRESSUM</div>
     <button class="sx" onclick="closeImpressum()">✕</button>
@@ -630,21 +677,18 @@ E-Mail: dennis.stein@cobradynamics.de
 Dennis Stein &amp; Christoph Frick (Anschrift wie oben)
 
 <b style="color:var(--gold);">App-Informationen</b>
-App-Name: WIPULSCAN PRO
-Version: 5.1.0
-Preis: 1,99 EUR (Einzellizenz)
-Altersfreigabe: Ohne Altersbeschränkung (4+)
-Kategorie: Dienstprogramme / Utilities
+App-Name: WIPULSCAN PRO · Version: 5.2.0
+Preis: 1,99 EUR (Einzellizenz) · Altersfreigabe: 4+
 Plattformen: Android (PWA / Play Store), iOS (PWA / App Store)
 
 <b style="color:var(--gold);">Haftungsausschluss</b>
-Die Signalmessungen dieser App sind Näherungswerte auf Basis der NetworkInformation-Web-API. Keine Garantie auf Messgenauigkeit. Die App ersetzt keine professionelle Netzwerkmessung.
+Signalmessungen sind Näherungswerte via NetworkInformation-Web-API. Keine Garantie auf Messgenauigkeit.
 
 <b style="color:var(--gold);">Urheberrecht</b>
-© Cobra Dynamics 2026. Alle Rechte vorbehalten. Unbefugte Vervielfältigung, Verbreitung oder öffentliche Wiedergabe sind untersagt.
+© Cobra Dynamics 2026. Alle Rechte vorbehalten.
 
 <b style="color:var(--gold);">Streitbeilegung (EU)</b>
-Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: https://ec.europa.eu/consumers/odr
+https://ec.europa.eu/consumers/odr
   </div>
 </div>
 
@@ -660,7 +704,786 @@ Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung ber
 <div id="toast"></div>
 
 <script>
-function $(e){return document.getElementById(e)}function setText(e,t){e=$(e);e&&(e.textContent=t)}function setHTML(e,t){e=$(e);e&&(e.innerHTML=t)}function clamp(e,t,n){return Math.min(Math.max(e,t),n)}function lerp(e,t,n){return e+(t-e)*n}var LEG={de:"Diese App (WIPULSCAN PRO) wird von Cobra Dynamics, Dennis Stein & Christoph Frick, Nördliche Ringstraße 75, 63225 Langen betrieben.\n\nDie App liest ausschließlich Gerätedaten via Web-APIs (NetworkInformation, DeviceMotion). Es werden keine personenbezogenen Daten erhoben, gespeichert oder übermittelt. Alle Berechnungen erfolgen lokal auf Ihrem Gerät.\n\nRechtsgrundlage: DSGVO Art. 6 Abs. 1 lit. b. Löschrecht: Art. 17 DSGVO — alle lokalen Daten jederzeit über Einstellungen löschbar.\n\nKontakt: dennis.stein@cobradynamics.de",en:"This app (WIPULSCAN PRO) is operated by Cobra Dynamics, Dennis Stein & Christoph Frick, Nördliche Ringstraße 75, 63225 Langen, Germany.\n\nThe app reads device data only via Web APIs (NetworkInformation, DeviceMotion). No personal data is collected, stored or transmitted. All calculations run locally on your device.\n\nLegal basis: GDPR Art. 6(1)(b). Right to erasure: Art. 17 GDPR — delete all local data anytime via Settings.\n\nContact: dennis.stein@cobradynamics.de",zh:"本应用（WIPULSCAN PRO）由 Cobra Dynamics, Dennis Stein & Christoph Frick, 德国兰根 运营。\n\n本应用仅通过 Web API（NetworkInformation、DeviceMotion）读取设备数据。不收集、存储或传输任何个人数据。所有计算均在您的设备本地进行。\n\n法律依据：GDPR第6条第1款(b)项。数据删除权：GDPR第17条。\n\n联系：dennis.stein@cobradynamics.de"},LANGS={de:{c_eye:"Bitte lies die Datenschutzerklärung",c_sub:"Diese App läuft vollständig lokal.<br>Keine Server. Keine Tracking-Daten.",c_chk:"Ich habe die Datenschutzerklärung gelesen und stimme zu.",c_ok:"Starten",s_title:"EINSTELLUNGEN",s_opt:"OPTIONEN",s_mus:"Hintergrundmusik",s_feat:"FEATURES",h_ready:"BEREIT",h_scan:"SCANNING",h_pause:"PAUSIERT",ml_sig:"SIGNAL",ml_dl:"DOWNLOAD",ml_rtt:"LATENZ",l_s:"STARK",l_g:"GUT",l_m:"MITTEL",l_w:"SCHWACH",btn_start:"Scan Starten",btn_stop:"Scan Stoppen",feats:["Echtzeit via NetworkInformation API","Trail Radar & AR Visualizer","3.75s Cinematic Intro + Jingle","Dreisprachig DE / EN / 中文","DSGVO-konform · lokal only"],msgs:[{min:88,msg:"Exzellentes Signal — Glasfaser-Qualität"},{min:72,msg:"Starkes Signal — optimale Verbindung"},{min:50,msg:"Gutes Signal — stabil und zuverlässig"},{min:30,msg:"Mittleres Signal — ausreichend"},{min:12,msg:"Schwaches Signal — eingeschränkt"},{min:0,msg:"Kritisches Signal — Verbindung instabil"}]},en:{c_eye:"Please read the Privacy Policy",c_sub:"This app runs entirely locally.<br>No servers. No tracking.",c_chk:"I have read the Privacy Policy and agree.",c_ok:"Start",s_title:"SETTINGS",s_opt:"OPTIONS",s_mus:"Background Music",s_feat:"FEATURES",h_ready:"READY",h_scan:"SCANNING",h_pause:"PAUSED",ml_sig:"SIGNAL",ml_dl:"DOWNLOAD",ml_rtt:"LATENCY",l_s:"STRONG",l_g:"GOOD",l_m:"MEDIUM",l_w:"WEAK",btn_start:"Start Scan",btn_stop:"Stop Scan",feats:["Real-time via NetworkInformation API","Trail Radar & AR Visualizer","3.75s Cinematic Intro + Jingle","Trilingual DE / EN / 中文","GDPR-compliant · local only"],msgs:[{min:88,msg:"Excellent signal — fiber quality"},{min:72,msg:"Strong signal — optimal connection"},{min:50,msg:"Good signal — stable & reliable"},{min:30,msg:"Medium signal — adequate"},{min:12,msg:"Weak signal — limited reception"},{min:0,msg:"Critical signal — connection unstable"}]},zh:{c_eye:"请阅读隐私政策",c_sub:"本应用完全在本地运行。<br>无服务器。无追踪。",c_chk:"我已阅读并同意隐私政策。",c_ok:"开始",s_title:"设置",s_opt:"选项",s_mus:"背景音乐",s_feat:"功能列表",h_ready:"就绪",h_scan:"扫描中",h_pause:"已暂停",ml_sig:"信号",ml_dl:"下载",ml_rtt:"延迟",l_s:"强",l_g:"良",l_m:"中",l_w:"弱",btn_start:"开始扫描",btn_stop:"停止扫描",feats:["实时 NetworkInformation API 数据","轨迹雷达 & AR 可视化","3.75s 电影级开场 + 音乐","三语界面 DE / EN / 中文","符合GDPR · 纯本地运行"],msgs:[{min:88,msg:"极佳信号 — 光纤级质量"},{min:72,msg:"强信号 — 最佳连接"},{min:50,msg:"良好信号 — 稳定可靠"},{min:30,msg:"中等信号 — 基本够用"},{min:12,msg:"弱信号 — 接收受限"},{min:0,msg:"极弱信号 — 连接不稳定"}]}},lang=localStorage.getItem("wps_lang")||"de",T=LANGS[lang];function setLang(e){lang=e,localStorage.setItem("wps_lang",e),T=LANGS[e],document.body.style.fontFamily="zh"===e?"'Noto Sans SC',sans-serif":"'Space Grotesk',sans-serif",applyLang()}function applyLang(){setText("c-eye",(T=LANGS[lang]).c_eye),setHTML("c-sub",T.c_sub),setText("c-chk",T.c_chk),setText("cta",T.c_ok);var e=$("c-leg"),e=(e&&(e.textContent=LEG[lang]),setText("s-title",T.s_title),setText("s-opt",T.s_opt),setText("s-mus",T.s_mus),setText("s-feat",T.s_feat),setText("ml-sig",T.ml_sig),setText("ml-dl",T.ml_dl),setText("ml-rtt",T.ml_rtt),setText("l-s",T.l_s),setText("l-g",T.l_g),setText("l-m",T.l_m),setText("l-w",T.l_w),$("badge-inner")),n=(e&&(e.textContent=S.scanning?T.h_scan:S.paused?T.h_pause:T.h_ready),setText("btn-lbl",S.scanning?T.btn_stop:T.btn_start),$("feat-list"));n&&(n.innerHTML="",T.feats.forEach(function(e){var t=document.createElement("li");t.textContent=e,n.appendChild(t)})),document.querySelectorAll("[data-lang]").forEach(function(e){e.classList.toggle("on",e.getAttribute("data-lang")===lang)})}var NET={supported:!1,type:"unknown",effectiveType:"4g",rtt:0,downlink:0,sigPct:0};function initNetworkAPI(){var a=navigator.connection||navigator.mozConnection||navigator.webkitConnection;function e(){NET.type=a.type||"unknown",NET.effectiveType=a.effectiveType||"4g",NET.rtt=a.rtt||0,NET.downlink=a.downlink||0,NET.sigPct=(()=>{var e=0;switch(a.effectiveType){case"4g":e=68;break;case"3g":e=42;break;case"2g":e=18;break;default:e=5}var t=clamp(a.downlink||0,0,25),t=Math.round(t/10*28),n=clamp(a.rtt||0,0,400);return clamp(e+t-Math.round(n/300*10)+("wifi"===a.type?6:"ethernet"===a.type?10:0),2,99)})(),S.scanning&&applyRealData()}a?(NET.supported=!0,a.addEventListener("change",e),e(),setInterval(e,500)):NET.supported=!1}function applyRealData(){(navigator.connection||navigator.mozConnection||navigator.webkitConnection)&&(S.dSig=NET.sigPct,S.dPing=NET.rtt,S.dDL=NET.downlink,S.dDBm=sigToDBm(NET.sigPct))}function sigToDBm(e){return Math.round(e/100*75-95)}var S={scanning:!1,paused:!1,dSig:0,dPing:0,dDL:0,dDBm:-95,dots:[],maxDots:110,sweep:0,sweepSpd:.016,hapticIv:null,raf:null,msgTimer:0,msgIdx:0,lastT:0},HAPTIC_BASE=380,cv=$("cv"),ctx=cv.getContext("2d"),W=0,H=0,DPR=1;function resizeCv(){DPR=Math.min(window.devicePixelRatio||1,3),W=window.innerWidth,H=window.innerHeight,cv.width=Math.round(W*DPR),cv.height=Math.round(H*DPR),cv.style.width=W+"px",cv.style.height=H+"px",ctx.setTransform(DPR,0,0,DPR,0,0),positionUI()}function sbPx(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sb"))||0}function positionUI(){var e=Math.max(44,Math.round(.115*Math.min(W,H))),t=sbPx(),n=$("f-set"),t=(n&&(n.style.bottom=t+128+2*e+10+"px",n.style.left="14px"),$("legend")),e=(t&&(t.style.top=.33*H+"px",t.style.right="12px"),$("smsg"));e&&(e.style.top=.17*H+"px")}function sigCol(e,t){return t=t||1,72<=e?"rgba(0,255,136,"+t+")":50<=e?"rgba(212,175,55,"+t+")":28<=e?"rgba(240,112,0,"+t+")":"rgba(255,51,51,"+t+")"}function hapticBeat(){var e,t;S.scanning&&navigator.vibrate&&(e=S.dSig,t=Math.round(HAPTIC_BASE-e/100*(HAPTIC_BASE-80)),80<=e?navigator.vibrate([8,38,8]):55<=e?navigator.vibrate(10):28<=e?navigator.vibrate(8):navigator.vibrate(6),clearInterval(S.hapticIv),S.hapticIv=setInterval(hapticBeat,t))}function spawnDot(){S.dots.length>=S.maxDots&&S.dots.shift();var e=Math.random()*Math.PI*2,t=28+Math.random()*Math.min(W,H)*.4;S.dots.push({x:.5*W+Math.cos(e)*t,y:.5*H+Math.sin(e)*t,sig:S.dSig,age:0,life:3200+4e3*Math.random(),r:2.5+5.5*Math.random(),vx:.28*(Math.random()-.5),vy:.28*(Math.random()-.5)})}function drawRadar(){if($("tog-rad").checked){var e=sbPx(),i=Math.max(44,Math.round(.115*Math.min(W,H))),s=14+i,r=H-e-14-i;ctx.save(),ctx.beginPath(),ctx.arc(s,r,i+2,0,2*Math.PI),ctx.fillStyle="rgba(0,0,14,.84)",ctx.fill(),ctx.beginPath(),ctx.arc(s,r,i,0,2*Math.PI),ctx.strokeStyle="rgba(212,175,55,.28)",ctx.lineWidth=1,ctx.stroke(),[.34,.67,1].forEach(function(e){ctx.beginPath(),ctx.arc(s,r,i*e,0,2*Math.PI),ctx.strokeStyle="rgba(0,255,136,.07)",ctx.lineWidth=.5,ctx.stroke()}),ctx.strokeStyle="rgba(0,255,136,.09)",ctx.lineWidth=.5,ctx.beginPath(),ctx.moveTo(s-i,r),ctx.lineTo(s+i,r),ctx.moveTo(s,r-i),ctx.lineTo(s,r+i),ctx.stroke();for(var t=0;t<28;t++){var n=S.sweep-t/28*(.6*Math.PI),a=S.sweep-(t+1)/28*(.6*Math.PI);ctx.beginPath(),ctx.moveTo(s,r),ctx.arc(s,r,i,n,a,!0),ctx.closePath(),ctx.fillStyle="rgba(0,255,136,"+.16*(.95-t/28)+")",ctx.fill()}ctx.beginPath(),ctx.moveTo(s,r),ctx.lineTo(s+Math.cos(S.sweep)*i,r+Math.sin(S.sweep)*i),ctx.strokeStyle="rgba(0,255,136,.72)",ctx.lineWidth=1.5,ctx.stroke(),S.dots.forEach(function(e){var t=(e.x-.5*W)/(.5*W)*i*.88,n=(e.y-.5*H)/(.5*H)*i*.88,a=.78*(1-e.age/e.life);ctx.beginPath(),ctx.arc(s+t,r+n,1.6,0,2*Math.PI),ctx.fillStyle=sigCol(e.sig,a),ctx.fill()}),ctx.beginPath(),ctx.arc(s,r,3,0,2*Math.PI),ctx.fillStyle="rgba(0,255,136,.92)",ctx.fill();e=Math.max(7,Math.round(.18*i));ctx.font="500 "+e+'px "Space Mono",monospace',ctx.textAlign="center",ctx.textBaseline="middle",ctx.fillStyle="rgba(212,175,55,.42)",[{t:"N",ax:0,ay:-1},{t:"S",ax:0,ay:1},{t:"W",ax:-1,ay:0},{t:"O",ax:1,ay:0}].forEach(function(e){ctx.fillText(e.t,s+e.ax*(i+11),r+e.ay*(i+11))}),ctx.restore()}}function frame(e){if(S.scanning){var t=clamp(e-(S.lastT||e),1,100),e=(S.lastT=e,NET.supported&&applyRealData(),S.sweep+=S.sweepSpd*(.06*t),S.sweep>2*Math.PI&&(S.sweep-=2*Math.PI),Math.random()<.055&&spawnDot(),S.dots=S.dots.filter(function(e){return e.age+=t,e.x+=e.vx,e.y+=e.vy,e.age<e.life}),ctx.clearRect(0,0,W,H),.025+25e-5*S.dSig);ctx.strokeStyle="rgba(212,175,55,"+e+")",ctx.lineWidth=.5;for(var n=0;n<W;n+=40)ctx.beginPath(),ctx.moveTo(n,0),ctx.lineTo(n,H),ctx.stroke();for(var a=0;a<H;a+=40)ctx.beginPath(),ctx.moveTo(0,a),ctx.lineTo(W,a),ctx.stroke();S.dots.forEach(function(e){var t=(1-e.age/e.life)*(.52+S.dSig/260),n=e.r*(1-e.age/e.life*.5),a=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,3.2*n);a.addColorStop(0,sigCol(e.sig,.45*t)),a.addColorStop(1,sigCol(e.sig,0)),ctx.beginPath(),ctx.arc(e.x,e.y,3.2*n,0,2*Math.PI),ctx.fillStyle=a,ctx.fill(),ctx.beginPath(),ctx.arc(e.x,e.y,.5*n,0,2*Math.PI),ctx.fillStyle=sigCol(e.sig,t),ctx.fill()});var e=.001*Date.now(),e=.08*Math.min(W,H)*(1+.1*Math.sin(1.9*e)),i=ctx.createRadialGradient(.5*W,.5*H,.4*e,.5*W,.5*H,2.6*e);i.addColorStop(0,sigCol(S.dSig,.1)),i.addColorStop(1,sigCol(S.dSig,0)),ctx.beginPath(),ctx.arc(.5*W,.5*H,2.6*e,0,2*Math.PI),ctx.fillStyle=i,ctx.fill(),ctx.beginPath(),ctx.arc(.5*W,.5*H,e,0,2*Math.PI),ctx.strokeStyle=sigCol(S.dSig,.32),ctx.lineWidth=1.5,ctx.stroke(),drawRadar(),updateUI(t),S.raf=requestAnimationFrame(frame)}}function updateUI(e){for(var t,n=Math.round(S.dSig),a=0<S.dDL?S.dDL.toFixed(1):"–",i=0<S.dPing?Math.round(S.dPing):"–",s=sigToDBm(n),r=72<=n?"g":50<=n?"o":28<=n?"a":"r",o=(setText("mv-sig",n||"–"),setText("mv-dl",a),setText("mv-rtt",i),setText("orb-val",n||"–"),setText("orb-dbm",s+" dBm"),["g","o","a","r"].forEach(function(e){var t=$("mv-sig"),t=(t&&t.classList.toggle(e,e===r),$("mv-dl"));t&&t.classList.toggle(e,e===r)}),$("mv-rtt")),a=(o&&(t="number"==typeof i?i<50?"g":i<120?"o":i<280?"a":"r":"a",["g","o","a","r"].forEach(function(e){o.classList.toggle(e,e===t)})),["mc-sig","mc-dl","mc-rtt"].forEach(function(e){e=$(e);e&&e.classList.add("live")}),navigator.connection||navigator.mozConnection||navigator.webkitConnection),l=(a&&(setText("cp-type",a.type||"—"),setText("cp-rtt",(a.rtt||0)+" ms"),setText("cp-dl",(a.downlink||0)+" Mbps"),setText("cp-eff",a.effectiveType||"—"),setText("tb-conn",(a.effectiveType||"").toUpperCase())),S.msgTimer+=e,4800<S.msgTimer&&(S.msgTimer=0,S.msgIdx=(S.msgIdx+1)%T.msgs.length),""),c=0;c<T.msgs.length;c++)if(n>=T.msgs[c].min){l=T.msgs[c].msg;break}setText("smsg",l)}function toggleScan(){var e;S.scanning?(S.scanning=!1,S.paused=!0,cancelAnimationFrame(S.raf),clearInterval(S.hapticIv),(e=$("badge-inner"))&&(e.textContent=T.h_pause,e.className="off"),(e=$("scan-btn"))&&e.classList.remove("on"),setText("btn-lbl",T.btn_start),ctx.clearRect(0,0,W,H)):(S.scanning=!0,S.paused=!1,NET.supported?applyRealData():(S.dSig=65,S.dPing=32,S.dDL=8.4),S.dots=[],S.sweep=0,S.msgTimer=0,(e=$("badge-inner"))&&(e.textContent=T.h_scan,e.className="on"),(e=$("scan-btn"))&&e.classList.add("on"),setText("btn-lbl",T.btn_stop),$("tog-hap").checked&&navigator.vibrate&&(clearInterval(S.hapticIv),S.hapticIv=setInterval(hapticBeat,HAPTIC_BASE)),S.lastT=performance.now(),S.raf=requestAnimationFrame(frame))}function openSettings(){var e=$("settings");e&&e.classList.add("open")}function closeSettings(){var e=$("settings");e&&e.classList.remove("open")}window.addEventListener("resize",resizeCv);var _fadeRaf=null;function audioFadeTo(n,a,i,s){var r,o;n&&(_fadeRaf&&cancelAnimationFrame(_fadeRaf),r=n.volume,o=performance.now(),_fadeRaf=requestAnimationFrame(function e(t){t=Math.min((t-o)/i,1);n.volume=Math.max(0,Math.min(1,r+(a-r)*t)),t<1?_fadeRaf=requestAnimationFrame(e):s&&s()}))}function startBgMusic(){var e,n=$("aud-bg");n&&(n.volume=0,n.currentTime=0,(e=n.play())&&e.catch&&e.catch(function(){}),audioFadeTo(n,.6,2200,null),n.addEventListener("timeupdate",function e(){var t;n.duration&&!isNaN(n.duration)&&(t=n.duration-n.currentTime)<=5&&0<t&&.01<n.volume&&(n.removeEventListener("timeupdate",e),audioFadeTo(n,0,4800,function(){n.pause(),n.currentTime=0}))}))}function toggleBgMusic(){var e=$("aud-bg");e&&($("tog-mus").checked?startBgMusic():audioFadeTo(e,0,1400,function(){e.pause()}))}function resetConsent(){localStorage.removeItem("wps_consent"),localStorage.removeItem("wps_lang"),showToast("Reset. Neustart…"),setTimeout(function(){location.reload()},1600)}var PRIVACY_TEXT="DATENSCHUTZERKLÄRUNG / PRIVACY POLICY\n© Cobra Dynamics 2026 — Version 5.1.0\n\n1. VERANTWORTLICHER\nCobra Dynamics, Dennis Stein & Christoph Frick\nNördliche Ringstraße 75, 63225 Langen\nE-Mail: dennis.stein@cobradynamics.de\n\n2. DATENERHEBUNG\nDiese App erhebt KEINE personenbezogenen Daten. Es werden keine Namen, E-Mail-Adressen, Standortdaten oder Gerätekennungen gespeichert oder übertragen. Alle Messungen erfolgen ausschließlich lokal auf Ihrem Gerät.\n\n3. VERWENDETE WEB-APIs\n• NetworkInformation API (Verbindungsqualität, RTT, Downlink)\n• DeviceMotion API (optionale Bewegungssteuerung)\n• Web Audio API (Intro-Jingle, lokal)\n• Vibration API (haptisches Feedback)\nAlle APIs werden ausschließlich lokal genutzt. Keine Daten verlassen das Gerät.\n\n4. LOKALE SPEICHERUNG\nEs wird ausschließlich localStorage verwendet, um:\n• Ihre Spracheinstellung (DE/EN/ZH) zu speichern\n• Ihre Datenschutz-Zustimmung zu speichern\nDiese Daten verbleiben ausschließlich auf Ihrem Gerät und können jederzeit über Einstellungen → Consent zurücksetzen gelöscht werden (Art. 17 DSGVO).\n\n5. KEINE DRITTANBIETER\nDiese App verwendet keine Analytics, kein Tracking, keine Werbenetzwerke, keine Social-Media-Plugins und keine externen Server.\n\n6. SCHRIFTARTEN\nDie App lädt Schriftarten von Google Fonts (fonts.googleapis.com). Dabei wird Ihre IP-Adresse übertragen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse). Sie können die Schriftarten durch Offline-Nutzung umgehen.\n\n7. RECHTSGRUNDLAGE\nRechtsgrundlage für die Verarbeitung: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigte Interessen).\n\n8. IHRE RECHTE (DSGVO Art. 15–22)\n• Auskunft über gespeicherte Daten\n• Berichtigung unrichtiger Daten\n• Löschung (Art. 17) — jederzeit über Einstellungen möglich\n• Einschränkung der Verarbeitung\n• Datenübertragbarkeit\n• Widerspruch\nAnfragen: dennis.stein@cobradynamics.de\n\n9. MINDESTALTER\nDiese App ist ab 4 Jahren freigegeben (Altersklasse 4+ / Everyone). Keine In-App-Käufe nach Kauf. Keine Werbung.\n\n10. PREIS & LIZENZ\nEinmalzahlung: 1,99 EUR (inkl. MwSt.). Die Lizenz gilt für eine Person auf allen eigenen Geräten. Kein Abo. Keine versteckten Kosten.\n\n11. ÄNDERUNGEN\nÄnderungen dieser Datenschutzerklärung werden in der App und auf der GitHub-Seite veröffentlicht.\n\nENGLISH SUMMARY\nThis app collects no personal data. All processing is local. Storage: language preference and consent only, deletable at any time. No tracking, no analytics, no ads. One-time purchase of EUR 1.99. Age rating: 4+.\n\n中文摘要\n本应用不收集任何个人数据。所有处理均在本地进行。仅存储语言偏好和同意记录，可随时删除。无追踪，无分析，无广告。一次性购买，价格1.99欧元。年龄评级：4+。";function openPrivacy(){var e=document.getElementById("privacy-overlay"),t=document.getElementById("privacy-body");t&&(t.textContent=PRIVACY_TEXT),e&&(e.style.display="flex"),closeSettings()}function closePrivacy(){var e=document.getElementById("privacy-overlay");e&&(e.style.display="none")}function openImpressum(){var e=document.getElementById("impressum-overlay");e&&(e.style.display="flex"),closeSettings()}function closeImpressum(){var e=document.getElementById("impressum-overlay");e&&(e.style.display="none")}function showToast(e){var t=$("toast");t&&(t.textContent=e,t.classList.add("show"),setTimeout(function(){t.classList.remove("show")},2600))}var INTRO_DUR=3750,INTRO_TL=[[0,function(){startIntroAudio()}],[380,function(){$("il-pre").classList.add("vis")}],[820,function(){var e=$("intro-bar-wrap");e&&(e.style.opacity="1")}],[1400,function(){$("il-sub").classList.add("vis")}],[2100,function(){$("il-desc").classList.add("vis")}],[3380,function(){var e=$("intro-flash"),e=(e&&(e.classList.remove("burst"),e.offsetWidth,e.classList.add("burst")),$("il-brand"));e&&(e.classList.remove("shoot"),e.offsetWidth,e.classList.add("shoot")),navigator.vibrate&&navigator.vibrate([6,20,30,20,8])}],[3600,function(){var e=$("intro-foot");e&&(e.style.opacity="1")}]];function startIntroAudio(){var e=$("aud-intro");e&&(e.volume=.82,e=e.play())&&e.catch&&e.catch(function(){})}function runIntro(){var e=$("icv"),s=e.getContext("2d"),r=0,o=0,l=[],c=[],d=performance.now();function t(){r=e.width=window.innerWidth,o=e.height=window.innerHeight}t(),window.addEventListener("resize",t);for(var n=0;n<100;n++)l.push({x:Math.random()*r,y:Math.random()*o,vx:.35*(Math.random()-.5),vy:.35*(Math.random()-.5),r:1.6*Math.random()+.3,a:.38*Math.random()+.06,col:.55<Math.random()?"212,175,55":"245,224,112"});requestAnimationFrame(function e(){var t,n=performance.now()-d,a=(INTRO_TL.forEach(function(e,t){!c[t]&&n>=e[0]&&(c[t]=!0,e[1]())}),Math.min(n/INTRO_DUR,1)),i=$("intro-bar"),i=(i&&(i.style.width=100*a+"%"),s.clearRect(0,0,r,o),l.forEach(function(e){e.x+=e.vx,e.y+=e.vy,e.x<0&&(e.x=r),r<e.x&&(e.x=0),e.y<0&&(e.y=o),o<e.y&&(e.y=0),s.beginPath(),s.arc(e.x,e.y,e.r,0,2*Math.PI),s.fillStyle="rgba("+e.col+","+e.a+")",s.fill()}),[0,.33,.66].forEach(function(e){var e=(55e-5*n+e)%1,t=e*Math.min(r,o)*.42,e=.09*(1-e);s.beginPath(),s.arc(.5*r,.5*o,t,0,2*Math.PI),s.strokeStyle="rgba(212,175,55,"+e+")",s.lineWidth=1.5,s.stroke()}),Math.max(0,1-Math.abs(n-3380)/400));.02<i&&((a=s.createRadialGradient(.5*r,.5*o,0,.5*r,.5*o,.3*Math.min(r,o))).addColorStop(0,"rgba(212,175,55,"+.12*i+")"),a.addColorStop(1,"rgba(212,175,55,0)"),s.beginPath(),s.arc(.5*r,.5*o,.3*Math.min(r,o),0,2*Math.PI),s.fillStyle=a,s.fill()),n<INTRO_DUR?requestAnimationFrame(e):(t=$("intro"))&&(t.style.transition="opacity 1s ease",t.style.opacity="0",setTimeout(function(){t.style.display="none",showApp()},1e3))})}function showApp(){var e=$("app");e&&(e.style.display="flex",e.style.opacity="0",e.style.transition="opacity .9s ease",setTimeout(function(){e.style.opacity="1"},40)),resizeCv(),initNetworkAPI(),applyLang(),initPwaButton()}window.acceptConsent=function(){localStorage.setItem("wps_consent","1");var t=$("consent");t&&(t.style.transition="opacity .65s",t.style.opacity="0",setTimeout(function(){t.style.display="none";var e=$("intro");e&&(e.style.display="flex"),runIntro()},650))},(()=>{var e;T=LANGS[lang],applyLang(),"zh"===lang&&(document.body.style.fontFamily="'Noto Sans SC',sans-serif"),localStorage.getItem("wps_consent")?((e=$("consent"))&&(e.style.display="none"),runIntro()):((e=$("consent"))&&(e.style.display="flex"),(e=$("intro"))&&(e.style.display="none"))})();var _pwaPrompt=null;function triggerPwaInstall(){_pwaPrompt?(_pwaPrompt.prompt(),_pwaPrompt.userChoice.then(function(e){"accepted"===e.outcome&&(e=$("pwa-install"))&&e.classList.remove("visible"),_pwaPrompt=null})):showToast(/iphone|ipad|ipod/i.test(navigator.userAgent)?'Tippe ↑ Teilen → „Zum Home-Bildschirm"':'Browser-Menü → „App installieren"')}function initPwaButton(){var e={de:{lbl:"App installieren",sub:"Zum Homescreen hinzufügen"},en:{lbl:"Install App",sub:"Add to Home Screen"},zh:{lbl:"安装应用",sub:"添加到主屏幕"}},e=e[lang]||e.de,e=(setText("pwa-lbl",e.lbl),setText("pwa-sub",e.sub),/iphone|ipad|ipod/i.test(navigator.userAgent)),t=!0===window.navigator.standalone||window.matchMedia("(display-mode: fullscreen)").matches||window.matchMedia("(display-mode: standalone)").matches;e&&!t&&(e=$("pwa-install"))&&e.classList.add("visible")}window.addEventListener("beforeinstallprompt",function(e){e.preventDefault(),_pwaPrompt=e;e=$("pwa-install");e&&e.classList.add("visible")}),window.addEventListener("appinstalled",function(){_pwaPrompt=null;var e=$("pwa-install");e&&e.classList.remove("visible"),showToast("✓ App installiert!")}),"serviceWorker"in navigator&&window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js").catch(function(){})});
+// ─── UTILS ───────────────────────────────────────────────────
+function $(id){return document.getElementById(id);}
+function setText(id,t){var e=$(id);if(e)e.textContent=t;}
+function setHTML(id,t){var e=$(id);if(e)e.innerHTML=t;}
+function clamp(v,mn,mx){return Math.min(Math.max(v,mn),mx);}
+
+// ─── I18N ────────────────────────────────────────────────────
+var LEG={
+  de:"Diese App (WIPULSCAN PRO) wird von Cobra Dynamics, Dennis Stein & Christoph Frick, Nördliche Ringstraße 75, 63225 Langen betrieben.\n\nDie App liest ausschließlich Gerätedaten via Web-APIs (NetworkInformation, DeviceMotion). Es werden keine personenbezogenen Daten erhoben, gespeichert oder übermittelt. Alle Berechnungen erfolgen lokal auf Ihrem Gerät.\n\nRechtsgrundlage: DSGVO Art. 6 Abs. 1 lit. b. Löschrecht: Art. 17 DSGVO.\n\nKontakt: dennis.stein@cobradynamics.de",
+  en:"This app (WIPULSCAN PRO) is operated by Cobra Dynamics, Dennis Stein & Christoph Frick, Nördliche Ringstraße 75, 63225 Langen, Germany.\n\nThe app reads device data only via Web APIs. No personal data is collected, stored or transmitted.\n\nLegal basis: GDPR Art. 6(1)(b). Contact: dennis.stein@cobradynamics.de",
+  zh:"本应用由 Cobra Dynamics 运营。不收集任何个人数据。联系：dennis.stein@cobradynamics.de"
+};
+var LANGS={
+  de:{c_eye:"Bitte lies die Datenschutzerklärung",c_sub:"Diese App läuft vollständig lokal.<br>Keine Server. Keine Tracking-Daten.",c_chk:"Ich habe die Datenschutzerklärung gelesen und stimme zu.",c_ok:"Starten",s_title:"EINSTELLUNGEN",s_opt:"OPTIONEN",s_mus:"Hintergrundmusik",s_feat:"FEATURES",h_ready:"BEREIT",h_scan:"SCANNING",h_pause:"PAUSIERT",ml_sig:"SIGNAL",ml_dl:"DOWNLOAD",ml_rtt:"LATENZ",l_s:"STARK",l_g:"GUT",l_m:"MITTEL",l_w:"SCHWACH",btn_start:"Scan Starten",btn_stop:"Scan Stoppen",bd_current:"Aktuelle Verbindung",bd_main:"Echtdaten",bd_est:"Geschätzt",bd_stability:"STABILITÄT",feats:["Echtzeit via NetworkInformation API","Interaktive Netzwerk-Bubbles + AR","3.75s Cinematic Intro + Jingle","Dreisprachig DE / EN / 中文","DSGVO-konform · lokal only"],msgs:[{min:88,msg:"Exzellentes Signal — Glasfaser-Qualität"},{min:72,msg:"Starkes Signal — optimale Verbindung"},{min:50,msg:"Gutes Signal — stabil und zuverlässig"},{min:30,msg:"Mittleres Signal — ausreichend"},{min:12,msg:"Schwaches Signal — eingeschränkt"},{min:0,msg:"Kritisches Signal — Verbindung instabil"}]},
+  en:{c_eye:"Please read the Privacy Policy",c_sub:"This app runs entirely locally.<br>No servers. No tracking.",c_chk:"I have read the Privacy Policy and agree.",c_ok:"Start",s_title:"SETTINGS",s_opt:"OPTIONS",s_mus:"Background Music",s_feat:"FEATURES",h_ready:"READY",h_scan:"SCANNING",h_pause:"PAUSED",ml_sig:"SIGNAL",ml_dl:"DOWNLOAD",ml_rtt:"LATENCY",l_s:"STRONG",l_g:"GOOD",l_m:"MEDIUM",l_w:"WEAK",btn_start:"Start Scan",btn_stop:"Stop Scan",bd_current:"Active Connection",bd_main:"Real data",bd_est:"Estimated",bd_stability:"STABILITY",feats:["Real-time via NetworkInformation API","Interactive Network Bubbles + AR","3.75s Cinematic Intro + Jingle","Trilingual DE / EN / 中文","GDPR-compliant · local only"],msgs:[{min:88,msg:"Excellent signal — fiber quality"},{min:72,msg:"Strong signal — optimal connection"},{min:50,msg:"Good signal — stable & reliable"},{min:30,msg:"Medium signal — adequate"},{min:12,msg:"Weak signal — limited reception"},{min:0,msg:"Critical signal — connection unstable"}]},
+  zh:{c_eye:"请阅读隐私政策",c_sub:"本应用完全在本地运行。<br>无服务器。无追踪。",c_chk:"我已阅读并同意隐私政策。",c_ok:"开始",s_title:"设置",s_opt:"选项",s_mus:"背景音乐",s_feat:"功能列表",h_ready:"就绪",h_scan:"扫描中",h_pause:"已暂停",ml_sig:"信号",ml_dl:"下载",ml_rtt:"延迟",l_s:"强",l_g:"良",l_m:"中",l_w:"弱",btn_start:"开始扫描",btn_stop:"停止扫描",bd_current:"当前连接",bd_main:"真实数据",bd_est:"估算",bd_stability:"稳定性",feats:["实时 NetworkInformation API","交互式网络气泡 + AR","3.75秒电影级开场","三语界面 DE / EN / 中文","符合GDPR · 纯本地"],msgs:[{min:88,msg:"极佳信号 — 光纤级质量"},{min:72,msg:"强信号 — 最佳连接"},{min:50,msg:"良好信号 — 稳定可靠"},{min:30,msg:"中等信号 — 基本够用"},{min:12,msg:"弱信号 — 接收受限"},{min:0,msg:"极弱信号 — 连接不稳定"}]}
+};
+var lang=localStorage.getItem('wps_lang')||'de', T=LANGS[lang];
+
+function setLang(l){
+  lang=l; localStorage.setItem('wps_lang',l); T=LANGS[l];
+  document.body.style.fontFamily=(l==='zh')?"'Noto Sans SC',sans-serif":"'Space Grotesk',sans-serif";
+  applyLang();
+}
+function applyLang(){
+  T=LANGS[lang];
+  setText('c-eye',T.c_eye); setHTML('c-sub',T.c_sub); setText('c-chk',T.c_chk); setText('cta',T.c_ok);
+  var cl=$(  'c-leg'); if(cl) cl.textContent=LEG[lang];
+  setText('s-title',T.s_title); setText('s-opt',T.s_opt); setText('s-mus',T.s_mus); setText('s-feat',T.s_feat);
+  setText('ml-sig',T.ml_sig); setText('ml-dl',T.ml_dl); setText('ml-rtt',T.ml_rtt);
+  setText('l-s',T.l_s); setText('l-g',T.l_g); setText('l-m',T.l_m); setText('l-w',T.l_w);
+  var bi=$('badge-inner');
+  if(bi) bi.textContent=S.scanning?T.h_scan:S.paused?T.h_pause:T.h_ready;
+  setText('btn-lbl',S.scanning?T.btn_stop:T.btn_start);
+  var fl=$('feat-list');
+  if(fl){fl.innerHTML='';T.feats.forEach(function(f){var li=document.createElement('li');li.textContent=f;fl.appendChild(li);});}
+  document.querySelectorAll('[data-lang]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-lang')===lang);});
+}
+
+// ─── NETWORK API ─────────────────────────────────────────────
+var NET={supported:false,type:'unknown',effectiveType:'4g',rtt:0,downlink:0,sigPct:0};
+
+function estimateBand(){
+  var c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  if(!c) return 'unknown';
+  if(c.type==='cellular') return 'LTE';
+  if(c.type==='ethernet') return 'LAN';
+  if(c.type==='wifi'){
+    if(c.rtt<25&&c.downlink>30) return '5';
+    if(c.rtt<55&&c.downlink>10) return '5';
+    return '2.4';
+  }
+  return 'unknown';
+}
+
+function initNetworkAPI(){
+  var a=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  if(!a){NET.supported=false;return;}
+  NET.supported=true;
+  function read(){
+    NET.type=a.type||'unknown'; NET.effectiveType=a.effectiveType||'4g';
+    NET.rtt=a.rtt||0; NET.downlink=a.downlink||0;
+    var base=0;
+    switch(a.effectiveType){case'4g':base=68;break;case'3g':base=42;break;case'2g':base=18;break;default:base=5;}
+    var dl=clamp(a.downlink||0,0,25), dlBonus=Math.round(dl/10*28);
+    var rttPenalty=Math.round(clamp(a.rtt||0,0,400)/300*10);
+    var typeBonus=(a.type==='wifi'?6:a.type==='ethernet'?10:0);
+    NET.sigPct=clamp(base+dlBonus-rttPenalty+typeBonus,2,99);
+    if(S.scanning) applyRealData();
+  }
+  a.addEventListener('change',read);
+  read();
+  setInterval(read,500);
+}
+function applyRealData(){
+  S.dSig=NET.sigPct; S.dPing=NET.rtt; S.dDL=NET.downlink; S.dDBm=sigToDBm(NET.sigPct);
+}
+function sigToDBm(pct){return Math.round(pct/100*75-95);}
+
+// ─── COLOUR HELPERS ──────────────────────────────────────────
+function sigCol(s,a){
+  if(s>=72) return 'rgba(0,255,136,'+a+')';
+  if(s>=50) return 'rgba(212,175,55,'+a+')';
+  if(s>=28) return 'rgba(240,112,0,'+a+')';
+  return 'rgba(255,51,51,'+a+')';
+}
+function sigColRGB(s){
+  if(s>=72) return '0,255,136';
+  if(s>=50) return '212,175,55';
+  if(s>=28) return '240,112,0';
+  return '255,51,51';
+}
+
+// ─── CANVAS + STATE ──────────────────────────────────────────
+var S={
+  scanning:false,paused:false,
+  dSig:0,dPing:0,dDL:0,dDBm:-95,
+  dots:[],maxDots:120,
+  sweep:0,sweepSpd:0.016,
+  hapticIv:null,raf:null,
+  msgTimer:0,msgIdx:0,lastT:0,
+  filterActive:'all'
+};
+var HAPTIC_BASE=380;
+var BUBBLES=[];
+var SELECTED_BUBBLE=null;
+
+var cv=$('cv'),ctx=cv.getContext('2d'),W=0,H=0,DPR=1;
+
+function resizeCv(){
+  DPR=Math.min(window.devicePixelRatio||1,3);
+  W=window.innerWidth; H=window.innerHeight;
+  cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+  cv.style.width=W+'px'; cv.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  positionUI();
+  if(S.scanning) repositionBubbleHomes();
+}
+function sbPx(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sb'))||0;}
+function positionUI(){
+  var btnR=Math.max(44,Math.round(0.115*Math.min(W,H)));
+  var sb=sbPx();
+  var gearBot=sb+128+2*btnR+10;
+  var gear=$('f-set'), info=$('info-btn'), fb=$('filterbar');
+  if(gear){gear.style.bottom=gearBot+'px'; gear.style.left='14px';}
+  if(info){info.style.bottom=gearBot+'px'; info.style.right='14px';}
+  if(fb) fb.style.bottom=(sb+104)+'px';
+  var leg=$('legend'); if(leg){leg.style.top=(H*0.33)+'px'; leg.style.right='12px';}
+  var smsg=$('smsg'); if(smsg) smsg.style.top=(H*0.17)+'px';
+}
+
+// ─── BUBBLE SYSTEM ───────────────────────────────────────────
+function initBubbles(){
+  BUBBLES=[];
+  var mainSig=NET.sigPct||65;
+  var cx=W*0.50, cy=H*0.40;
+  // Main connection bubble
+  BUBBLES.push({
+    id:'main', x:cx, y:cy, homeX:cx, homeY:cy, vx:0, vy:0,
+    r:clamp(48+mainSig*0.52,48,100),
+    sig:mainSig, baseSig:mainSig,
+    dbm:sigToDBm(mainSig),
+    type:NET.type||'wifi', band:estimateBand(),
+    effectiveType:NET.effectiveType||'4g',
+    isMain:true, label:'', history:[mainSig], histTimer:0
+  });
+  // Simulated neighbor APs
+  var count=4+Math.floor(Math.random()*3);
+  var bands=['2.4','5','2.4','5','6','2.4'];
+  for(var i=0;i<count;i++){
+    var angle=(i/count)*Math.PI*2+(Math.random()-0.5)*0.7;
+    var minD=BUBBLES[0].r+38+Math.random()*20;
+    var dist=minD+Math.random()*70;
+    var nsig=clamp(mainSig-10-Math.random()*45,4,90);
+    var nx=clamp(cx+Math.cos(angle)*dist,52,W-52);
+    var ny=clamp(cy+Math.sin(angle)*dist,75,H-185);
+    BUBBLES.push({
+      id:'ap'+i, x:nx, y:ny, homeX:nx, homeY:ny,
+      vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4,
+      r:clamp(18+nsig*0.38,18,56),
+      sig:nsig, baseSig:nsig,
+      dbm:sigToDBm(nsig),
+      type:'wifi', band:bands[i%bands.length],
+      effectiveType:nsig>70?'4g':nsig>40?'3g':'2g',
+      isMain:false, label:'AP-'+(i+1<10?'0':'')+(i+1),
+      history:[nsig], histTimer:0
+    });
+  }
+}
+function repositionBubbleHomes(){
+  if(!BUBBLES.length) return;
+  var cx=W*0.50, cy=H*0.40;
+  BUBBLES[0].homeX=cx; BUBBLES[0].homeY=cy;
+}
+function updateBubblePhysics(dt){
+  BUBBLES.forEach(function(b){
+    // Update main from real data
+    if(b.isMain&&NET.supported){
+      b.sig=NET.sigPct; b.dbm=sigToDBm(NET.sigPct);
+      b.r=clamp(48+NET.sigPct*0.52,48,100);
+      b.effectiveType=NET.effectiveType; b.type=NET.type;
+    } else if(!b.isMain){
+      // Gentle signal noise for realism
+      b.sig=clamp(b.sig+(Math.random()-0.5)*0.5,b.baseSig-6,b.baseSig+6);
+      b.dbm=sigToDBm(b.sig);
+    }
+    // History (every ~500ms)
+    b.histTimer=(b.histTimer||0)+dt;
+    if(b.histTimer>=500){
+      b.histTimer=0;
+      b.history.push(Math.round(b.sig));
+      if(b.history.length>40) b.history.shift();
+    }
+    // Spring physics — smooth, not nervous
+    var dx=b.homeX-b.x, dy=b.homeY-b.y;
+    b.vx+=dx*0.006+(Math.random()-0.5)*0.10;
+    b.vy+=dy*0.006+(Math.random()-0.5)*0.10;
+    b.vx*=0.88; b.vy*=0.88;
+    var spd=dt*0.055;
+    b.x+=b.vx*spd; b.y+=b.vy*spd;
+    // Soft boundary
+    var m=b.r+8, topM=72, botM=170;
+    if(b.x<m) b.vx+=0.6;
+    if(b.x>W-m) b.vx-=0.6;
+    if(b.y<topM+m) b.vy+=0.6;
+    if(b.y>H-botM-m) b.vy-=0.6;
+  });
+}
+function drawBubbles(){
+  var af=S.filterActive;
+  BUBBLES.forEach(function(b){
+    // Filter
+    var vis=true;
+    if(af==='wifi'&&b.type!=='wifi') vis=false;
+    if(af==='cellular'&&b.type!=='cellular') vis=false;
+    if(af==='strong'&&b.sig<70) vis=false;
+    if(af==='5ghz'&&b.band!=='5') vis=false;
+    var alpha=vis?1:0.1;
+    var rgb=sigColRGB(b.sig);
+    var pulse=b.isMain?(0.84+0.16*Math.sin(Date.now()*0.0022)):1;
+
+    // Outer bloom glow
+    var bR=b.r*(b.isMain?3.0:2.2);
+    var glow=ctx.createRadialGradient(b.x,b.y,b.r*0.4,b.x,b.y,bR);
+    glow.addColorStop(0,'rgba('+rgb+','+(0.13*alpha*pulse)+')');
+    glow.addColorStop(1,'rgba('+rgb+',0)');
+    ctx.beginPath(); ctx.arc(b.x,b.y,bR,0,Math.PI*2); ctx.fillStyle=glow; ctx.fill();
+
+    // Glass bubble body
+    var body=ctx.createRadialGradient(b.x-b.r*0.28,b.y-b.r*0.28,0,b.x,b.y,b.r);
+    body.addColorStop(0,'rgba('+rgb+','+(0.30*alpha)+')');
+    body.addColorStop(0.55,'rgba('+rgb+','+(0.09*alpha)+')');
+    body.addColorStop(1,'rgba('+rgb+','+(0.02*alpha)+')');
+    ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fillStyle=body; ctx.fill();
+
+    // Rim
+    ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+    ctx.strokeStyle='rgba('+rgb+','+(0.62*alpha*pulse)+')';
+    ctx.lineWidth=b.isMain?1.6:0.9; ctx.stroke();
+
+    // Specular highlight (glass gleam)
+    var sx=b.x-b.r*0.28, sy=b.y-b.r*0.30, sr=b.r*0.22;
+    var spec=ctx.createRadialGradient(sx,sy,0,sx,sy,sr);
+    spec.addColorStop(0,'rgba(255,255,255,'+(0.14*alpha)+')');
+    spec.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2); ctx.fillStyle=spec; ctx.fill();
+
+    // Labels
+    if(b.r>=20){
+      var fs=clamp(Math.round(b.r*0.30),8,15);
+      ctx.font='bold '+fs+'px "Space Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle='rgba('+rgb+','+(0.96*alpha)+')';
+      var labelY=b.r>=36?b.y-fs*0.5:b.y;
+      ctx.fillText(Math.round(b.sig)+'%',b.x,labelY);
+      if(b.r>=36){
+        var fs2=clamp(Math.round(b.r*0.18),7,11);
+        ctx.font='500 '+fs2+'px "Space Grotesk",sans-serif';
+        ctx.fillStyle='rgba(255,255,255,'+(0.42*alpha)+')';
+        ctx.fillText(b.dbm+' dBm',b.x,b.y+fs*0.5+fs2*0.2);
+      }
+      if(b.r>=52&&b.band&&b.band!=='unknown'){
+        var bs=clamp(Math.round(b.r*0.16),7,10);
+        ctx.font='500 '+bs+'px "Space Grotesk",sans-serif';
+        ctx.fillStyle='rgba(212,175,55,'+(0.48*alpha)+')';
+        var bandTxt=b.band==='5'?'5 GHz':b.band==='2.4'?'2.4 GHz':b.band;
+        ctx.fillText(bandTxt,b.x,b.y+fs*0.5+fs2*0.5+bs+2);
+      }
+    }
+    // Label tag for small bubbles
+    if(b.r<20&&vis){
+      ctx.font='bold 8px "Space Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='top';
+      ctx.fillStyle='rgba('+rgb+',0.7)';
+      ctx.fillText(b.label,b.x,b.y+b.r+3);
+    }
+  });
+}
+
+// ─── BUBBLE INTERACTION ──────────────────────────────────────
+function handleCanvasTouch(e){
+  if(!S.scanning) return;
+  var touch=e.changedTouches?e.changedTouches[0]:e;
+  var rect=cv.getBoundingClientRect();
+  var mx=touch.clientX-rect.left, my=touch.clientY-rect.top;
+  for(var i=BUBBLES.length-1;i>=0;i--){
+    var b=BUBBLES[i];
+    var d=Math.sqrt((mx-b.x)*(mx-b.x)+(my-b.y)*(my-b.y));
+    if(d<=b.r+10){showBubbleDetail(b);return;}
+  }
+}
+function showBubbleDetail(b){
+  SELECTED_BUBBLE=b;
+  var name=b.isMain?T.bd_current:b.label;
+  setText('bdetail-name',name);
+  var hint=b.isMain?T.bd_main:T.bd_est;
+  setText('bdetail-dbm',b.dbm+' dBm · '+hint+(b.isMain?'':' · NetworkInformation API'));
+  var stab=calcStability(b);
+  var band=b.band==='5'?'5 GHz':b.band==='2.4'?'2.4 GHz':b.band==='6'?'6 GHz':b.band==='LTE'?'LTE/4G':b.band;
+  var tp=b.type==='wifi'?'WiFi':b.type==='cellular'?'Mobilfunk':b.type;
+  var rttTxt=b.isMain?(NET.rtt?NET.rtt+' ms':'—'):'—';
+  var dlTxt=b.isMain?(NET.downlink?NET.downlink+' Mbps':'—'):'—';
+  var grid=$('bdetail-grid');
+  if(grid) grid.innerHTML=[
+    bdCell('SIGNAL',Math.round(b.sig)+'%',''),
+    bdCell('BAND',band||'—',b.isMain?'':T.bd_est),
+    bdCell('TYPE',tp||'—',''),
+    bdCell('EFF.',b.effectiveType?b.effectiveType.toUpperCase():'—',''),
+    bdCell('RTT',rttTxt,''),
+    bdCell('DOWNLOAD',dlTxt,''),
+    bdCell(T.bd_stability,stab+'%','letzte '+b.history.length+' Messg.'),
+    bdCell('QUALITÄT',stab>80?'stabil':stab>55?'mittel':'variabel','')
+  ].join('');
+  drawSparkline(b);
+  var ov=$('bdetail'); if(ov) ov.classList.add('open');
+  if(navigator.vibrate) navigator.vibrate(6);
+}
+function bdCell(lbl,val,note){
+  return '<div class="bd-cell"><div class="bd-lbl">'+lbl+'</div><div class="bd-val">'+val+'</div>'+(note?'<div class="bd-note">'+note+'</div>':'')+'</div>';
+}
+function calcStability(b){
+  if(!b.history||b.history.length<2) return 100;
+  var sum=0;
+  for(var i=1;i<b.history.length;i++) sum+=Math.abs(b.history[i]-b.history[i-1]);
+  return Math.round(clamp(100-sum/(b.history.length-1)*3,0,100));
+}
+function drawSparkline(b){
+  var canvas=$('bdetail-spark'); if(!canvas||!b.history||b.history.length<2) return;
+  var sc=canvas.getContext('2d');
+  var sw=canvas.offsetWidth||300, sh=46;
+  canvas.width=sw; canvas.height=sh;
+  sc.clearRect(0,0,sw,sh);
+  var data=b.history;
+  var mn=Math.min.apply(null,data), mx=Math.max.apply(null,data), rng=mx-mn||1;
+  var rgb=sigColRGB(b.sig);
+  sc.beginPath();
+  data.forEach(function(v,i){
+    var x=(i/(data.length-1))*sw;
+    var y=sh-4-((v-mn)/rng)*(sh-8);
+    i===0?sc.moveTo(x,y):sc.lineTo(x,y);
+  });
+  sc.strokeStyle='rgba('+rgb+',0.9)'; sc.lineWidth=1.5; sc.lineJoin='round'; sc.stroke();
+  sc.lineTo(sw,sh); sc.lineTo(0,sh); sc.closePath();
+  var fill=sc.createLinearGradient(0,0,0,sh);
+  fill.addColorStop(0,'rgba('+rgb+',0.20)'); fill.addColorStop(1,'rgba('+rgb+',0)');
+  sc.fillStyle=fill; sc.fill();
+}
+function closeBubbleDetail(){
+  var ov=$('bdetail'); if(ov) ov.classList.remove('open');
+}
+
+// ─── FILTER ──────────────────────────────────────────────────
+function setFilter(f){
+  S.filterActive=f;
+  document.querySelectorAll('.fb').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-f')===f);});
+}
+
+// ─── RADAR DOTS ──────────────────────────────────────────────
+function spawnDot(){
+  S.dots.length>=S.maxDots&&S.dots.shift();
+  var a=Math.random()*Math.PI*2, r2=28+Math.random()*Math.min(W,H)*0.4;
+  // Strong signals stay longer in radar memory
+  var lifeM=S.dSig>75?3.2:S.dSig>50?1.9:1.0;
+  S.dots.push({
+    x:W*0.5+Math.cos(a)*r2, y:H*0.5+Math.sin(a)*r2,
+    sig:S.dSig, age:0, life:(3200+4000*Math.random())*lifeM,
+    r:2.5+5.5*Math.random(), vx:0.28*(Math.random()-0.5), vy:0.28*(Math.random()-0.5)
+  });
+}
+function drawRadar(){
+  if(!$('tog-rad').checked) return;
+  var sb2=sbPx(), btnR=Math.max(44,Math.round(0.115*Math.min(W,H)));
+  var rx=14+btnR, ry=H-sb2-14-btnR;
+  ctx.save();
+  ctx.beginPath(); ctx.arc(rx,ry,btnR+2,0,2*Math.PI);
+  ctx.fillStyle='rgba(0,0,6,.88)'; ctx.fill();
+  ctx.beginPath(); ctx.arc(rx,ry,btnR,0,2*Math.PI);
+  ctx.strokeStyle='rgba(212,175,55,.28)'; ctx.lineWidth=1; ctx.stroke();
+  [0.34,0.67,1].forEach(function(s){
+    ctx.beginPath(); ctx.arc(rx,ry,btnR*s,0,2*Math.PI);
+    ctx.strokeStyle='rgba(0,255,136,.07)'; ctx.lineWidth=0.5; ctx.stroke();
+  });
+  ctx.strokeStyle='rgba(0,255,136,.09)'; ctx.lineWidth=0.5;
+  ctx.beginPath(); ctx.moveTo(rx-btnR,ry); ctx.lineTo(rx+btnR,ry);
+  ctx.moveTo(rx,ry-btnR); ctx.lineTo(rx,ry+btnR); ctx.stroke();
+  for(var i2=0;i2<28;i2++){
+    var a1=S.sweep-i2/28*(0.6*Math.PI), a2=S.sweep-(i2+1)/28*(0.6*Math.PI);
+    ctx.beginPath(); ctx.moveTo(rx,ry); ctx.arc(rx,ry,btnR,a1,a2,true); ctx.closePath();
+    ctx.fillStyle='rgba(0,255,136,'+(0.16*(0.95-i2/28))+')'; ctx.fill();
+  }
+  ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx+Math.cos(S.sweep)*btnR,ry+Math.sin(S.sweep)*btnR);
+  ctx.strokeStyle='rgba(0,255,136,.72)'; ctx.lineWidth=1.5; ctx.stroke();
+  S.dots.forEach(function(d){
+    var dx2=(d.x-W*0.5)/(W*0.5)*btnR*0.88, dy2=(d.y-H*0.5)/(H*0.5)*btnR*0.88;
+    var da=0.78*(1-d.age/d.life);
+    ctx.beginPath(); ctx.arc(rx+dx2,ry+dy2,1.6,0,2*Math.PI);
+    ctx.fillStyle=sigCol(d.sig,da); ctx.fill();
+  });
+  ctx.beginPath(); ctx.arc(rx,ry,3,0,2*Math.PI);
+  ctx.fillStyle='rgba(0,255,136,.92)'; ctx.fill();
+  var fs3=Math.max(7,Math.round(0.18*btnR));
+  ctx.font='500 '+fs3+'px "Space Mono",monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(212,175,55,.42)';
+  [{t:'N',ax:0,ay:-1},{t:'S',ax:0,ay:1},{t:'W',ax:-1,ay:0},{t:'O',ax:1,ay:0}].forEach(function(c){
+    ctx.fillText(c.t,rx+c.ax*(btnR+11),ry+c.ay*(btnR+11));
+  });
+  ctx.restore();
+}
+
+// ─── MAIN ANIMATION LOOP ─────────────────────────────────────
+function frame(ts){
+  if(!S.scanning) return;
+  var dt=clamp(ts-(S.lastT||ts),1,100); S.lastT=ts;
+  if(NET.supported) applyRealData();
+  S.sweep+=S.sweepSpd*(0.06*dt);
+  if(S.sweep>2*Math.PI) S.sweep-=2*Math.PI;
+  if(Math.random()<0.055) spawnDot();
+  S.dots=S.dots.filter(function(d){d.age+=dt;d.x+=d.vx;d.y+=d.vy;return d.age<d.life;});
+  updateBubblePhysics(dt);
+
+  ctx.clearRect(0,0,W,H);
+
+  // OLED grid (very subtle — only when scanning)
+  var gA=0.016+0.00018*S.dSig;
+  ctx.strokeStyle='rgba(212,175,55,'+gA+')'; ctx.lineWidth=0.5;
+  for(var x2=0;x2<W;x2+=40){ctx.beginPath();ctx.moveTo(x2,0);ctx.lineTo(x2,H);ctx.stroke();}
+  for(var y2=0;y2<H;y2+=40){ctx.beginPath();ctx.moveTo(0,y2);ctx.lineTo(W,y2);ctx.stroke();}
+
+  // Network bubbles
+  drawBubbles();
+
+  // Center orb glow (behind scan button)
+  var t3=0.001*Date.now();
+  var orbR=0.08*Math.min(W,H)*(1+0.1*Math.sin(1.9*t3));
+  var orbG=ctx.createRadialGradient(W*0.5,H*0.5,orbR*0.4,W*0.5,H*0.5,orbR*2.6);
+  orbG.addColorStop(0,sigCol(S.dSig,0.07)); orbG.addColorStop(1,sigCol(S.dSig,0));
+  ctx.beginPath(); ctx.arc(W*0.5,H*0.5,orbR*2.6,0,2*Math.PI); ctx.fillStyle=orbG; ctx.fill();
+  ctx.beginPath(); ctx.arc(W*0.5,H*0.5,orbR,0,2*Math.PI);
+  ctx.strokeStyle=sigCol(S.dSig,0.20); ctx.lineWidth=1.5; ctx.stroke();
+
+  drawRadar();
+  updateUI(dt);
+  S.raf=requestAnimationFrame(frame);
+}
+
+// ─── UI UPDATE ───────────────────────────────────────────────
+function updateUI(dt){
+  var n=Math.round(S.dSig), dl=S.dDL>0?S.dDL.toFixed(1):'–', rtt=S.dPing>0?Math.round(S.dPing):'–';
+  var rc=n>=72?'g':n>=50?'o':n>=28?'a':'r';
+  setText('mv-sig',n||'–'); setText('mv-dl',dl); setText('mv-rtt',rtt);
+  setText('orb-val',n||'–'); setText('orb-dbm',sigToDBm(n)+' dBm');
+  ['g','o','a','r'].forEach(function(c){
+    var ms=$('mv-sig'); if(ms) ms.classList.toggle(c,c===rc);
+    var md=$('mv-dl');  if(md) md.classList.toggle(c,c===rc);
+  });
+  var mr=$('mv-rtt');
+  if(mr){
+    var rc2=typeof rtt==='number'?rtt<50?'g':rtt<120?'o':rtt<280?'a':'r':'a';
+    ['g','o','a','r'].forEach(function(c){mr.classList.toggle(c,c===rc2);});
+  }
+  ['mc-sig','mc-dl','mc-rtt'].forEach(function(id){var e=$(id);if(e) e.classList.add('live');});
+  var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  if(conn){
+    setText('cp-type',conn.type||'—'); setText('cp-rtt',(conn.rtt||0)+' ms');
+    setText('cp-dl',(conn.downlink||0)+' Mbps'); setText('cp-eff',conn.effectiveType||'—');
+    setText('tb-conn',(conn.effectiveType||'').toUpperCase());
+  }
+  S.msgTimer+=dt;
+  if(S.msgTimer>4800){S.msgTimer=0; S.msgIdx=(S.msgIdx+1)%T.msgs.length;}
+  var msg='';
+  for(var i=0;i<T.msgs.length;i++){if(n>=T.msgs[i].min){msg=T.msgs[i].msg;break;}}
+  setText('smsg',msg);
+  // Update selected bubble sparkline live
+  if(SELECTED_BUBBLE&&$('bdetail').classList.contains('open')){
+    if(SELECTED_BUBBLE.isMain) drawSparkline(SELECTED_BUBBLE);
+  }
+}
+
+// ─── HAPTIC ──────────────────────────────────────────────────
+function hapticBeat(){
+  if(!S.scanning||!navigator.vibrate) return;
+  var s=S.dSig, iv=Math.round(HAPTIC_BASE-s/100*(HAPTIC_BASE-80));
+  s>=80?navigator.vibrate([8,38,8]):s>=55?navigator.vibrate(10):s>=28?navigator.vibrate(8):navigator.vibrate(6);
+  clearInterval(S.hapticIv); S.hapticIv=setInterval(hapticBeat,iv);
+}
+
+// ─── TOGGLE SCAN ─────────────────────────────────────────────
+function toggleScan(){
+  var bi=$('badge-inner'), sb=$('scan-btn');
+  if(S.scanning){
+    S.scanning=false; S.paused=true;
+    cancelAnimationFrame(S.raf); clearInterval(S.hapticIv);
+    if(bi){bi.textContent=T.h_pause; bi.className='off';}
+    if(sb) sb.classList.remove('on');
+    setText('btn-lbl',T.btn_start);
+    ctx.clearRect(0,0,W,H);
+    closeBubbleDetail();
+  } else {
+    S.scanning=true; S.paused=false;
+    NET.supported?applyRealData():(S.dSig=65,S.dPing=32,S.dDL=8.4);
+    S.dots=[]; S.sweep=0; S.msgTimer=0;
+    initBubbles();
+    if(bi){bi.textContent=T.h_scan; bi.className='on';}
+    if(sb) sb.classList.add('on');
+    setText('btn-lbl',T.btn_stop);
+    if($('tog-hap').checked&&navigator.vibrate){clearInterval(S.hapticIv); S.hapticIv=setInterval(hapticBeat,HAPTIC_BASE);}
+    S.lastT=performance.now();
+    S.raf=requestAnimationFrame(frame);
+  }
+}
+
+// ─── SETTINGS / OVERLAYS ─────────────────────────────────────
+function openSettings(){var e=$('settings');if(e) e.classList.add('open');}
+function closeSettings(){var e=$('settings');if(e) e.classList.remove('open');}
+function openPrivacy(){var e=$('privacy-overlay'),b=$('privacy-body');if(b) b.textContent=PRIVACY_TEXT;if(e) e.style.display='flex';closeSettings();}
+function closePrivacy(){var e=$('privacy-overlay');if(e) e.style.display='none';}
+function openImpressum(){var e=$('impressum-overlay');if(e) e.style.display='flex';closeSettings();}
+function closeImpressum(){var e=$('impressum-overlay');if(e) e.style.display='none';}
+function showToast(msg){var t=$('toast');if(!t) return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
+function resetConsent(){localStorage.removeItem('wps_consent');localStorage.removeItem('wps_lang');showToast('Reset. Neustart…');setTimeout(function(){location.reload();},1600);}
+
+// ─── INFO OVERLAY ────────────────────────────────────────────
+var INFO_CONTENT={
+  de:[
+    {title:'SCAN & NETZWERK',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Echtzeit-Messung von RTT, Downlink, Verbindungstyp und Signalqualität via Browser-API. 500ms Aktualisierungsrate.'},
+      {icon:'🔵',t:'Interaktive Bubbles',d:'Jede Blase repräsentiert ein Funknetz. Tippe auf eine Blase für Details: Signal, Band, Typ, Stabilität und Verlaufsgraph.'},
+      {icon:'🎯',t:'Filter-Leiste',d:'Zeige nur WiFi, LTE, starke Signale (≥−70 dBm) oder 5-GHz-Netze. Schwache Netze werden ausgegraut.'}
+    ]},
+    {title:'VISUALISIERUNG',items:[
+      {icon:'🌐',t:'Trail Radar',d:'Mini-Radar unten links zeigt Signal-Blips mit Kompassrichtung. Starke Signale (>75%) bleiben bis 3× länger sichtbar.'},
+      {icon:'💎',t:'Glasblase + Bloom',d:'Bubbles haben Tiefe durch semi-transparenten Körper, Glanzpunkt und Leuchteffekt (Bloom). Farbe = Signalstärke.'},
+      {icon:'⚡',t:'Signalfarben',d:'Grün ≥72% (stark) · Gold ≥50% (gut) · Orange ≥28% (mittel) · Rot <28% (schwach). Integriert in Blase und Legende.'}
+    ]},
+    {title:'PERFORMANCE',items:[
+      {icon:'🔋',t:'CPU-Schonung',d:'Physik-Simulation mit Dämpfung. Kein Overscanning. Canvas nur bei aktivem Scan gerendert.'},
+      {icon:'📴',t:'Offline-Modus',d:'Service Worker cached alle Assets. App läuft vollständig ohne Internet-Verbindung.'},
+      {icon:'🔒',t:'Datenschutz',d:'Keine Daten verlassen dein Gerät. Kein Tracking, keine Server, kein Analytics.'}
+    ]}
+  ],
+  en:[
+    {title:'SCAN & NETWORK',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Real-time measurement of RTT, downlink, connection type and signal quality via browser API. 500ms refresh rate.'},
+      {icon:'🔵',t:'Interactive Bubbles',d:'Each bubble represents a wireless network. Tap a bubble for details: signal, band, type, stability and history graph.'},
+      {icon:'🎯',t:'Filter Bar',d:'Show only WiFi, LTE, strong signals (≥−70 dBm) or 5 GHz networks. Weak networks are dimmed.'}
+    ]},
+    {title:'VISUALIZATION',items:[
+      {icon:'🌐',t:'Trail Radar',d:'Mini radar shows signal blips with compass direction. Strong signals (>75%) remain visible up to 3× longer.'},
+      {icon:'💎',t:'Glass Bubble + Bloom',d:'Bubbles have depth via semi-transparent body, specular gleam and bloom glow. Color = signal strength.'},
+      {icon:'⚡',t:'Signal Colors',d:'Green ≥72% (strong) · Gold ≥50% (good) · Orange ≥28% (medium) · Red <28% (weak).'}
+    ]},
+    {title:'PERFORMANCE',items:[
+      {icon:'🔋',t:'Battery-friendly',d:'Physics simulation with damping. No overscanning. Canvas only rendered during active scan.'},
+      {icon:'📴',t:'Offline Mode',d:'Service Worker caches all assets. App runs fully without internet connection.'},
+      {icon:'🔒',t:'Privacy',d:'No data leaves your device. No tracking, no servers, no analytics.'}
+    ]}
+  ],
+  zh:[
+    {title:'扫描与网络',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'通过浏览器API实时测量RTT、下行速率、连接类型和信号质量。500ms刷新率。'},
+      {icon:'🔵',t:'交互式气泡',d:'每个气泡代表一个无线网络。点击气泡查看详情：信号、频段、类型、稳定性和历史曲线。'},
+      {icon:'🎯',t:'过滤栏',d:'仅显示WiFi、LTE、强信号（≥−70 dBm）或5GHz网络。弱网络将变暗显示。'}
+    ]},
+    {title:'可视化',items:[
+      {icon:'🌐',t:'轨迹雷达',d:'左下角迷你雷达显示信号点和罗盘方向。强信号（>75%）可见时间延长至3倍。'},
+      {icon:'💎',t:'玻璃气泡+光晕',d:'气泡具有半透明体、高光点和辉光效果，颜色代表信号强度。'},
+      {icon:'⚡',t:'信号颜色',d:'绿色≥72%（强）· 金色≥50%（良）· 橙色≥28%（中）· 红色<28%（弱）。'}
+    ]},
+    {title:'性能',items:[
+      {icon:'🔋',t:'节电',d:'带阻尼的物理仿真。仅在主动扫描时渲染Canvas。'},
+      {icon:'📴',t:'离线模式',d:'Service Worker缓存所有资产。无需网络即可运行。'},
+      {icon:'🔒',t:'隐私',d:'数据不离开您的设备。无追踪，无服务器，无分析。'}
+    ]}
+  ]
+};
+function openInfo(){
+  var ov=$('info-overlay'), ct=$('io-content'), it=$('io-title');
+  if(!ov||!ct) return;
+  var data=INFO_CONTENT[lang]||INFO_CONTENT.de;
+  if(it) it.textContent=lang==='zh'?'功能说明':lang==='en'?'FEATURES':'FUNKTIONEN';
+  ct.innerHTML=data.map(function(sec){
+    return '<div class="io-sec"><div class="io-sec-title">'+sec.title+'</div>'+
+      sec.items.map(function(item){
+        return '<div class="io-item"><div class="io-icon">'+item.icon+'</div><div class="io-body"><div class="io-item-title">'+item.t+'</div><div class="io-item-desc">'+item.d+'</div></div></div>';
+      }).join('')+'</div>';
+  }).join('');
+  ov.classList.add('open');
+}
+function closeInfo(){var ov=$('info-overlay');if(ov) ov.classList.remove('open');}
+
+// ─── AUDIO ───────────────────────────────────────────────────
+var _fadeRaf=null;
+function audioFadeTo(el,target,dur,cb){
+  if(!el) return;
+  if(_fadeRaf) cancelAnimationFrame(_fadeRaf);
+  var sv=el.volume, t0=performance.now();
+  _fadeRaf=requestAnimationFrame(function step(now){
+    var p=Math.min((now-t0)/dur,1);
+    el.volume=Math.max(0,Math.min(1,sv+(target-sv)*p));
+    p<1?(_fadeRaf=requestAnimationFrame(step)):(cb&&cb());
+  });
+}
+function startIntroAudio(){
+  var e=$('aud-intro');
+  if(!e||!e.paused) return; // already playing — guard
+  e.volume=0.82;
+  var p=e.play(); if(p&&p.catch) p.catch(function(){});
+}
+function startBgMusic(){
+  var bg=$('aud-bg'); if(!bg) return;
+  bg.volume=0; bg.currentTime=0;
+  var p=bg.play(); if(p&&p.catch) p.catch(function(){});
+  audioFadeTo(bg,0.6,2200,null);
+  bg.addEventListener('timeupdate',function onTU(){
+    if(!bg.duration||isNaN(bg.duration)) return;
+    var rem=bg.duration-bg.currentTime;
+    if(rem<=5&&rem>0&&bg.volume>0.01){
+      bg.removeEventListener('timeupdate',onTU);
+      audioFadeTo(bg,0,4800,function(){bg.pause();bg.currentTime=0;});
+    }
+  });
+}
+function toggleBgMusic(){
+  var bg=$('aud-bg'); if(!bg) return;
+  $('tog-mus').checked?startBgMusic():audioFadeTo(bg,0,1400,function(){bg.pause();});
+}
+
+// ─── INTRO ───────────────────────────────────────────────────
+var INTRO_DUR=3750;
+var INTRO_TL=[
+  [0,    function(){startIntroAudio();}],
+  [380,  function(){var e=$('il-pre'); if(e) e.classList.add('vis');}],
+  [820,  function(){var e=$('intro-bar-wrap'); if(e) e.style.opacity='1';}],
+  [1400, function(){var e=$('il-sub'); if(e) e.classList.add('vis');}],
+  [2100, function(){var e=$('il-desc'); if(e) e.classList.add('vis');}],
+  [3380, function(){
+    var f=$('intro-flash'); if(f){f.classList.remove('burst');void f.offsetWidth;f.classList.add('burst');}
+    var b=$('il-brand');    if(b){b.classList.remove('shoot');void b.offsetWidth;b.classList.add('shoot');}
+    if(navigator.vibrate) navigator.vibrate([6,20,30,20,8]);
+  }],
+  [3600, function(){var f=$('intro-foot'); if(f) f.style.opacity='1';}]
+];
+var _introShown=false;
+function _doShowApp(){
+  if(_introShown) return; _introShown=true;
+  var intro=$('intro');
+  if(intro){intro.style.transition='opacity .8s ease';intro.style.opacity='0';}
+  setTimeout(function(){
+    if(intro) intro.style.display='none';
+    showApp();
+  },850);
+}
+function runIntro(){
+  if(_introShown) return;
+  var icv=$('icv'), sc=icv.getContext('2d'), iw=0, ih=0, pts=[], t0=Date.now();
+  function resize(){iw=icv.width=window.innerWidth; ih=icv.height=window.innerHeight;}
+  resize(); window.addEventListener('resize',resize);
+  for(var i=0;i<100;i++) pts.push({
+    x:Math.random()*iw,y:Math.random()*ih,
+    vx:0.35*(Math.random()-0.5),vy:0.35*(Math.random()-0.5),
+    r:Math.random()*1.6+0.3,a:Math.random()*0.38+0.06,
+    col:Math.random()>0.55?'212,175,55':'245,224,112'
+  });
+  // Timeline events via plain setTimeout — works even when rAF is throttled
+  var tlDone=[];
+  INTRO_TL.forEach(function(ev,idx){
+    setTimeout(function(){if(!tlDone[idx]){tlDone[idx]=true;try{ev[1]();}catch(e){}}}, ev[0]);
+  });
+  // Guaranteed app launch via setTimeout — not dependent on rAF
+  setTimeout(_doShowApp, INTRO_DUR+900);
+  // Visual animation via rAF (cosmetic only — app will show regardless)
+  requestAnimationFrame(function tick(){
+    if(_introShown) return;
+    var elapsed=Date.now()-t0;
+    var pct=Math.min(elapsed/INTRO_DUR,1);
+    var ib=$('intro-bar'); if(ib) ib.style.width=(pct*100)+'%';
+    sc.clearRect(0,0,iw,ih);
+    pts.forEach(function(p){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0) p.x=iw; if(p.x>iw) p.x=0;
+      if(p.y<0) p.y=ih; if(p.y>ih) p.y=0;
+      sc.beginPath(); sc.arc(p.x,p.y,p.r,0,2*Math.PI);
+      sc.fillStyle='rgba('+p.col+','+p.a+')'; sc.fill();
+    });
+    [0,0.33,0.66].forEach(function(off){
+      var ph=(5.5e-5*elapsed+off)%1, r2=ph*Math.min(iw,ih)*0.42, a2=0.09*(1-ph);
+      sc.beginPath(); sc.arc(iw*0.5,ih*0.5,r2,0,2*Math.PI);
+      sc.strokeStyle='rgba(212,175,55,'+a2+')'; sc.lineWidth=1.5; sc.stroke();
+    });
+    var gp=Math.max(0,1-Math.abs(elapsed-3380)/400);
+    if(gp>0.02){
+      var gg=sc.createRadialGradient(iw*0.5,ih*0.5,0,iw*0.5,ih*0.5,Math.min(iw,ih)*0.3);
+      gg.addColorStop(0,'rgba(212,175,55,'+(0.12*gp)+')'); gg.addColorStop(1,'rgba(212,175,55,0)');
+      sc.beginPath(); sc.arc(iw*0.5,ih*0.5,Math.min(iw,ih)*0.3,0,2*Math.PI);
+      sc.fillStyle=gg; sc.fill();
+    }
+    if(pct<1) requestAnimationFrame(tick);
+  });
+  // Tap-to-skip for impatient users
+  var introEl=$('intro');
+  if(introEl) introEl.addEventListener('click',_doShowApp,{once:true});
+}
+function showApp(){
+  var app=$('app'); if(app){
+    app.style.display='flex'; app.style.opacity='0'; app.style.transition='opacity .9s ease';
+    setTimeout(function(){app.style.opacity='1';},40);
+  }
+  resizeCv(); initNetworkAPI(); applyLang(); initPwaButton();
+  // Canvas click/touch for bubble detail
+  cv.addEventListener('click',handleCanvasTouch);
+  cv.addEventListener('touchend',function(e){e.preventDefault();handleCanvasTouch(e);},{passive:false});
+}
+
+// ─── CONSENT ─────────────────────────────────────────────────
+window.acceptConsent=function(){
+  // CRITICAL: start audio immediately in gesture handler (before setTimeout)
+  startIntroAudio();
+  localStorage.setItem('wps_consent','1');
+  var cc=$('consent');
+  if(cc){
+    cc.style.transition='opacity .65s'; cc.style.opacity='0';
+    setTimeout(function(){
+      cc.style.display='none';
+      var intro=$('intro'); if(intro) intro.style.display='flex';
+      runIntro();
+    },650);
+  }
+};
+
+// ─── INIT ────────────────────────────────────────────────────
+(function(){
+  T=LANGS[lang]; applyLang();
+  if(lang==='zh') document.body.style.fontFamily="'Noto Sans SC',sans-serif";
+  var cc=$('consent'), intro=$('intro');
+  if(localStorage.getItem('wps_consent')){
+    if(cc) cc.style.display='none';
+    runIntro();
+  } else {
+    if(cc) cc.style.display='flex';
+    if(intro) intro.style.display='none';
+  }
+})();
+
+// ─── PWA ─────────────────────────────────────────────────────
+var _pwaPrompt=null;
+function triggerPwaInstall(){
+  if(_pwaPrompt){
+    _pwaPrompt.prompt();
+    _pwaPrompt.userChoice.then(function(r){
+      if(r.outcome==='accepted'){var e=$('pwa-install');if(e) e.classList.remove('visible');}
+      _pwaPrompt=null;
+    });
+  } else {
+    showToast(/iphone|ipad|ipod/i.test(navigator.userAgent)?'Tippe ↑ Teilen → „Zum Home-Bildschirm"':'Browser-Menü → „App installieren"');
+  }
+}
+function initPwaButton(){
+  var lbl={de:{lbl:'App installieren',sub:'Zum Homescreen'},en:{lbl:'Install App',sub:'Add to Home Screen'},zh:{lbl:'安装应用',sub:'添加到主屏幕'}};
+  var l=lbl[lang]||lbl.de; setText('pwa-lbl',l.lbl); setText('pwa-sub',l.sub);
+  var isIos=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  var standalone=window.navigator.standalone||window.matchMedia('(display-mode: fullscreen)').matches||window.matchMedia('(display-mode: standalone)').matches;
+  if(isIos&&!standalone){var e=$('pwa-install');if(e) e.classList.add('visible');}
+}
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault(); _pwaPrompt=e;
+  var btn=$('pwa-install'); if(btn) btn.classList.add('visible');
+});
+window.addEventListener('appinstalled',function(){
+  _pwaPrompt=null; var btn=$('pwa-install'); if(btn) btn.classList.remove('visible');
+  showToast('✓ App installiert!');
+});
+window.addEventListener('resize',resizeCv);
+
+// ─── SERVICE WORKER ──────────────────────────────────────────
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});
+}
+
+// ─── PRIVACY TEXT ────────────────────────────────────────────
+var PRIVACY_TEXT="DATENSCHUTZERKLÄRUNG / PRIVACY POLICY\n© Cobra Dynamics 2026 — Version 5.2.0\n\n1. VERANTWORTLICHER\nCobra Dynamics, Dennis Stein & Christoph Frick\nNördliche Ringstraße 75, 63225 Langen\nE-Mail: dennis.stein@cobradynamics.de\n\n2. DATENERHEBUNG\nDiese App erhebt KEINE personenbezogenen Daten. Es werden keine Namen, E-Mail-Adressen, Standortdaten oder Gerätekennungen gespeichert oder übermittelt. Alle Messungen erfolgen ausschließlich lokal auf Ihrem Gerät.\n\n3. VERWENDETE WEB-APIs\n• NetworkInformation API (Verbindungsqualität, RTT, Downlink)\n• DeviceMotion API (optionale Bewegungssteuerung)\n• Web Audio API (Intro-Jingle, lokal)\n• Vibration API (haptisches Feedback)\n\n4. LOKALE SPEICHERUNG\nNur localStorage: Spracheinstellung (DE/EN/ZH) und Datenschutz-Zustimmung. Jederzeit löschbar über Einstellungen → Consent zurücksetzen (Art. 17 DSGVO).\n\n5. KEINE DRITTANBIETER\nKein Analytics, kein Tracking, keine Werbenetzwerke, keine externen Server.\n\n6. SCHRIFTARTEN\nGoogle Fonts (fonts.googleapis.com): Ihre IP-Adresse wird dabei übertragen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.\n\n7. RECHTE (DSGVO Art. 15–22)\nAuskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit, Widerspruch.\nAnfragen: dennis.stein@cobradynamics.de\n\n8. PREIS & LIZENZ\nEinmalzahlung: 1,99 EUR. Altersfreigabe: 4+. Kein Abo. Keine In-App-Käufe.\n\nENGLISH SUMMARY\nNo personal data collected. Local processing only. One-time purchase EUR 1.99. Age 4+.\n\n中文摘要\n不收集任何个人数据。纯本地处理。一次性购买1.99欧元。年龄评级4+。";
 </script>
 </body>
 </html>
