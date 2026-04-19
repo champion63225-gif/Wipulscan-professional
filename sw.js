@@ -2,7 +2,7 @@
    © Cobra Dynamics 2026 · Dennis Stein & Christoph Frick · Langen Germany
    Offline-first caching · PWA / Play Store compliant */
 
-const CACHE = 'wipulscan-v6';
+const CACHE = 'wipulscan-v7';
 const ASSETS = [
   './',
   './index.html',
