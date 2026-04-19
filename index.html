@@ -789,37 +789,113 @@ function applyLang(){
 // ─── NETWORK API ─────────────────────────────────────────────
 var NET={supported:false,type:'unknown',effectiveType:'4g',rtt:0,downlink:0,sigPct:0};
 
+// Real HTTP-RTT measurement — actual fetch roundtrip, not Navigator estimate
+var _rttBuf=[], _dlBuf=[], _rttIdx=0;
+var RTT_TARGETS=[
+  'https://1.1.1.1/cdn-cgi/trace',       // Cloudflare – schnell, weit verbreitet
+  'https://dns.google/resolve?name=a.a',  // Google DNS
+  'https://8.8.8.8'                        // Google fallback
+];
+
+function measureRealRTT(){
+  var url=RTT_TARGETS[(_rttIdx++)%RTT_TARGETS.length]+'?_='+Date.now();
+  var t0=performance.now();
+  return fetch(url,{mode:'no-cors',cache:'no-store'})
+    .then(function(){
+      var rtt=Math.round(performance.now()-t0);
+      _rttBuf.push(rtt);
+      if(_rttBuf.length>8) _rttBuf.shift();
+      // Median of buffer — robust against outliers
+      var sorted=_rttBuf.slice().sort(function(a,b){return a-b;});
+      NET.rtt=sorted[Math.floor(sorted.length/2)];
+      return NET.rtt;
+    })
+    .catch(function(){return NET.rtt;});
+}
+
+// Real download speed — fetch known payload, measure throughput
+var _dlMeasuring=false;
+function measureRealDownload(){
+  if(_dlMeasuring) return;
+  _dlMeasuring=true;
+  // Use Cloudflare's 100kB speed-test endpoint
+  var url='https://speed.cloudflare.com/__down?bytes=102400&_='+Date.now();
+  var t0=performance.now();
+  fetch(url,{cache:'no-store'})
+    .then(function(r){return r.arrayBuffer();})
+    .then(function(buf){
+      var elapsed=(performance.now()-t0)/1000;
+      var mbps=(buf.byteLength*8/1000000)/elapsed;
+      mbps=Math.round(mbps*10)/10;
+      _dlBuf.push(mbps);
+      if(_dlBuf.length>4) _dlBuf.shift();
+      var avg=_dlBuf.reduce(function(a,b){return a+b;},0)/_dlBuf.length;
+      NET.downlink=Math.round(avg*10)/10;
+      _dlMeasuring=false;
+    })
+    .catch(function(){_dlMeasuring=false;});
+}
+
 function estimateBand(){
   var c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   if(!c) return 'unknown';
   if(c.type==='cellular') return 'LTE';
   if(c.type==='ethernet') return 'LAN';
   if(c.type==='wifi'){
-    if(c.rtt<25&&c.downlink>30) return '5';
-    if(c.rtt<55&&c.downlink>10) return '5';
+    // Use real measured RTT for band estimation
+    var rtt=NET.rtt||c.rtt||999;
+    var dl=NET.downlink||c.downlink||0;
+    if(rtt<20&&dl>50) return '6';   // WiFi 6E / ax
+    if(rtt<30&&dl>20) return '5';
+    if(rtt<60) return '5';
     return '2.4';
   }
   return 'unknown';
 }
 
+// Signal quality from REAL measured RTT + downlink
+function calcSigPct(){
+  var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  var rtt=NET.rtt||(conn?conn.rtt:0)||150;
+  var dl=NET.downlink||(conn?conn.downlink:0)||1;
+  var et=conn?conn.effectiveType:'4g';
+  // Base from effective type
+  var base=et==='4g'?65:et==='3g'?38:et==='2g'?16:5;
+  // Real RTT score: 0ms→+30, 300ms→0, >500ms→-15
+  var rttScore=clamp(Math.round(30-rtt*0.10),-15,30);
+  // Real download score: 0Mbps→0, 100Mbps→+25
+  var dlScore=clamp(Math.round(dl*0.25),0,25);
+  // Connection type bonus
+  var typeBonus=conn?(conn.type==='wifi'?5:conn.type==='ethernet'?10:0):0;
+  return clamp(base+rttScore+dlScore+typeBonus,2,99);
+}
+
 function initNetworkAPI(){
   var a=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-  if(!a){NET.supported=false;return;}
-  NET.supported=true;
-  function read(){
-    NET.type=a.type||'unknown'; NET.effectiveType=a.effectiveType||'4g';
-    NET.rtt=a.rtt||0; NET.downlink=a.downlink||0;
-    var base=0;
-    switch(a.effectiveType){case'4g':base=68;break;case'3g':base=42;break;case'2g':base=18;break;default:base=5;}
-    var dl=clamp(a.downlink||0,0,25), dlBonus=Math.round(dl/10*28);
-    var rttPenalty=Math.round(clamp(a.rtt||0,0,400)/300*10);
-    var typeBonus=(a.type==='wifi'?6:a.type==='ethernet'?10:0);
-    NET.sigPct=clamp(base+dlBonus-rttPenalty+typeBonus,2,99);
-    if(S.scanning) applyRealData();
+  NET.supported=true; // We have fetch-based measurement as fallback
+  if(a){
+    NET.type=a.type||'unknown';
+    NET.effectiveType=a.effectiveType||'4g';
+    a.addEventListener('change',function(){
+      NET.type=a.type||'unknown';
+      NET.effectiveType=a.effectiveType||'4g';
+    });
   }
-  a.addEventListener('change',read);
-  read();
-  setInterval(read,500);
+  // Kick off first real measurements immediately
+  measureRealRTT().then(function(){
+    NET.sigPct=calcSigPct();
+    if(S.scanning) applyRealData();
+  });
+  measureRealDownload();
+  // Poll RTT every 1.5s — real, variable values
+  setInterval(function(){
+    measureRealRTT().then(function(){
+      NET.sigPct=calcSigPct();
+      if(S.scanning) applyRealData();
+    });
+  },1500);
+  // Poll download every 8s — heavier request
+  setInterval(measureRealDownload,8000);
 }
 function applyRealData(){
   S.dSig=NET.sigPct; S.dPing=NET.rtt; S.dDL=NET.downlink; S.dDBm=sigToDBm(NET.sigPct);
