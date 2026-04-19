@@ -335,6 +335,17 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
 .pwa-txt{display:flex;flex-direction:column;}
 .pwa-lbl{font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;}
 .pwa-sub{font-family:var(--font-data);font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.35);margin-top:1px;}
+/* ── GPS PERMISSION DIALOG ── */
+#gps-permit{position:fixed;inset:0;z-index:4500;background:rgba(0,0,10,.90);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;}
+#gps-permit.open{display:flex;}
+#gps-card{background:linear-gradient(160deg,#000a18 0%,#000510 100%);border:1px solid rgba(0,180,255,.18);border-radius:20px;padding:28px 24px 20px;max-width:310px;width:88%;text-align:center;box-shadow:0 0 40px rgba(0,180,255,.08),0 20px 60px rgba(0,0,0,.7);}
+#gps-card-icon{font-size:36px;margin-bottom:14px;display:block;filter:drop-shadow(0 0 14px rgba(0,180,255,.5));}
+#gps-card-title{font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.28em;color:rgba(0,200,255,.9);margin-bottom:10px;}
+#gps-card-desc{font-family:var(--font-data);font-size:10px;color:rgba(255,255,255,.38);line-height:1.7;margin-bottom:22px;}
+#gps-card-desc b{color:rgba(0,200,255,.6);}
+#gps-grant{width:100%;padding:13px;margin-bottom:10px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.35);border-radius:24px;color:rgba(0,200,255,.9);font-family:var(--font-ui);font-size:9px;font-weight:700;letter-spacing:.22em;cursor:pointer;transition:background .2s;}
+#gps-grant:active{background:rgba(0,180,255,.18);}
+#gps-skip{background:none;border:none;color:rgba(255,255,255,.22);font-family:var(--font-data);font-size:8px;letter-spacing:.12em;cursor:pointer;padding:6px;}
 
 /* ── BUBBLE DETAIL OVERLAY (bottom sheet) ───────────────── */
 #bdetail{
@@ -732,6 +743,20 @@ Signalmessungen sind Näherungswerte via NetworkInformation-Web-API. Keine Garan
 
 <b style="color:var(--gold);">Streitbeilegung (EU)</b>
 https://ec.europa.eu/consumers/odr
+  </div>
+</div>
+
+<!-- GPS PERMISSION -->
+<div id="gps-permit">
+  <div id="gps-card">
+    <span id="gps-card-icon">📍</span>
+    <div id="gps-card-title">STANDORT · GPS</div>
+    <div id="gps-card-desc">
+      WIPULSCAN benötigt deinen Standort um den <b>Signalpfad</b> aufzuzeichnen
+      und dir zu zeigen, <b>in welche Richtung</b> du für besseren Empfang gehen solltest.
+    </div>
+    <button id="gps-grant" onclick="grantGps()">STANDORT FREIGEBEN</button>
+    <button id="gps-skip" onclick="skipGps()">Ohne GPS weiter</button>
   </div>
 </div>
 
@@ -1243,6 +1268,38 @@ function stopGeolocation(){
   window.removeEventListener('deviceorientation',onDeviceOrientation);
 }
 
+function computeSignalSectors(){
+  if(!GEO.current||GEO.trail.length<4) return null;
+  var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
+  var N=8, secs=[];
+  for(var i=0;i<N;i++) secs.push({sum:0,cnt:0,max:0});
+  GEO.trail.forEach(function(p){
+    var dx=p.dx-cur.dx, dy=p.dy-cur.dy;
+    if(Math.sqrt(dx*dx+dy*dy)<4) return;
+    var ang=(Math.atan2(dy,dx)+Math.PI/2+Math.PI*2)%(Math.PI*2); // 0=Nord
+    var si=Math.floor(ang/(Math.PI*2/N))%N;
+    secs[si].sum+=p.sig; secs[si].cnt++;
+    if(p.sig>secs[si].max) secs[si].max=p.sig;
+  });
+  return secs;
+}
+function signalTrend(){
+  if(GEO.trail.length<6) return 0;
+  var n=Math.min(10,GEO.trail.length), pts=GEO.trail.slice(-n), h=Math.floor(n/2);
+  var a1=pts.slice(0,h).reduce(function(s,p){return s+p.sig;},0)/h;
+  var a2=pts.slice(h).reduce(function(s,p){return s+p.sig;},0)/(n-h);
+  return a2-a1;
+}
+window.grantGps=function(){
+  localStorage.setItem('wps_gps_perm','yes');
+  var e=$('gps-permit'); if(e) e.classList.remove('open');
+  initGeolocation();
+};
+window.skipGps=function(){
+  localStorage.setItem('wps_gps_perm','no');
+  var e=$('gps-permit'); if(e) e.classList.remove('open');
+};
+
 // ─── RADAR DOTS ──────────────────────────────────────────────
 function spawnDot(){
   S.dots.length>=S.maxDots&&S.dots.shift();
@@ -1257,35 +1314,69 @@ function spawnDot(){
 }
 function drawRadar(){
   if(!$('tog-rad').checked) return;
-  var sb2=sbPx(), btnR=Math.max(44,Math.round(0.115*Math.min(W,H)));
-  var rx=14+btnR, ry=H-sb2-14-btnR;
+  var sb2=sbPx();
+  // Cap radius: ensures radar sits fully below scan button (btn bottom = sb+128)
+  var btnR=Math.min(Math.max(36,Math.round(0.115*Math.min(W,H))),52);
+  var rx=16+btnR, ry=H-sb2-16-btnR;
   ctx.save();
-  ctx.beginPath(); ctx.arc(rx,ry,btnR+2,0,2*Math.PI);
-  ctx.fillStyle='rgba(0,0,6,.88)'; ctx.fill();
-  ctx.beginPath(); ctx.arc(rx,ry,btnR,0,2*Math.PI);
-  ctx.strokeStyle='rgba(212,175,55,.28)'; ctx.lineWidth=1; ctx.stroke();
-  [0.34,0.67,1].forEach(function(s){
-    ctx.beginPath(); ctx.arc(rx,ry,btnR*s,0,2*Math.PI);
-    ctx.strokeStyle='rgba(0,255,136,.07)'; ctx.lineWidth=0.5; ctx.stroke();
-  });
-  ctx.strokeStyle='rgba(0,255,136,.09)'; ctx.lineWidth=0.5;
-  ctx.beginPath(); ctx.moveTo(rx-btnR,ry); ctx.lineTo(rx+btnR,ry);
-  ctx.moveTo(rx,ry-btnR); ctx.lineTo(rx,ry+btnR); ctx.stroke();
-  for(var i2=0;i2<28;i2++){
-    var a1=S.sweep-i2/28*(0.6*Math.PI), a2=S.sweep-(i2+1)/28*(0.6*Math.PI);
-    ctx.beginPath(); ctx.moveTo(rx,ry); ctx.arc(rx,ry,btnR,a1,a2,true); ctx.closePath();
-    ctx.fillStyle='rgba(0,255,136,'+(0.16*(0.95-i2/28))+')'; ctx.fill();
+
+  // Clip so drawing stays inside the circle
+  ctx.beginPath(); ctx.arc(rx,ry,btnR+3,0,2*Math.PI); ctx.clip();
+
+  // Background fill
+  ctx.beginPath(); ctx.arc(rx,ry,btnR+3,0,2*Math.PI);
+  ctx.fillStyle='rgba(0,0,8,.94)'; ctx.fill();
+
+  // ── SIGNAL SECTOR HEATMAP ──────────────────────────────────
+  var secs=computeSignalSectors();
+  var bestSecIdx=-1, bestSecSig=0;
+  if(secs){
+    var SN=8;
+    secs.forEach(function(s,i){
+      if(!s.cnt) return;
+      var avg=s.sum/s.cnt;
+      if(avg>bestSecSig){bestSecSig=avg;bestSecIdx=i;}
+      var a0=-Math.PI/2+(i/SN)*Math.PI*2;
+      var a1=-Math.PI/2+((i+1)/SN)*Math.PI*2;
+      ctx.beginPath(); ctx.moveTo(rx,ry);
+      ctx.arc(rx,ry,btnR,a0,a1); ctx.closePath();
+      ctx.fillStyle=sigCol(avg,clamp(avg/100,0,1)*0.34); ctx.fill();
+    });
   }
-  ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx+Math.cos(S.sweep)*btnR,ry+Math.sin(S.sweep)*btnR);
-  ctx.strokeStyle='rgba(0,255,136,.72)'; ctx.lineWidth=1.5; ctx.stroke();
-  S.dots.forEach(function(d){
-    var dx2=(d.x-W*0.5)/(W*0.5)*btnR*0.88, dy2=(d.y-H*0.5)/(H*0.5)*btnR*0.88;
-    var da=0.78*(1-d.age/d.life);
-    ctx.beginPath(); ctx.arc(rx+dx2,ry+dy2,1.6,0,2*Math.PI);
-    ctx.fillStyle=sigCol(d.sig,da); ctx.fill();
+
+  // Rings
+  ctx.beginPath(); ctx.arc(rx,ry,btnR,0,2*Math.PI);
+  ctx.strokeStyle='rgba(212,175,55,.30)'; ctx.lineWidth=1; ctx.stroke();
+  [0.34,0.67].forEach(function(s){
+    ctx.beginPath(); ctx.arc(rx,ry,btnR*s,0,2*Math.PI);
+    ctx.strokeStyle='rgba(0,255,136,.08)'; ctx.lineWidth=0.5; ctx.stroke();
   });
 
-  // ── GPS TRAIL ──
+  // Cross-hair
+  ctx.strokeStyle='rgba(0,255,136,.09)'; ctx.lineWidth=0.5;
+  ctx.beginPath();
+  ctx.moveTo(rx-btnR,ry); ctx.lineTo(rx+btnR,ry);
+  ctx.moveTo(rx,ry-btnR); ctx.lineTo(rx,ry+btnR);
+  ctx.stroke();
+
+  // Sweep trail
+  for(var i2=0;i2<28;i2++){
+    var sa1=S.sweep-i2/28*(0.6*Math.PI), sa2=S.sweep-(i2+1)/28*(0.6*Math.PI);
+    ctx.beginPath(); ctx.moveTo(rx,ry); ctx.arc(rx,ry,btnR,sa1,sa2,true); ctx.closePath();
+    ctx.fillStyle='rgba(0,255,136,'+(0.15*(0.95-i2/28))+')'; ctx.fill();
+  }
+  ctx.beginPath(); ctx.moveTo(rx,ry);
+  ctx.lineTo(rx+Math.cos(S.sweep)*btnR,ry+Math.sin(S.sweep)*btnR);
+  ctx.strokeStyle='rgba(0,255,136,.70)'; ctx.lineWidth=1.5; ctx.stroke();
+
+  // Radar blips from bubble positions
+  S.dots.forEach(function(d){
+    var dx2=(d.x-W*0.5)/(W*0.5)*btnR*0.88, dy2=(d.y-H*0.5)/(H*0.5)*btnR*0.88;
+    ctx.beginPath(); ctx.arc(rx+dx2,ry+dy2,1.5,0,2*Math.PI);
+    ctx.fillStyle=sigCol(d.sig,0.72*(1-d.age/d.life)); ctx.fill();
+  });
+
+  // ── GPS TRAIL ──────────────────────────────────────────────
   if(GEO.current&&GEO.trail.length>0){
     var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
     var scl=btnR/GEO.scale;
@@ -1296,56 +1387,92 @@ function drawRadar(){
         var px=rx+(p.dx-cur.dx)*scl, py=ry+(p.dy-cur.dy)*scl;
         i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
       });
-      ctx.strokeStyle='rgba(0,200,255,.20)'; ctx.lineWidth=1; ctx.stroke();
+      ctx.strokeStyle='rgba(0,200,255,.22)'; ctx.lineWidth=1; ctx.stroke();
     }
-    // Trail dots coloured by signal at measurement point
+    // Trail dots coloured by signal at each fix
     var now2=Date.now();
     GEO.trail.forEach(function(p){
       var px=rx+(p.dx-cur.dx)*scl, py=ry+(p.dy-cur.dy)*scl;
-      var odx=px-rx, ody=py-ry;
-      if(odx*odx+ody*ody>btnR*btnR) return; // clip
       var age=(now2-p.ts)/1000;
-      var alpha=Math.max(0.15,0.80-age*0.004);
-      ctx.beginPath(); ctx.arc(px,py,2.2,0,2*Math.PI);
-      ctx.fillStyle=sigCol(p.sig,alpha); ctx.fill();
+      ctx.beginPath(); ctx.arc(px,py,2.4,0,2*Math.PI);
+      ctx.fillStyle=sigCol(p.sig,Math.max(0.18,0.82-age*0.004)); ctx.fill();
     });
-    // Compass heading arrow from center
+    // Thin compass heading needle
     if(GEO.heading!==null){
-      var hRad=GEO.heading*Math.PI/180;
-      var arLen=btnR*0.52;
-      var ax=Math.sin(hRad)*arLen, ay=-Math.cos(hRad)*arLen;
-      ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx+ax,ry+ay);
-      ctx.strokeStyle='rgba(212,175,55,.55)'; ctx.lineWidth=1.2; ctx.stroke();
-      var la=hRad-2.5, ra=hRad+2.5;
+      var hRad2=GEO.heading*Math.PI/180;
       ctx.beginPath();
-      ctx.moveTo(rx+ax,ry+ay);
-      ctx.lineTo(rx+ax+Math.sin(la)*5,ry+ay-Math.cos(la)*5);
-      ctx.lineTo(rx+ax+Math.sin(ra)*5,ry+ay-Math.cos(ra)*5);
-      ctx.closePath(); ctx.fillStyle='rgba(212,175,55,.75)'; ctx.fill();
+      ctx.moveTo(rx,ry);
+      ctx.lineTo(rx+Math.sin(hRad2)*btnR*0.48, ry-Math.cos(hRad2)*btnR*0.48);
+      ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.lineWidth=1; ctx.stroke();
     }
-    // User position — gold pulsing dot at radar center
-    var pulse=0.7+0.3*Math.sin(Date.now()*0.004);
+    // User position — pulsing gold dot at center
+    var pulse=0.72+0.28*Math.sin(Date.now()*0.004);
     ctx.beginPath(); ctx.arc(rx,ry,5*pulse,0,2*Math.PI);
-    ctx.fillStyle='rgba(212,175,55,.92)'; ctx.fill();
+    ctx.fillStyle='rgba(212,175,55,.95)'; ctx.fill();
     ctx.beginPath(); ctx.arc(rx,ry,5*pulse,0,2*Math.PI);
-    ctx.strokeStyle='rgba(255,255,255,.70)'; ctx.lineWidth=1.2; ctx.stroke();
-    // Scale label (bottom-right of radar)
-    var scaleLbl=GEO.scale<1000?Math.round(GEO.scale)+'m':(GEO.scale/1000).toFixed(1)+'km';
-    var fsS=Math.max(6,Math.round(0.11*btnR));
-    ctx.font='500 '+fsS+'px "Space Mono",monospace';
+    ctx.strokeStyle='rgba(255,255,255,.60)'; ctx.lineWidth=1.2; ctx.stroke();
+    // Scale label
+    var slbl=GEO.scale<1000?Math.round(GEO.scale)+'m':(GEO.scale/1000).toFixed(1)+'km';
+    ctx.font='500 '+Math.max(6,Math.round(0.10*btnR))+'px "Space Mono",monospace';
     ctx.textAlign='right'; ctx.textBaseline='bottom';
-    ctx.fillStyle='rgba(0,200,255,.55)';
-    ctx.fillText(scaleLbl,rx+btnR-3,ry+btnR-3);
+    ctx.fillStyle='rgba(0,200,255,.45)';
+    ctx.fillText(slbl,rx+btnR-4,ry+btnR-4);
   } else {
-    // No GPS: regular green center dot
+    // No GPS fix — standard green center dot
     ctx.beginPath(); ctx.arc(rx,ry,3,0,2*Math.PI);
-    ctx.fillStyle='rgba(0,255,136,.92)'; ctx.fill();
+    ctx.fillStyle='rgba(0,255,136,.90)'; ctx.fill();
+    // Blinking "GPS warte..." while watchPosition is active
+    if(S.scanning&&GEO.watching){
+      var blink=0.28+0.22*Math.sin(Date.now()*0.003);
+      ctx.font='600 '+Math.max(6,Math.round(0.14*btnR))+'px "Space Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle='rgba(0,200,255,'+blink+')';
+      ctx.fillText('GPS',rx,ry-btnR*0.30);
+      ctx.font='500 '+Math.max(5,Math.round(0.10*btnR))+'px "Space Mono",monospace';
+      ctx.fillStyle='rgba(255,255,255,.18)';
+      ctx.fillText('warte...',rx,ry+btnR*0.12);
+    }
   }
-  var fs3=Math.max(7,Math.round(0.18*btnR));
-  ctx.font='500 '+fs3+'px "Space Mono",monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
+
+  // ── BEST SIGNAL DIRECTION ARROW ────────────────────────────
+  if(bestSecIdx>=0&&bestSecSig>35){
+    var bAng=-Math.PI/2+(bestSecIdx+0.5)/8*Math.PI*2;
+    var bx=Math.cos(bAng), by=Math.sin(bAng);
+    var arLen=btnR*0.62;
+    // Gradient: transparent at origin → gold at tip
+    var grd=ctx.createLinearGradient(rx+bx*10,ry+by*10,rx+bx*arLen,ry+by*arLen);
+    grd.addColorStop(0,'rgba(212,175,55,0)');
+    grd.addColorStop(1,'rgba(212,175,55,.95)');
+    ctx.beginPath();
+    ctx.moveTo(rx+bx*10,ry+by*10);
+    ctx.lineTo(rx+bx*arLen,ry+by*arLen);
+    ctx.strokeStyle=grd; ctx.lineWidth=2.8; ctx.stroke();
+    // Arrowhead
+    var la=bAng-2.55, ra=bAng+2.55;
+    ctx.beginPath();
+    ctx.moveTo(rx+bx*arLen,ry+by*arLen);
+    ctx.lineTo(rx+bx*arLen+Math.cos(la)*8,ry+by*arLen+Math.sin(la)*8);
+    ctx.lineTo(rx+bx*arLen+Math.cos(ra)*8,ry+by*arLen+Math.sin(ra)*8);
+    ctx.closePath(); ctx.fillStyle='rgba(212,175,55,.95)'; ctx.fill();
+    // Signal trend ↑ / ↓
+    var trend=signalTrend();
+    if(Math.abs(trend)>3){
+      ctx.font='700 '+Math.max(7,Math.round(0.16*btnR))+'px "Space Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle=trend>0?'rgba(0,255,136,.90)':'rgba(255,72,50,.85)';
+      ctx.fillText(trend>0?'↑':'↓', rx+bx*arLen*0.40, ry+by*arLen*0.40);
+    }
+  }
+
+  // N/S/W/O labels — drawn after restore (outside clip)
+  ctx.restore();
+  ctx.save();
+  var fs3=Math.max(7,Math.round(0.17*btnR));
+  ctx.font='500 '+fs3+'px "Space Mono",monospace';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.fillStyle='rgba(212,175,55,.42)';
   [{t:'N',ax:0,ay:-1},{t:'S',ax:0,ay:1},{t:'W',ax:-1,ay:0},{t:'O',ax:1,ay:0}].forEach(function(c){
-    ctx.fillText(c.t,rx+c.ax*(btnR+11),ry+c.ay*(btnR+11));
+    ctx.fillText(c.t,rx+c.ax*(btnR+10),ry+c.ay*(btnR+10));
   });
   ctx.restore();
 }
@@ -1441,7 +1568,9 @@ function toggleScan(){
     closeBubbleDetail();
   } else {
     S.scanning=true; S.paused=false;
-    initGeolocation();
+    var gpsPerm=localStorage.getItem('wps_gps_perm');
+    if(!gpsPerm){var gp=$('gps-permit');if(gp) gp.classList.add('open');}
+    else if(gpsPerm==='yes') initGeolocation();
     NET.supported?applyRealData():(S.dSig=65,S.dPing=32,S.dDL=8.4);
     S.dots=[]; S.sweep=0; S.msgTimer=0;
     initBubbles();
