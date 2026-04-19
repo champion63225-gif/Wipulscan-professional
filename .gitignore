@@ -1,0 +1,15 @@
+# Large background music (nicht ins Repo — zu groß für GitHub Pages)
+jingle.wav
+
+# Temporäre Dateien
+*.html.html
+*.html.txt
+netpulse.html.txt
+wipulscan_pro.html
+index.html.html
+
+# IDE / System
+.vscode/
+oracleJdk-26/
+Thumbs.db
+.DS_Store
