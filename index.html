@@ -618,10 +618,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
         <div><div class="srl">Trail Radar</div></div>
         <label class="tog"><input type="checkbox" id="tog-rad" checked/><div class="tog-t"></div><div class="tog-k"></div></label>
       </div>
-      <div class="sr">
-        <div><div class="srl" id="s-mus">Hintergrundmusik</div></div>
-        <label class="tog"><input type="checkbox" id="tog-mus" onchange="toggleBgMusic()"/><div class="tog-t"></div><div class="tog-k"></div></label>
-      </div>
+
     </div>
     <div class="ss">
       <div class="sst" id="s-feat">FEATURES</div>
@@ -949,7 +946,8 @@ var S={
   sweep:0,sweepSpd:0.016,
   hapticIv:null,raf:null,
   msgTimer:0,msgIdx:0,lastT:0,
-  filterActive:'all'
+  filterActive:'all',
+  radarExpanded:false
 };
 var HAPTIC_BASE=380;
 var BUBBLES=[];
@@ -1144,6 +1142,14 @@ function handleCanvasTouch(e){
   var touch=e.changedTouches?e.changedTouches[0]:e;
   var rect=cv.getBoundingClientRect();
   var mx=touch.clientX-rect.left, my=touch.clientY-rect.top;
+  // Radar tap — toggle expanded
+  if($('tog-rad')&&$('tog-rad').checked){
+    if(S.radarExpanded){S.radarExpanded=false;return;}
+    var sb2r=sbPx(), rR=Math.min(Math.max(36,Math.round(0.115*Math.min(W,H))),52);
+    var rrx=16+rR, rry=H-sb2r-16-rR;
+    if(Math.sqrt((mx-rrx)*(mx-rrx)+(my-rry)*(my-rry))<=rR+18){S.radarExpanded=true;return;}
+  }
+  // Bubble tap
   for(var i=BUBBLES.length-1;i>=0;i--){
     var b=BUBBLES[i];
     var d=Math.sqrt((mx-b.x)*(mx-b.x)+(my-b.y)*(my-b.y));
@@ -1315,9 +1321,20 @@ function spawnDot(){
 function drawRadar(){
   if(!$('tog-rad').checked) return;
   var sb2=sbPx();
-  // Cap radius: ensures radar sits fully below scan button (btn bottom = sb+128)
-  var btnR=Math.min(Math.max(36,Math.round(0.115*Math.min(W,H))),52);
-  var rx=16+btnR, ry=H-sb2-16-btnR;
+  var btnR, rx, ry;
+  if(S.radarExpanded){
+    btnR=Math.round(Math.min(W,H)*0.38);
+    rx=W*0.5; ry=H*0.5;
+    ctx.fillStyle='rgba(0,0,10,.80)'; ctx.fillRect(0,0,W,H);
+    var hfs=Math.max(8,Math.round(0.022*Math.min(W,H)));
+    ctx.font='600 '+hfs+'px "Space Mono",monospace';
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.fillStyle='rgba(255,255,255,.20)';
+    ctx.fillText('· TIPPEN ZUM SCHLIEẞEN ·',W*0.5,Math.max(16,sb2+10));
+  } else {
+    btnR=Math.min(Math.max(36,Math.round(0.115*Math.min(W,H))),52);
+    rx=16+btnR; ry=H-sb2-16-btnR;
+  }
   ctx.save();
 
   // Clip so drawing stays inside the circle
@@ -1560,7 +1577,7 @@ function toggleScan(){
   if(S.scanning){
     S.scanning=false; S.paused=true;
     cancelAnimationFrame(S.raf); clearInterval(S.hapticIv);
-    stopGeolocation();
+    stopGeolocation(); S.radarExpanded=false;
     if(bi){bi.textContent=T.h_pause; bi.className='off';}
     if(sb) sb.classList.remove('on');
     setText('btn-lbl',T.btn_start);
@@ -1606,6 +1623,14 @@ var INFO_CONTENT={
       {icon:'💎',t:'Glasblase + Bloom',d:'Bubbles haben Tiefe durch semi-transparenten Körper, Glanzpunkt und Leuchteffekt (Bloom). Farbe = Signalstärke.'},
       {icon:'⚡',t:'Signalfarben',d:'Grün ≥72% (stark) · Gold ≥50% (gut) · Orange ≥28% (mittel) · Rot <28% (schwach). Integriert in Blase und Legende.'}
     ]},
+    {title:'RADAR & GPS-NAVIGATION',items:[
+      {icon:'🟡',t:'Gold-Punkt (du)',d:'Der pulsierende gold­farbene Punkt in der Mitte zeigt deine aktuelle GPS-Position. Du bist immer im Zentrum — der Pfad zieht sich hinter dir.'},
+      {icon:'🎨',t:'Farbige Sektoren',d:'Das Radar ist in 8 Himmelsrichtungen aufgeteilt. Jeder Sektor leuchtet in der Farbe des dort gemessenen Signals — grün = stark, rot = schwach.'},
+      {icon:'➡️',t:'Goldener Pfeil',d:'Der Pfeil zeigt in die Richtung mit dem stärksten bisher gemessenen Signal. Folge dem Pfeil für besseren Empfang.'},
+      {icon:'↑↓',t:'Trend-Anzeige',d:'↑ grün = Signal wird auf dem Weg besser. ↓ rot = Signal wird schlechter. Erscheint neben dem Richtungspfeil.'},
+      {icon:'🔵',t:'Trail-Punkte',d:'Farbige Punkte zeigen deine vergangenen GPS-Positionen. Die Farbe entspricht der Signalstärke zum Zeitpunkt der Messung.'},
+      {icon:'📍',t:'GPS warte…',d:'Blinkender Hinweis solange der erste GPS-Fix noch aussteht. Radar-Tap vergrößert die Ansicht für mehr Detail.'}
+    ]},
     {title:'PERFORMANCE',items:[
       {icon:'🔋',t:'CPU-Schonung',d:'Physik-Simulation mit Dämpfung. Kein Overscanning. Canvas nur bei aktivem Scan gerendert.'},
       {icon:'📴',t:'Offline-Modus',d:'Service Worker cached alle Assets. App läuft vollständig ohne Internet-Verbindung.'},
@@ -1623,6 +1648,14 @@ var INFO_CONTENT={
       {icon:'💎',t:'Glass Bubble + Bloom',d:'Bubbles have depth via semi-transparent body, specular gleam and bloom glow. Color = signal strength.'},
       {icon:'⚡',t:'Signal Colors',d:'Green ≥72% (strong) · Gold ≥50% (good) · Orange ≥28% (medium) · Red <28% (weak).'}
     ]},
+    {title:'RADAR & GPS NAVIGATION',items:[
+      {icon:'🟡',t:'Gold Dot (You)',d:'The pulsing gold dot at the centre is your current GPS position. You are always centred — the trail extends behind you.'},
+      {icon:'🎨',t:'Coloured Sectors',d:'Radar is divided into 8 compass sectors. Each sector glows in the colour of the signal measured there — green = strong, red = weak.'},
+      {icon:'➡️',t:'Gold Arrow',d:'Arrow points toward the direction with the strongest measured signal so far. Follow it for better reception.'},
+      {icon:'↑↓',t:'Trend Indicator',d:'↑ green = signal improving in that direction. ↓ red = signal declining. Appears next to the direction arrow.'},
+      {icon:'🔵',t:'Trail Dots',d:'Coloured dots mark your past GPS positions. Colour matches signal strength at time of measurement.'},
+      {icon:'📍',t:'GPS waiting…',d:'Blinking indicator while the first GPS fix is pending. Tap the radar to expand it for a larger, more detailed view.'}
+    ]},
     {title:'PERFORMANCE',items:[
       {icon:'🔋',t:'Battery-friendly',d:'Physics simulation with damping. No overscanning. Canvas only rendered during active scan.'},
       {icon:'📴',t:'Offline Mode',d:'Service Worker caches all assets. App runs fully without internet connection.'},
@@ -1639,6 +1672,14 @@ var INFO_CONTENT={
       {icon:'🌐',t:'轨迹雷达',d:'左下角迷你雷达显示信号点和罗盘方向。强信号（>75%）可见时间延长至3倍。'},
       {icon:'💎',t:'玻璃气泡+光晕',d:'气泡具有半透明体、高光点和辉光效果，颜色代表信号强度。'},
       {icon:'⚡',t:'信号颜色',d:'绿色≥72%（强）· 金色≥50%（良）· 橙色≥28%（中）· 红色<28%（弱）。'}
+    ]},
+    {title:'雷达与GPS导航',items:[
+      {icon:'🟡',t:'金点（你的位置）',d:'中心闪烁的金色圆点是你当前的GPS位置。你始终位于中心，轨迹延伸在身后。'},
+      {icon:'🎨',t:'彩色扇区',d:'雷达分为8个罗盘方向扇区。每个扇区以该方向测量的信号颜色发光——绿色=强，红色=弱。'},
+      {icon:'➡️',t:'金色箭头',d:'箭头指向迄今测量信号最强的方向。跟随箭头以获得更好的接收信号。'},
+      {icon:'↑↓',t:'趋势指示',d:'↑绿色=该方向信号增强。↓红色=信号减弱。显示在方向箭头旁边。'},
+      {icon:'🔵',t:'轨迹点',d:'彩色圆点标记你过去的GPS位置，颜色对应测量时的信号强度。'},
+      {icon:'📍',t:'GPS等待中…',d:'等待首次GPS定位时的闪烁提示。点击雷达可放大查看更多细节。'}
     ]},
     {title:'性能',items:[
       {icon:'🔋',t:'节电',d:'带阻尼的物理仿真。仅在主动扫描时渲染Canvas。'},
