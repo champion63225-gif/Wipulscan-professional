@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#000022"/>
+      <stop offset="100%" stop-color="#000010"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="256" y1="100" x2="256" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f5e070"/>
+      <stop offset="28%" stop-color="#d4af37"/>
+      <stop offset="65%" stop-color="#7a5c10"/>
+      <stop offset="100%" stop-color="#2a1800"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0)"/>
+      <stop offset="44%" stop-color="rgba(255,255,255,0.22)"/>
+      <stop offset="56%" stop-color="rgba(255,255,255,0.08)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="dotglow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Background (maskable: safe zone = inner 80%) -->
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="96" fill="none" stroke="rgba(212,175,55,0.12)" stroke-width="3"/>
+  <!-- WiFi arcs -->
+  <g filter="url(#glow)">
+    <!-- Shadow layers -->
+    <path d="M72 258 A184 184 0 0 1 440 258"
+      fill="none" stroke="rgba(0,0,0,0.75)" stroke-width="46" stroke-linecap="round"/>
+    <path d="M136 258 A120 120 0 0 1 376 258"
+      fill="none" stroke="rgba(0,0,0,0.7)" stroke-width="38" stroke-linecap="round"/>
+    <path d="M200 258 A56 56 0 0 1 312 258"
+      fill="none" stroke="rgba(0,0,0,0.65)" stroke-width="30" stroke-linecap="round"/>
+    <!-- Gold arcs -->
+    <path d="M80 252 A176 176 0 0 1 432 252"
+      fill="none" stroke="url(#gold)" stroke-width="32" stroke-linecap="round"/>
+    <path d="M143 252 A113 113 0 0 1 369 252"
+      fill="none" stroke="url(#gold)" stroke-width="26" stroke-linecap="round"/>
+    <path d="M206 252 A50 50 0 0 1 306 252"
+      fill="none" stroke="url(#gold)" stroke-width="20" stroke-linecap="round"/>
+    <!-- Sheen overlay -->
+    <path d="M80 248 A176 176 0 0 1 432 248"
+      fill="none" stroke="url(#sheen)" stroke-width="32" stroke-linecap="round"/>
+    <path d="M143 248 A113 113 0 0 1 369 248"
+      fill="none" stroke="url(#sheen)" stroke-width="26" stroke-linecap="round"/>
+  </g>
+  <!-- Dot -->
+  <g filter="url(#dotglow)">
+    <circle cx="256" cy="342" r="48" fill="rgba(180,130,20,0.15)"/>
+    <circle cx="256" cy="346" r="30" fill="rgba(0,0,0,0.6)"/>
+    <circle cx="256" cy="342" r="28" fill="url(#gold)" stroke="rgba(240,200,60,0.5)" stroke-width="2"/>
+    <ellipse cx="246" cy="333" rx="10" ry="7" fill="rgba(255,255,255,0.28)" transform="rotate(-15,246,333)"/>
+  </g>
+</svg>
