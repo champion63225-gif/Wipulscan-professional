@@ -930,6 +930,17 @@ var HAPTIC_BASE=380;
 var BUBBLES=[];
 var SELECTED_BUBBLE=null;
 
+// ─── GPS / COMPASS STATE ──────────────────────────────────────
+var GEO={
+  watching:false, watchId:null,
+  heading:null,
+  current:null,   // {lat,lng,acc,ts}
+  origin:null,    // first fix when scan starts
+  trail:[],       // [{dx,dy,sig,rtt,ts}] meters offset from origin
+  scale:50,       // meters at radar radius
+  maxTrail:200
+};
+
 var cv=$('cv'),ctx=cv.getContext('2d'),W=0,H=0,DPR=1;
 
 function resizeCv(){
@@ -1180,6 +1191,58 @@ function setFilter(f){
   document.querySelectorAll('.fb').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-f')===f);});
 }
 
+// ─── GEOLOCATION / GPS TRAIL ─────────────────────────────────
+function latLngToXY(oLat,oLng,lat,lng){
+  var dy=-(lat-oLat)*111000;                          // metres, north=negative screen y
+  var dx=(lng-oLng)*111000*Math.cos(oLat*Math.PI/180);
+  return{dx:dx,dy:dy};
+}
+function autoScaleRadar(){
+  if(!GEO.trail.length||!GEO.current) return;
+  var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
+  var maxD=20;
+  GEO.trail.forEach(function(p){
+    var d=Math.sqrt((p.dx-cur.dx)*(p.dx-cur.dx)+(p.dy-cur.dy)*(p.dy-cur.dy));
+    if(d>maxD) maxD=d;
+  });
+  GEO.scale=maxD*1.25;
+}
+function onGeoSuccess(pos){
+  var lat=pos.coords.latitude, lng=pos.coords.longitude, acc=pos.coords.accuracy;
+  if(!GEO.origin) GEO.origin={lat:lat,lng:lng};
+  GEO.current={lat:lat,lng:lng,acc:acc,ts:Date.now()};
+  var off=latLngToXY(GEO.origin.lat,GEO.origin.lng,lat,lng);
+  GEO.trail.push({dx:off.dx,dy:off.dy,sig:S.dSig,rtt:S.dPing,ts:Date.now()});
+  if(GEO.trail.length>GEO.maxTrail) GEO.trail.shift();
+  autoScaleRadar();
+}
+function onDeviceOrientation(e){
+  if(e.webkitCompassHeading!=null) GEO.heading=e.webkitCompassHeading;
+  else if(e.alpha!=null) GEO.heading=(360-e.alpha)%360;
+}
+function initGeolocation(){
+  if(!navigator.geolocation||GEO.watching) return;
+  GEO.watching=true; GEO.trail=[]; GEO.origin=null; GEO.current=null; GEO.scale=50;
+  GEO.watchId=navigator.geolocation.watchPosition(onGeoSuccess,function(){},{
+    enableHighAccuracy:true,maximumAge:2000,timeout:15000
+  });
+  if(window.DeviceOrientationEvent){
+    if(typeof DeviceOrientationEvent.requestPermission==='function'){
+      DeviceOrientationEvent.requestPermission().then(function(s){
+        if(s==='granted') window.addEventListener('deviceorientation',onDeviceOrientation);
+      }).catch(function(){});
+    } else {
+      window.addEventListener('deviceorientation',onDeviceOrientation);
+    }
+  }
+}
+function stopGeolocation(){
+  if(!GEO.watching) return;
+  GEO.watching=false;
+  if(GEO.watchId!==null){navigator.geolocation.clearWatch(GEO.watchId);GEO.watchId=null;}
+  window.removeEventListener('deviceorientation',onDeviceOrientation);
+}
+
 // ─── RADAR DOTS ──────────────────────────────────────────────
 function spawnDot(){
   S.dots.length>=S.maxDots&&S.dots.shift();
@@ -1221,8 +1284,63 @@ function drawRadar(){
     ctx.beginPath(); ctx.arc(rx+dx2,ry+dy2,1.6,0,2*Math.PI);
     ctx.fillStyle=sigCol(d.sig,da); ctx.fill();
   });
-  ctx.beginPath(); ctx.arc(rx,ry,3,0,2*Math.PI);
-  ctx.fillStyle='rgba(0,255,136,.92)'; ctx.fill();
+
+  // ── GPS TRAIL ──
+  if(GEO.current&&GEO.trail.length>0){
+    var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
+    var scl=btnR/GEO.scale;
+    // Trail line
+    if(GEO.trail.length>1){
+      ctx.beginPath();
+      GEO.trail.forEach(function(p,i){
+        var px=rx+(p.dx-cur.dx)*scl, py=ry+(p.dy-cur.dy)*scl;
+        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+      });
+      ctx.strokeStyle='rgba(0,200,255,.20)'; ctx.lineWidth=1; ctx.stroke();
+    }
+    // Trail dots coloured by signal at measurement point
+    var now2=Date.now();
+    GEO.trail.forEach(function(p){
+      var px=rx+(p.dx-cur.dx)*scl, py=ry+(p.dy-cur.dy)*scl;
+      var odx=px-rx, ody=py-ry;
+      if(odx*odx+ody*ody>btnR*btnR) return; // clip
+      var age=(now2-p.ts)/1000;
+      var alpha=Math.max(0.15,0.80-age*0.004);
+      ctx.beginPath(); ctx.arc(px,py,2.2,0,2*Math.PI);
+      ctx.fillStyle=sigCol(p.sig,alpha); ctx.fill();
+    });
+    // Compass heading arrow from center
+    if(GEO.heading!==null){
+      var hRad=GEO.heading*Math.PI/180;
+      var arLen=btnR*0.52;
+      var ax=Math.sin(hRad)*arLen, ay=-Math.cos(hRad)*arLen;
+      ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx+ax,ry+ay);
+      ctx.strokeStyle='rgba(212,175,55,.55)'; ctx.lineWidth=1.2; ctx.stroke();
+      var la=hRad-2.5, ra=hRad+2.5;
+      ctx.beginPath();
+      ctx.moveTo(rx+ax,ry+ay);
+      ctx.lineTo(rx+ax+Math.sin(la)*5,ry+ay-Math.cos(la)*5);
+      ctx.lineTo(rx+ax+Math.sin(ra)*5,ry+ay-Math.cos(ra)*5);
+      ctx.closePath(); ctx.fillStyle='rgba(212,175,55,.75)'; ctx.fill();
+    }
+    // User position — gold pulsing dot at radar center
+    var pulse=0.7+0.3*Math.sin(Date.now()*0.004);
+    ctx.beginPath(); ctx.arc(rx,ry,5*pulse,0,2*Math.PI);
+    ctx.fillStyle='rgba(212,175,55,.92)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(rx,ry,5*pulse,0,2*Math.PI);
+    ctx.strokeStyle='rgba(255,255,255,.70)'; ctx.lineWidth=1.2; ctx.stroke();
+    // Scale label (bottom-right of radar)
+    var scaleLbl=GEO.scale<1000?Math.round(GEO.scale)+'m':(GEO.scale/1000).toFixed(1)+'km';
+    var fsS=Math.max(6,Math.round(0.11*btnR));
+    ctx.font='500 '+fsS+'px "Space Mono",monospace';
+    ctx.textAlign='right'; ctx.textBaseline='bottom';
+    ctx.fillStyle='rgba(0,200,255,.55)';
+    ctx.fillText(scaleLbl,rx+btnR-3,ry+btnR-3);
+  } else {
+    // No GPS: regular green center dot
+    ctx.beginPath(); ctx.arc(rx,ry,3,0,2*Math.PI);
+    ctx.fillStyle='rgba(0,255,136,.92)'; ctx.fill();
+  }
   var fs3=Math.max(7,Math.round(0.18*btnR));
   ctx.font='500 '+fs3+'px "Space Mono",monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.fillStyle='rgba(212,175,55,.42)';
@@ -1315,6 +1433,7 @@ function toggleScan(){
   if(S.scanning){
     S.scanning=false; S.paused=true;
     cancelAnimationFrame(S.raf); clearInterval(S.hapticIv);
+    stopGeolocation();
     if(bi){bi.textContent=T.h_pause; bi.className='off';}
     if(sb) sb.classList.remove('on');
     setText('btn-lbl',T.btn_start);
@@ -1322,6 +1441,7 @@ function toggleScan(){
     closeBubbleDetail();
   } else {
     S.scanning=true; S.paused=false;
+    initGeolocation();
     NET.supported?applyRealData():(S.dSig=65,S.dPing=32,S.dDL=8.4);
     S.dots=[]; S.sweep=0; S.msgTimer=0;
     initBubbles();
