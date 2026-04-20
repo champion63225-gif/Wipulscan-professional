@@ -504,6 +504,8 @@ body[dir=rtl] #filterbar{direction:rtl;}
       <button class="lb" data-lang="fr" onclick="setLang('fr')">FR</button>
       <button class="lb" data-lang="ru" onclick="setLang('ru')">РУ</button>
       <button class="lb" data-lang="ja" onclick="setLang('ja')">日</button>
+      <button class="lb" data-lang="hr" onclick="setLang('hr')">HR</button>
+      <button class="lb" data-lang="sr" onclick="setLang('sr')">СР</button>
     </div>
     <div class="cc-h"  id="c-eye"></div>
     <div class="cc-p"  id="c-sub"></div>
@@ -797,7 +799,9 @@ var LANGS={
   pt:{tap_lbl:"· Toque para Iniciar ·",c_eye:"Por favor leia a política de privacidade",c_sub:"Este app funciona completamente em local.<br>Sem servidores. Sem rastreamento.",c_chk:"Li a política de privacidade e concordo.",c_ok:"Iniciar",s_title:"CONFIGURAÇÕES",s_opt:"OPÇÕES",s_feat:"RECURSOS",h_ready:"PRONTO",h_scan:"ESCANEANDO",h_pause:"PAUSADO",ml_sig:"SINAL",ml_dl:"DOWNLOAD",ml_rtt:"LATÊNCIA",l_s:"FORTE",l_g:"BOA",l_m:"MÉDIA",l_w:"FRACA",btn_start:"Iniciar Scan",btn_stop:"Parar Scan",bd_current:"Conexão ativa",bd_main:"Dados reais",bd_est:"Estimado",bd_stability:"ESTABILIDADE",feats:["Tempo real via NetworkInformation API","Bolhas de rede interativas + AR","Intro cinemático 3.75s + jingle","10 idiomas disponíveis","Conforme GDPR · apenas local"],msgs:[{min:88,msg:"Sinal excelente — qualidade fibra"},{min:72,msg:"Sinal forte — conexão ideal"},{min:50,msg:"Bom sinal — estável e confiável"},{min:30,msg:"Sinal médio — suficiente"},{min:12,msg:"Sinal fraco — recepção limitada"},{min:0,msg:"Sinal crítico — conexão instável"}]},
   fr:{tap_lbl:"· Appuyer pour Démarrer ·",c_eye:"Veuillez lire la politique de confidentialité",c_sub:"Cette app fonctionne entièrement en local.<br>Pas de serveurs. Pas de suivi.",c_chk:"J'ai lu la politique de confidentialité et j'accepte.",c_ok:"Démarrer",s_title:"PARAMÈTRES",s_opt:"OPTIONS",s_feat:"FONCTIONNALITÉS",h_ready:"PRÊT",h_scan:"SCAN EN COURS",h_pause:"EN PAUSE",ml_sig:"SIGNAL",ml_dl:"TÉLÉCHARGEMENT",ml_rtt:"LATENCE",l_s:"FORT",l_g:"BON",l_m:"MOYEN",l_w:"FAIBLE",btn_start:"Démarrer le scan",btn_stop:"Arrêter le scan",bd_current:"Connexion active",bd_main:"Données réelles",bd_est:"Estimé",bd_stability:"STABILITÉ",feats:["Temps réel via NetworkInformation API","Bulles réseau interactives + AR","Intro cinématique 3.75s + jingle","10 langues disponibles","Conforme RGPD · local uniquement"],msgs:[{min:88,msg:"Signal excellent — qualité fibre"},{min:72,msg:"Signal fort — connexion optimale"},{min:50,msg:"Bon signal — stable et fiable"},{min:30,msg:"Signal moyen — suffisant"},{min:12,msg:"Signal faible — réception limitée"},{min:0,msg:"Signal critique — connexion instable"}]},
   ru:{tap_lbl:"· Нажмите для Запуска ·",c_eye:"Прочитайте политику конфиденциальности",c_sub:"Приложение работает полностью локально.<br>Без серверов. Без слежки.",c_chk:"Я прочитал(а) политику и согласен(на).",c_ok:"Начать",s_title:"НАСТРОЙКИ",s_opt:"ОПЦИИ",s_feat:"ФУНКЦИИ",h_ready:"ГОТОВ",h_scan:"СКАНИРОВАНИЕ",h_pause:"ПАУЗА",ml_sig:"СИГНАЛ",ml_dl:"ЗАГРУЗКА",ml_rtt:"ЗАДЕРЖКА",l_s:"СИЛЬНЫЙ",l_g:"ХОРОШИЙ",l_m:"СРЕДНИЙ",l_w:"СЛАБЫЙ",btn_start:"Начать сканирование",btn_stop:"Остановить сканирование",bd_current:"Активное соединение",bd_main:"Реальные данные",bd_est:"Оценочно",bd_stability:"СТАБИЛЬНОСТЬ",feats:["Реалтайм через NetworkInformation API","Интерактивные сетевые пузыри + AR","Кинематическое вступление 3.75с","10 языков интерфейса","Соответствие GDPR · только локально"],msgs:[{min:88,msg:"Отличный сигнал — качество волокна"},{min:72,msg:"Сильный сигнал — оптимальное соединение"},{min:50,msg:"Хороший сигнал — стабильный и надёжный"},{min:30,msg:"Средний сигнал — достаточно"},{min:12,msg:"Слабый сигнал — ограниченный приём"},{min:0,msg:"Критический сигнал — соединение нестабильно"}]},
-  ja:{tap_lbl:"· タップして開始 ·",c_eye:"プライバシーポリシーをお読みください",c_sub:"このアプリは完全にローカルで動作します。<br>サーバーなし。トラッキングなし。",c_chk:"プライバシーポリシーを読み、同意します。",c_ok:"開始",s_title:"設定",s_opt:"オプション",s_feat:"機能一覧",h_ready:"準備完了",h_scan:"スキャン中",h_pause:"一時停止",ml_sig:"シグナル",ml_dl:"ダウンロード",ml_rtt:"遅延",l_s:"強",l_g:"良",l_m:"中",l_w:"弱",btn_start:"スキャン開始",btn_stop:"スキャン停止",bd_current:"アクティブな接続",bd_main:"実データ",bd_est:"推定値",bd_stability:"安定性",feats:["NetworkInformation APIによるリアルタイム","インタラクティブネットワークバブル + AR","3.75秒シネマティックイントロ","10言語対応","GDPR準拠 · ローカルのみ"],msgs:[{min:88,msg:"優れたシグナル — 光ファイバー品質"},{min:72,msg:"強いシグナル — 最適な接続"},{min:50,msg:"良好なシグナル — 安定・信頼性高"},{min:30,msg:"中程度のシグナル — 十分"},{min:12,msg:"弱いシグナル — 受信制限あり"},{min:0,msg:"クリティカルシグナル — 接続不安定"}]}
+  ja:{tap_lbl:"· タップして開始 ·",c_eye:"プライバシーポリシーをお読みください",c_sub:"このアプリは完全にローカルで動作します。<br>サーバーなし。トラッキングなし。",c_chk:"プライバシーポリシーを読み、同意します。",c_ok:"開始",s_title:"設定",s_opt:"オプション",s_feat:"機能一覧",h_ready:"準備完了",h_scan:"スキャン中",h_pause:"一時停止",ml_sig:"シグナル",ml_dl:"ダウンロード",ml_rtt:"遅延",l_s:"強",l_g:"良",l_m:"中",l_w:"弱",btn_start:"スキャン開始",btn_stop:"スキャン停止",bd_current:"アクティブな接続",bd_main:"実データ",bd_est:"推定値",bd_stability:"安定性",feats:["NetworkInformation APIによるリアルタイム","インタラクティブネットワークバブル + AR","3.75秒シネマティックイントロ","12言語対応","GDPR準拠 · ローカルのみ"],msgs:[{min:88,msg:"優れたシグナル — 光ファイバー品質"},{min:72,msg:"強いシグナル — 最適な接続"},{min:50,msg:"良好なシグナル — 安定・信頼性高"},{min:30,msg:"中程度のシグナル — 十分"},{min:12,msg:"弱いシグナル — 受信制限あり"},{min:0,msg:"クリティカルシグナル — 接続不安定"}]},
+  hr:{tap_lbl:"· Dodirnite za Pokretanje ·",c_eye:"Molimo pročitajte Politiku privatnosti",c_sub:"Ova app radi potpuno lokalno.<br>Bez servera. Bez praćenja.",c_chk:"Pročitao/la sam Politiku privatnosti i slažem se.",c_ok:"Pokreni",s_title:"POSTAVKE",s_opt:"OPCIJE",s_feat:"FUNKCIJE",h_ready:"SPREMAN",h_scan:"SKENIRANJE",h_pause:"PAUZA",ml_sig:"SIGNAL",ml_dl:"PREUZIMANJE",ml_rtt:"LATENCIJA",l_s:"JAK",l_g:"DOBAR",l_m:"SREDNJI",l_w:"SLAB",btn_start:"Pokreni skeniranje",btn_stop:"Zaustavi skeniranje",bd_current:"Aktivna veza",bd_main:"Stvarni podaci",bd_est:"Procijenjeno",bd_stability:"STABILNOST",feats:["Stvarno vrijeme putem NetworkInformation API","Interaktivni mrežni mjehurići + AR","3.75s kinematski uvod + jingle","12 jezika dostupno","Sukladno GDPR-u · samo lokalno"],msgs:[{min:88,msg:"Izvrstan signal — kvaliteta optike"},{min:72,msg:"Jak signal — optimalna veza"},{min:50,msg:"Dobar signal — stabilan i pouzdan"},{min:30,msg:"Srednji signal — dovoljan"},{min:12,msg:"Slab signal — ograničen prijem"},{min:0,msg:"Kritičan signal — veza nestabilna"}]},
+  sr:{tap_lbl:"· Додирните за Почетак ·",c_eye:"Молимо прочитајте Политику приватности",c_sub:"Ова апп ради потпуно локално.<br>Без сервера. Без праћења.",c_chk:"Прочитао/ла сам Политику приватности и слажем се.",c_ok:"Покрени",s_title:"ПОДЕШАВАЊА",s_opt:"ОПЦИЈЕ",s_feat:"ФУНКЦИЈЕ",h_ready:"СПРЕМАН",h_scan:"СКЕНИРАЊЕ",h_pause:"ПАУЗА",ml_sig:"СИГНАЛ",ml_dl:"ПРЕУЗИМАЊЕ",ml_rtt:"ЛАТЕНЦИЈА",l_s:"ЈАК",l_g:"ДОБАР",l_m:"СРЕДЊИ",l_w:"САБ",btn_start:"Покрени скенирање",btn_stop:"Заустави скенирање",bd_current:"Активна веза",bd_main:"Стварни подаци",bd_est:"Процењено",bd_stability:"СТАБИЛНОСТ",feats:["Реално време преко NetworkInformation API","Интерактивни мрежни мехурићи + AR","3.75с кинематски увод + џингл","12 језика доступно","Усклађено са GDPR-ом · само локално"],msgs:[{min:88,msg:"Одличан сигнал — квалитет оптике"},{min:72,msg:"Јак сигнал — оптимална веза"},{min:50,msg:"Добар сигнал — стабилан и поуздан"},{min:30,msg:"Средњи сигнал — довољан"},{min:12,msg:"Слаб сигнал — ограничен пријем"},{min:0,msg:"Критичан сигнал — веза нестабилна"}]}
 };
 var lang=localStorage.getItem('wps_lang')||'de', T=LANGS[lang];
 
@@ -1982,6 +1986,42 @@ var INFO_CONTENT={
       {icon:'🔋',t:'省電力',d:'減衰付き物理シミュレーション。アクティブスキャン中のみCanvasをレンダリング。'},
       {icon:'📴',t:'オフラインモード',d:'Service Workerがすべてのリソースをキャッシュ。インターネットなしで動作。'},
       {icon:'🔒',t:'プライバシー',d:'データはデバイスから外に出ません。追跡なし、サーバーなし。'}
+    ]}
+  ],
+  hr:[
+    {title:'SKENIRANJE I MREŽA',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Mjerenje RTT-a, downlinka, vrste veze i kvalitete signala u stvarnom vremenu. Osvježavanje svakih 500ms.'},
+      {icon:'🔵',t:'Interaktivni mjehurići',d:'Svaki mjehurić predstavlja bežičnu mrežu. Dodirnite za detalje: signal, band, tip, stabilnost i graf.'},
+      {icon:'🎯',t:'Traka filtera',d:'Prikažite samo WiFi, LTE, jake signale (≥−70 dBm) ili 5-GHz mreže.'}
+    ]},
+    {title:'RADAR & GPS-NAVIGACIJA',items:[
+      {icon:'🟡',t:'Zlatna točka (ti)',d:'Pulsirajuća zlatna točka u sredini pokazuje tvoju GPS poziciju. Uvijek si u centru.'},
+      {icon:'🎨',t:'Obojeni sektori',d:'8 sektora kompasa — boja pokazuje izmjereni signal. Zelena = jak, crvena = slab.'},
+      {icon:'➡️',t:'Zlatna strelica (mekoća)',d:'Strelica pokazuje smjer najmekanijeg signala — jak I stabilan. Slijedi strelicu za bolji prijem.'},
+      {icon:'↑↓',t:'Trend signala',d:'↑ zelena = signal se poboljšava. ↓ crvena = signal se pogoršava.'}
+    ]},
+    {title:'PERFORMANSE',items:[
+      {icon:'🔋',t:'Štednja CPU-a',d:'Fizikalna simulacija s prigušenjem. Canvas se renderira samo za aktivnog skeniranja.'},
+      {icon:'📴',t:'Offline način',d:'Service Worker sprema sve resurse. App radi potpuno bez interneta.'},
+      {icon:'🔒',t:'Privatnost',d:'Nikakvi podaci ne napuštaju tvoj uređaj. Bez praćenja, bez servera.'}
+    ]}
+  ],
+  sr:[
+    {title:'СКЕНИРАЊЕ И МРЕЖА',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Мерење RTT-а, downlink-а, типа везе и квалитета сигнала у реалном времену. Освежавање свих 500ms.'},
+      {icon:'🔵',t:'Интерактивни мехурићи',d:'Сваки мехурић представља бежичну мрежу. Додирните за детаље: сигнал, band, тип, стабилност и граф.'},
+      {icon:'🎯',t:'Трака филтера',d:'Прикажите само WiFi, LTE, јаке сигнале (≥−70 dBm) или 5-GHz мреже.'}
+    ]},
+    {title:'РАДАР & GPS-НАВИГАЦИЈА',items:[
+      {icon:'🟡',t:'Златна тачка (ти)',d:'Пулсирајућа златна тачка у средини показује твоју GPS позицију. Увек си у центру.'},
+      {icon:'🎨',t:'Обојени сектори',d:'8 сектора компаса — боја показује измерени сигнал. Зелена = јак, црвена = слаб.'},
+      {icon:'➡️',t:'Златна стрелица (мекоћа)',d:'Стрелица показује смер најмекшег сигнала — јак и стабилан. Прати стрелицу за бољи пријем.'},
+      {icon:'↑↓',t:'Тренд сигнала',d:'↑ зелена = сигнал се побољшава. ↓ црвена = сигнал се погоршава.'}
+    ]},
+    {title:'ПЕРФОРМАНСЕ',items:[
+      {icon:'🔋',t:'Штедња CPU-а',d:'Физичка симулација са пригушењем. Canvas се рендерује само током активног скенирања.'},
+      {icon:'📴',t:'Offline режим',d:'Service Worker чува све ресурсе. Апп ради потпуно без интернета.'},
+      {icon:'🔒',t:'Приватност',d:'Никакви подаци не напуштају твој уређај. Без праћења, без сервера.'}
     ]}
   ]
 };
