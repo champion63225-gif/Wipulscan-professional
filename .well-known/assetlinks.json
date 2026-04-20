@@ -3,6 +3,6 @@
   "target": {
     "namespace": "android_app",
     "package_name": "com.cobradynamics.wipulscanpro",
-    "sha256_cert_fingerprints": ["REPLACE_WITH_YOUR_KEYSTORE_SHA256_FINGERPRINT"]
+    "sha256_cert_fingerprints": ["93:CD:0B:08:F0:79:BE:F6:14:ED:FD:8E:FC:87:A5:58:83:69:0E:E9:87:D0:66:DC:9E:02:DC:D1:91:5E:35:6C"]
   }
 }]

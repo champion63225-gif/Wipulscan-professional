@@ -975,10 +975,61 @@ var GEO={
   heading:null,
   current:null,   // {lat,lng,acc,ts}
   origin:null,    // first fix when scan starts
-  trail:[],       // [{dx,dy,sig,rtt,ts}] meters offset from origin
+  trail:[],       // [{dx,dy,sig,rtt,stab,ts}] meters offset from origin
   scale:50,       // meters at radar radius
   maxTrail:200
 };
+
+/* ── CLOUD CONFIG ───────────────────────────────────────────────
+   Setzt ein Firebase-Projekt voraus. Schritte:
+   1. console.firebase.google.com → Projekt erstellen
+   2. Realtime Database aktivieren (Testmodus)
+   3. Unten deine Werte eintragen und enabled:true setzen
+   ──────────────────────────────────────────────────────────── */
+var CLOUD={
+  enabled:false,
+  cfg:{
+    apiKey:'YOUR_API_KEY',
+    authDomain:'YOUR_PROJECT.firebaseapp.com',
+    databaseURL:'https://YOUR_PROJECT-default-rtdb.firebaseio.com',
+    projectId:'YOUR_PROJECT_ID',
+    storageBucket:'YOUR_PROJECT.appspot.com',
+    messagingSenderId:'YOUR_SENDER_ID',
+    appId:'YOUR_APP_ID'
+  },
+  db:null, unsub:null,
+  field:[],          // [{la,lo,s,t}] crowd measurements
+  lastUp:0, upIv:9000,
+  radius:0.003       // ~300 m in Grad (Datenschutz-Auflösung ~11 m)
+};
+function _pc(v){return Math.round(v*10000)/10000;} // privacy-coord
+function cloudInit(){
+  if(!CLOUD.enabled||!window.firebase) return;
+  try{
+    if(!firebase.apps.length) firebase.initializeApp(CLOUD.cfg);
+    CLOUD.db=firebase.database();
+  }catch(e){console.warn('[CLOUD]',e.message);CLOUD.enabled=false;}
+}
+function cloudUpload(){
+  if(!CLOUD.enabled||!CLOUD.db||!GEO.current) return;
+  var now=Date.now();
+  if(now-CLOUD.lastUp<CLOUD.upIv) return;
+  CLOUD.lastUp=now;
+  CLOUD.db.ref('sig').push().set({la:_pc(GEO.current.lat),lo:_pc(GEO.current.lng),s:Math.round(S.dSig),t:now})
+    .catch(function(){});
+}
+function cloudSubscribe(){
+  if(!CLOUD.enabled||!CLOUD.db||!GEO.current) return;
+  if(CLOUD.unsub) CLOUD.unsub();
+  var la=GEO.current.lat, r=CLOUD.radius;
+  CLOUD.db.ref('sig').orderByChild('la').startAt(_pc(la-r)).endAt(_pc(la+r)).limitToLast(400)
+    .on('value',function(snap){
+      var d=snap.val()||{}, cut=Date.now()-3600000, lng=GEO.current?GEO.current.lng:0;
+      CLOUD.field=Object.values(d).filter(function(m){return m.t>cut&&Math.abs(m.lo-lng)<r;});
+    });
+  CLOUD.unsub=function(){CLOUD.db.ref('sig').off();};
+}
+function cloudStop(){if(CLOUD.unsub){CLOUD.unsub();CLOUD.unsub=null;} CLOUD.field=[];}
 
 var cv=$('cv'),ctx=cv.getContext('2d'),W=0,H=0,DPR=1;
 
@@ -1259,9 +1310,18 @@ function onGeoSuccess(pos){
   if(!GEO.origin) GEO.origin={lat:lat,lng:lng};
   GEO.current={lat:lat,lng:lng,acc:acc,ts:Date.now()};
   var off=latLngToXY(GEO.origin.lat,GEO.origin.lng,lat,lng);
-  GEO.trail.push({dx:off.dx,dy:off.dy,sig:S.dSig,rtt:S.dPing,ts:Date.now()});
+  // Rolling stability score for this GPS fix (last 4 points)
+  var stab=1.0;
+  if(GEO.trail.length>=4){
+    var rc=GEO.trail.slice(-4);
+    var ra=rc.reduce(function(a,p){return a+p.sig;},0)/4;
+    var rv=rc.reduce(function(a,p){return a+(p.sig-ra)*(p.sig-ra);},0)/4;
+    stab=1/(1+rv/300);
+  }
+  GEO.trail.push({dx:off.dx,dy:off.dy,sig:S.dSig,rtt:S.dPing,ts:Date.now(),stab:stab});
   if(GEO.trail.length>GEO.maxTrail) GEO.trail.shift();
   autoScaleRadar();
+  cloudUpload();
 }
 function onDeviceOrientation(e){
   if(e.webkitCompassHeading!=null) GEO.heading=e.webkitCompassHeading;
@@ -1290,21 +1350,41 @@ function stopGeolocation(){
   window.removeEventListener('deviceorientation',onDeviceOrientation);
 }
 
-function computeSignalSectors(){
+function computeSoftnessField(){
   if(!GEO.current||GEO.trail.length<4) return null;
   var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
   var N=8, secs=[];
-  for(var i=0;i<N;i++) secs.push({sum:0,cnt:0,max:0});
+  for(var i=0;i<N;i++) secs.push({sum:0,sum2:0,cnt:0,avg:0,stability:0,softness:0});
   GEO.trail.forEach(function(p){
     var dx=p.dx-cur.dx, dy=p.dy-cur.dy;
     if(Math.sqrt(dx*dx+dy*dy)<4) return;
-    var ang=(Math.atan2(dy,dx)+Math.PI/2+Math.PI*2)%(Math.PI*2); // 0=Nord
+    var ang=(Math.atan2(dy,dx)+Math.PI/2+Math.PI*2)%(Math.PI*2);
     var si=Math.floor(ang/(Math.PI*2/N))%N;
-    secs[si].sum+=p.sig; secs[si].cnt++;
-    if(p.sig>secs[si].max) secs[si].max=p.sig;
+    secs[si].sum+=p.sig; secs[si].sum2+=p.sig*p.sig; secs[si].cnt++;
+  });
+  secs.forEach(function(s){
+    if(s.cnt<2){return;}
+    s.avg=s.sum/s.cnt;
+    var variance=(s.sum2/s.cnt)-(s.avg*s.avg);
+    s.stability=1/(1+variance/300); // 1=perfekt stabil, 0=sehr schwankend
+    s.softness=s.avg*s.stability;   // 0-100 kombinierter Score
   });
   return secs;
 }
+function currentSoftness(){
+  if(GEO.trail.length<4) return null;
+  var pts=GEO.trail.slice(-8), n=pts.length;
+  var avg=pts.reduce(function(a,p){return a+p.sig;},0)/n;
+  var v=pts.reduce(function(a,p){return a+(p.sig-avg)*(p.sig-avg);},0)/n;
+  var stab=1/(1+v/300);
+  return {avg:avg,stability:stab,score:avg*stab};
+}
+function softnessCol(score,alpha){
+  // Violett (rau/schwach) → Blau → Gold (sanft/stark)
+  var t=Math.min(1,score/75), r,g,b;
+  if(t<0.45){var u=t/0.45; r=Math.round(70*(1-u)); g=Math.round(10+60*u); b=Math.round(110+90*u);}
+  else{var u=(t-0.45)/0.55; r=Math.round(212*u); g=Math.round(70+105*u); b=Math.round(200*(1-u)+55*u);}
+  return 'rgba('+r+','+g+','+b+','+(alpha||0.42)+')';}
 function signalTrend(){
   if(GEO.trail.length<6) return 0;
   var n=Math.min(10,GEO.trail.length), pts=GEO.trail.slice(-n), h=Math.floor(n/2);
@@ -1360,20 +1440,51 @@ function drawRadar(){
   ctx.beginPath(); ctx.arc(rx,ry,btnR+3,0,2*Math.PI);
   ctx.fillStyle='rgba(0,0,8,.94)'; ctx.fill();
 
-  // ── SIGNAL SECTOR HEATMAP ──────────────────────────────────
-  var secs=computeSignalSectors();
-  var bestSecIdx=-1, bestSecSig=0;
+  // ── SANFTHEITSGRADIENT-FELD ─────────────────────────────────
+  var secs=computeSoftnessField();
+  var bestSecIdx=-1, bestSoftness=0;
   if(secs){
     var SN=8;
+    // Blurred pass → weicher Gradient zwischen Sektoren
+    ctx.save();
+    ctx.filter='blur('+Math.round(btnR*0.30)+'px)';
     secs.forEach(function(s,i){
       if(!s.cnt) return;
-      var avg=s.sum/s.cnt;
-      if(avg>bestSecSig){bestSecSig=avg;bestSecIdx=i;}
+      if(s.softness>bestSoftness){bestSoftness=s.softness;bestSecIdx=i;}
       var a0=-Math.PI/2+(i/SN)*Math.PI*2;
       var a1=-Math.PI/2+((i+1)/SN)*Math.PI*2;
       ctx.beginPath(); ctx.moveTo(rx,ry);
       ctx.arc(rx,ry,btnR,a0,a1); ctx.closePath();
-      ctx.fillStyle=sigCol(avg,clamp(avg/100,0,1)*0.34); ctx.fill();
+      ctx.fillStyle=softnessCol(s.softness,0.52); ctx.fill();
+    });
+    ctx.restore();
+    // Leuchtbogen am Rand für die weichste Zone
+    if(bestSecIdx>=0&&bestSoftness>20){
+      var ga0=-Math.PI/2+(bestSecIdx/SN)*Math.PI*2;
+      var ga1=-Math.PI/2+((bestSecIdx+1)/SN)*Math.PI*2;
+      ctx.beginPath(); ctx.arc(rx,ry,btnR,ga0,ga1);
+      ctx.strokeStyle=softnessCol(bestSoftness,0.90);
+      ctx.lineWidth=2.5; ctx.stroke();
+    }
+  }
+
+  // ── CLOUD-SIGNAL-FELD (Crowd-Messungen) ─────────────────────
+  if(CLOUD.enabled&&CLOUD.field.length&&GEO.current&&GEO.origin){
+    var ccur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
+    var cscl=btnR/GEO.scale, now3=Date.now();
+    CLOUD.field.forEach(function(m){
+      if(!m.la||!m.lo) return;
+      var mOff=latLngToXY(GEO.origin.lat,GEO.origin.lng,m.la,m.lo);
+      var mx=rx+(mOff.dx-ccur.dx)*cscl, my=ry+(mOff.dy-ccur.dy)*cscl;
+      if(Math.sqrt((mx-rx)*(mx-rx)+(my-ry)*(my-ry))>btnR) return;
+      var age=(now3-m.t)/3600000, alpha=Math.max(0.06,0.55-age*0.5);
+      var bg=ctx.createRadialGradient(mx,my,0,mx,my,btnR*0.16);
+      bg.addColorStop(0,sigCol(m.s,alpha*1.3));
+      bg.addColorStop(1,sigCol(m.s,0));
+      ctx.beginPath(); ctx.arc(mx,my,btnR*0.16,0,Math.PI*2);
+      ctx.fillStyle=bg; ctx.fill();
+      ctx.beginPath(); ctx.arc(mx,my,2,0,Math.PI*2);
+      ctx.fillStyle=sigCol(m.s,alpha+0.25); ctx.fill();
     });
   }
 
@@ -1422,13 +1533,19 @@ function drawRadar(){
       });
       ctx.strokeStyle='rgba(0,200,255,.22)'; ctx.lineWidth=1; ctx.stroke();
     }
-    // Trail dots coloured by signal at each fix
+    // Trail dots: Farbe = Signalstärke, Größe = Stabilität (sanfte Zonen = größere Punkte)
     var now2=Date.now();
     GEO.trail.forEach(function(p){
       var px=rx+(p.dx-cur.dx)*scl, py=ry+(p.dy-cur.dy)*scl;
       var age=(now2-p.ts)/1000;
-      ctx.beginPath(); ctx.arc(px,py,2.4,0,2*Math.PI);
+      var dotR=1.2+2.8*(p.stab!==undefined?p.stab:0.5);
+      ctx.beginPath(); ctx.arc(px,py,dotR,0,2*Math.PI);
       ctx.fillStyle=sigCol(p.sig,Math.max(0.18,0.82-age*0.004)); ctx.fill();
+      // Goldener Halo bei hoher Stabilität
+      if(p.stab>0.80){
+        ctx.beginPath(); ctx.arc(px,py,dotR+2,0,2*Math.PI);
+        ctx.strokeStyle='rgba(212,175,55,'+(0.35*p.stab)+')'; ctx.lineWidth=0.8; ctx.stroke();
+      }
     });
     // Thin compass heading needle
     if(GEO.heading!==null){
@@ -1467,33 +1584,49 @@ function drawRadar(){
     }
   }
 
-  // ── BEST SIGNAL DIRECTION ARROW ────────────────────────────
-  if(bestSecIdx>=0&&bestSecSig>35){
+  // ── SANFTHEITS-PFEIL ────────────────────────────────────────
+  if(bestSecIdx>=0&&bestSoftness>20){
     var bAng=-Math.PI/2+(bestSecIdx+0.5)/8*Math.PI*2;
     var bx=Math.cos(bAng), by=Math.sin(bAng);
-    var arLen=btnR*0.62;
-    // Gradient: transparent at origin → gold at tip
+    var arLen=btnR*0.65;
+    var aCol=softnessCol(bestSoftness,1.0);
+    // Schaft: transparent → Sanftheitfarbe
     var grd=ctx.createLinearGradient(rx+bx*10,ry+by*10,rx+bx*arLen,ry+by*arLen);
     grd.addColorStop(0,'rgba(212,175,55,0)');
-    grd.addColorStop(1,'rgba(212,175,55,.95)');
+    grd.addColorStop(0.55,softnessCol(bestSoftness,0.55));
+    grd.addColorStop(1,aCol);
     ctx.beginPath();
     ctx.moveTo(rx+bx*10,ry+by*10);
     ctx.lineTo(rx+bx*arLen,ry+by*arLen);
-    ctx.strokeStyle=grd; ctx.lineWidth=2.8; ctx.stroke();
-    // Arrowhead
+    ctx.strokeStyle=grd; ctx.lineWidth=3.2; ctx.stroke();
+    // Pfeilspitze
     var la=bAng-2.55, ra=bAng+2.55;
     ctx.beginPath();
     ctx.moveTo(rx+bx*arLen,ry+by*arLen);
-    ctx.lineTo(rx+bx*arLen+Math.cos(la)*8,ry+by*arLen+Math.sin(la)*8);
-    ctx.lineTo(rx+bx*arLen+Math.cos(ra)*8,ry+by*arLen+Math.sin(ra)*8);
-    ctx.closePath(); ctx.fillStyle='rgba(212,175,55,.95)'; ctx.fill();
-    // Signal trend ↑ / ↓
+    ctx.lineTo(rx+bx*arLen+Math.cos(la)*9,ry+by*arLen+Math.sin(la)*9);
+    ctx.lineTo(rx+bx*arLen+Math.cos(ra)*9,ry+by*arLen+Math.sin(ra)*9);
+    ctx.closePath(); ctx.fillStyle=aCol; ctx.fill();
+    // Trend ↑ / ↓ am Schaft
     var trend=signalTrend();
     if(Math.abs(trend)>3){
       ctx.font='700 '+Math.max(7,Math.round(0.16*btnR))+'px "Space Mono",monospace';
       ctx.textAlign='center'; ctx.textBaseline='middle';
       ctx.fillStyle=trend>0?'rgba(0,255,136,.90)':'rgba(255,72,50,.85)';
       ctx.fillText(trend>0?'↑':'↓', rx+bx*arLen*0.40, ry+by*arLen*0.40);
+    }
+    // Sanftheitswert in % (nur im expanded Modus)
+    if(S.radarExpanded){
+      var cs=currentSoftness();
+      if(cs){
+        var pct=Math.round(Math.min(100,cs.score));
+        ctx.font='700 '+Math.max(10,Math.round(0.13*btnR))+'px "Space Mono",monospace';
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillStyle=softnessCol(cs.score,0.95);
+        ctx.fillText(pct+'%', rx, ry-btnR*0.24);
+        ctx.font='500 '+Math.max(7,Math.round(0.08*btnR))+'px "Space Mono",monospace';
+        ctx.fillStyle='rgba(255,255,255,0.28)';
+        ctx.fillText('SANFT', rx, ry-btnR*0.37);
+      }
     }
   }
 
@@ -1528,6 +1661,15 @@ function frame(ts){
   ctx.strokeStyle='rgba(212,175,55,'+gA+')'; ctx.lineWidth=0.5;
   for(var x2=0;x2<W;x2+=40){ctx.beginPath();ctx.moveTo(x2,0);ctx.lineTo(x2,H);ctx.stroke();}
   for(var y2=0;y2<H;y2+=40){ctx.beginPath();ctx.moveTo(0,y2);ctx.lineTo(W,y2);ctx.stroke();}
+
+  // Optimal-Zone-Puls: sanftes goldenes Glühen wenn Sanftheit ≥ 68
+  var _cs=currentSoftness();
+  if(_cs&&_cs.score>=68){
+    var _t=((_cs.score-68)/32); // 0→1 je besser
+    var _p=0.5+0.5*Math.sin(Date.now()*0.0012); // sehr langsamer Puls
+    ctx.fillStyle='rgba(212,175,55,'+(_t*0.045*_p)+')';
+    ctx.fillRect(0,0,W,H);
+  }
 
   // Network bubbles
   drawBubbles();
@@ -1576,11 +1718,28 @@ function updateUI(dt){
 }
 
 // ─── HAPTIC ──────────────────────────────────────────────────
+var _lastSoftScore=0;
 function hapticBeat(){
   if(!S.scanning||!navigator.vibrate) return;
-  var s=S.dSig, iv=Math.round(HAPTIC_BASE-s/100*(HAPTIC_BASE-80));
-  s>=80?navigator.vibrate([8,38,8]):s>=55?navigator.vibrate(10):s>=28?navigator.vibrate(8):navigator.vibrate(6);
-  clearInterval(S.hapticIv); S.hapticIv=setInterval(hapticBeat,iv);
+  var s=S.dSig;
+  // Sanftheits-Feedback: sanftes Doppel-Puls wenn Sanftheit steigt
+  var cs=currentSoftness();
+  if(cs&&cs.score>_lastSoftScore+5&&cs.score>=60){
+    navigator.vibrate([12,50,12]); // sanftes "besser"
+    _lastSoftScore=cs.score;
+    return;
+  }
+  if(cs) _lastSoftScore=cs.score;
+  // Optimale Zone: sehr sanftes, langsames Pulsieren
+  if(cs&&cs.score>=68){
+    navigator.vibrate(8); // minimale Berührung
+  } else {
+    var iv=Math.round(HAPTIC_BASE-s/100*(HAPTIC_BASE-80));
+    s>=80?navigator.vibrate([8,38,8]):s>=55?navigator.vibrate(10):s>=28?navigator.vibrate(8):navigator.vibrate(6);
+    clearInterval(S.hapticIv); S.hapticIv=setInterval(hapticBeat,iv);
+    return;
+  }
+  clearInterval(S.hapticIv); S.hapticIv=setInterval(hapticBeat,HAPTIC_BASE);
 }
 
 // ─── TOGGLE SCAN ─────────────────────────────────────────────
@@ -1589,7 +1748,7 @@ function toggleScan(){
   if(S.scanning){
     S.scanning=false; S.paused=true;
     cancelAnimationFrame(S.raf); clearInterval(S.hapticIv);
-    stopGeolocation(); S.radarExpanded=false;
+    stopGeolocation(); cloudStop(); S.radarExpanded=false;
     if(bi){bi.textContent=T.h_pause; bi.className='off';}
     if(sb) sb.classList.remove('on');
     setText('btn-lbl',T.btn_start);
@@ -1599,7 +1758,7 @@ function toggleScan(){
     S.scanning=true; S.paused=false;
     var gpsPerm=localStorage.getItem('wps_gps_perm');
     if(!gpsPerm){var gp=$('gps-permit');if(gp) gp.classList.add('open');}
-    else if(gpsPerm==='yes') initGeolocation();
+    else if(gpsPerm==='yes'){initGeolocation(); cloudInit(); cloudSubscribe();}
     NET.supported?applyRealData():(S.dSig=65,S.dPing=32,S.dDL=8.4);
     S.dots=[]; S.sweep=0; S.msgTimer=0;
     initBubbles();
@@ -2048,5 +2207,9 @@ if('serviceWorker' in navigator){
 // ─── PRIVACY TEXT ────────────────────────────────────────────
 var PRIVACY_TEXT="DATENSCHUTZERKLÄRUNG / PRIVACY POLICY\n© Cobra Dynamics 2026 — Version 5.2.0\n\n1. VERANTWORTLICHER\nCobra Dynamics, Dennis Stein & Christoph Frick\nNördliche Ringstraße 75, 63225 Langen\nE-Mail: dennis.stein@cobradynamics.de\n\n2. DATENERHEBUNG\nDiese App erhebt KEINE personenbezogenen Daten. Es werden keine Namen, E-Mail-Adressen, Standortdaten oder Gerätekennungen gespeichert oder übermittelt. Alle Messungen erfolgen ausschließlich lokal auf Ihrem Gerät.\n\n3. VERWENDETE WEB-APIs\n• NetworkInformation API (Verbindungsqualität, RTT, Downlink)\n• DeviceMotion API (optionale Bewegungssteuerung)\n• Web Audio API (Intro-Jingle, lokal)\n• Vibration API (haptisches Feedback)\n\n4. LOKALE SPEICHERUNG\nNur localStorage: Spracheinstellung (DE/EN/ZH) und Datenschutz-Zustimmung. Jederzeit löschbar über Einstellungen → Consent zurücksetzen (Art. 17 DSGVO).\n\n5. KEINE DRITTANBIETER\nKein Analytics, kein Tracking, keine Werbenetzwerke, keine externen Server.\n\n6. SCHRIFTARTEN\nGoogle Fonts (fonts.googleapis.com): Ihre IP-Adresse wird dabei übertragen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.\n\n7. RECHTE (DSGVO Art. 15–22)\nAuskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit, Widerspruch.\nAnfragen: dennis.stein@cobradynamics.de\n\n8. PREIS & LIZENZ\nEinmalzahlung: 1,99 EUR. Altersfreigabe: 4+. Kein Abo. Keine In-App-Käufe.\n\nENGLISH SUMMARY\nNo personal data collected. Local processing only. One-time purchase EUR 1.99. Age 4+.\n\n中文摘要\n不收集任何个人数据。纯本地处理。一次性购买1.99欧元。年龄评级4+。";
 </script>
+
+<!-- Firebase SDK — wird von cloudInit() genutzt wenn CLOUD.enabled=true -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 </body>
 </html>

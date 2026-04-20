@@ -39,11 +39,25 @@
   ],
   "screenshots": [
     {
-      "src": "icon-512.png",
-      "sizes": "512x512",
+      "src": "screenshots/screen-android-1080x1920.png",
+      "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "WIPULSCAN PRO — WiFi Signal Scanner"
+      "label": "WIPULSCAN PRO — Signal Scanner"
+    },
+    {
+      "src": "screenshots/screen-iphone65-1242x2688.png",
+      "sizes": "1242x2688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "WIPULSCAN PRO — AR Bubbles"
+    },
+    {
+      "src": "screenshots/screen-iphone67-1290x2796.png",
+      "sizes": "1290x2796",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "WIPULSCAN PRO — GPS Trail"
     }
   ],
   "prefer_related_applications": false,

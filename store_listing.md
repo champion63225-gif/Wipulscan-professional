@@ -126,16 +126,16 @@ One-time purchase: €1.99. No subscriptions, no in-app purchases.
 
 ## APP STORE CHECKLIST
 
-- [ ] App icon 1024×1024 PNG (required for both stores)
-- [ ] At least 3 screenshots — recommended sizes:
-  - iPhone 6.7": 1290×2796 px
-  - iPhone 6.5": 1242×2688 px
-  - Android: 1080×1920 px minimum
-- [ ] Feature graphic (Google Play): 1024×500 px
-- [ ] Privacy policy URL live and accessible
-- [ ] `assetlinks.json` SHA256 fingerprint filled in (TWA / Play Store)
-- [ ] `apple-touch-icon.png` 180×180 px present
-- [ ] `icon-192.png` and `icon-512.png` generated from SVG
+- [x] App icon 1024×1024 PNG → `icon-1024.png` ✓
+- [x] Screenshots generated → `screenshots/` folder ✓
+  - iPhone 6.7": `screen-iphone67-1290x2796.png`
+  - iPhone 6.5": `screen-iphone65-1242x2688.png`
+  - Android: `screen-android-1080x1920.png`
+- [x] Feature graphic (Google Play): 1024×500 px → `feature-graphic.png` ✓
+- [ ] Privacy policy URL live and accessible — push to GitHub Pages
+- [x] `assetlinks.json` SHA256 fingerprint filled in ✓ `93:CD:0B:08:…`
+- [x] `apple-touch-icon.png` 180×180 px present ✓
+- [x] `icon-192.png` and `icon-512.png` generated from SVG ✓
 - [ ] Service Worker tested on real device
 - [ ] GPS permission dialog tested (tap "STANDORT FREIGEBEN")
 - [ ] All 10 languages manually verified on device
@@ -144,34 +144,57 @@ One-time purchase: €1.99. No subscriptions, no in-app purchases.
 
 ## TWA (Trusted Web Activity) — Google Play Store
 
-Build command after installing Bubblewrap:
+**Keystore already generated** — `android.keystore`
+- Alias: `wipulscan` · Password: `wipulscan2026`
+- SHA256: `93:CD:0B:08:F0:79:BE:F6:14:ED:FD:8E:FC:87:A5:58:83:69:0E:E9:87:D0:66:DC:9E:02:DC:D1:91:5E:35:6C`
+
+**Android project already generated** — `android-twa/`
+
+To build the AAB manually:
 ```bash
-bubblewrap init --manifest https://champion63225-gif.github.io/Wipulscan-professional/manifest.json
-bubblewrap build
+cd android-twa
+set ANDROID_HOME=C:\Users\STEIN\AppData\Local\Android\Sdk
+set JAVA_HOME=C:\Program Files\Android\Android Studio\jbr
+gradlew.bat bundleRelease
+```
+*Note: use Android Studio's JBR (Java 21), not oracleJdk-26 (Java 26 is too new for Gradle 8.11)*
+Output: `android-twa/app/build/outputs/bundle/release/app-release.aab`
+
+Then sign with:
+```bash
+jarsigner -keystore ..\android.keystore -storepass wipulscan2026 -keypass wipulscan2026 ^
+  app\build\outputs\bundle\release\app-release.aab wipulscan
 ```
 
-Fill in during init:
-- Package name: `com.cobradynamics.wipulscanpro`
-- App name: `WIPULSCAN PRO`
-- Launch URL: `https://champion63225-gif.github.io/Wipulscan-professional/`
-- Icon: `icon-512.png`
-- Signing key: generate with keytool, then update `.well-known/assetlinks.json`
+Upload `app-release.aab` to Google Play Console.
+
+---
+
+## iOS — App Store
+
+**Requires:** Apple Developer account ($99/yr) + Mac with Xcode
+
+Steps:
+1. Go to **https://www.pwabuilder.com**
+2. Enter: `https://champion63225-gif.github.io/Wipulscan-professional/`
+3. Click **Package for stores → iOS**
+4. Download the generated Xcode project zip
+5. Open in Xcode on a Mac → set your Developer Team
+6. **Archive → Distribute App → App Store Connect**
 
 ---
 
 ## WHAT STILL NEEDS TO BE DONE
 
-1. **Generate PNG icons** from the SVG files (icon-192.svg, icon-512.svg)  
-   Tool: `sharp-cli`, Inkscape, or online SVG-to-PNG converter  
-   Sizes needed: 192×192, 512×512, 1024×1024, 180×180 (apple-touch)
+1. **Push to GitHub Pages** — `git push` to publish the app and activate the privacy policy URL
 
-2. **Take screenshots** on a real device or simulator  
-   Show: Intro screen, bubble scan view, radar expanded, bubble detail sheet, settings
+2. **Feature graphic** (Google Play only) — 1024×500 px JPG/PNG  
+   Show: WIPULSCAN PRO logo on dark background with signal bubble visualization  
+   Tools: Canva / Figma / Photoshop
 
-3. **Publish privacy policy** at a public URL (GitHub Pages works)
+3. **Upload AAB to Google Play Console** — `wipulscan-release.aab` is ready (1.6 MB)  
+   Go to: Play Console → Create app → Release → Production → Upload AAB
 
-4. **Run Bubblewrap** to create the Play Store APK/AAB
+4. **iOS App Store** — use PWABuilder web tool (see above) + Apple Developer account ($99/yr)
 
-5. **Create Apple Developer account** and wrap with Capacitor or PWABuilder for App Store
-
-6. **Fill in SHA256** in `.well-known/assetlinks.json` after generating your keystore
+5. **Test on real device** — verify GPS dialog, 10 languages, Service Worker offline mode

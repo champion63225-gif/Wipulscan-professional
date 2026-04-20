@@ -1,0 +1,46 @@
+{
+  "packageId": "com.cobradynamics.wipulscanpro",
+  "host": "champion63225-gif.github.io",
+  "name": "WIPULSCAN PRO",
+  "launchUrl": "/Wipulscan-professional/",
+  "themeColor": "#00001a",
+  "navigationColor": "#00001a",
+  "backgroundColor": "#00001a",
+  "enableNotifications": false,
+  "startUrl": "/Wipulscan-professional/",
+  "iconUrl": "https://champion63225-gif.github.io/Wipulscan-professional/icon-512.png",
+  "maskableIconUrl": "https://champion63225-gif.github.io/Wipulscan-professional/icon-512.png",
+  "monochromeIconUrl": "https://champion63225-gif.github.io/Wipulscan-professional/icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signing": {
+    "outputDirectory": "./android-build",
+    "keystoreFile": "./android.keystore",
+    "keystorePassword": "wipulscan2026",
+    "keyAlias": "wipulscan",
+    "keyPassword": "wipulscan2026"
+  },
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://champion63225-gif.github.io/Wipulscan-professional/manifest.json",
+  "fallbackType": "chromeos",
+  "features": {
+    "locationDelegation": {
+      "enabled": false
+    },
+    "playBilling": {
+      "enabled": false
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "orientation": "portrait",
+  "display": "standalone",
+  "appVersion": "1",
+  "appVersionName": "5.2.0",
+  "shortcuts": [],
+  "generatedAppVersion": 1,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://champion63225-gif.github.io/Wipulscan-professional/",
+  "minSdkVersion": 21
+}

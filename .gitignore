@@ -13,3 +13,14 @@ index.html.html
 oracleJdk-26/
 Thumbs.db
 .DS_Store
+
+# Android build artifacts & secrets
+android.keystore
+android-twa/
+node_modules/
+take-screenshots.js
+build-android.js
+build-ios.js
+package.json
+package-lock.json
+screenshots/
