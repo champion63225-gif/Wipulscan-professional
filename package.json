@@ -1,0 +1,45 @@
+{
+  "name": "wipulscan-pro",
+  "private": true,
+  "version": "5.2.0",
+  "description": "Spatial WiFi Signal Scanner & AR Heatmap Visualizer",
+  "author": "Cobra Dynamics",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "cap:init": "npx cap init WIPULSCAN com.cobradynamics.wipulscan --web-dir dist",
+    "cap:add:android": "npx cap add android",
+    "cap:add:ios": "npx cap add ios",
+    "cap:sync": "npm run build && npx cap sync",
+    "cap:open:android": "npx cap open android",
+    "cap:open:ios": "npx cap open ios",
+    "release:android": "npm run build && npx cap sync android",
+    "release:ios": "npm run build && npx cap sync ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.3.1",
+    "@capacitor/app": "^8.1.0",
+    "@capacitor/camera": "^8.1.0",
+    "@capacitor/cli": "^8.3.1",
+    "@capacitor/core": "^8.3.1",
+    "@capacitor/device": "^8.0.2",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.3.1",
+    "@capacitor/preferences": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2",
+    "cordova-plugin-purchase": "^13.15.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^6.0.3",
+    "vite": "^5.0.0",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}

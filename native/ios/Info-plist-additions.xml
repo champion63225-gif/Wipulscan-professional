@@ -1,0 +1,17 @@
+<!-- Add these keys to ios/App/App/Info.plist -->
+
+<!-- Camera (AR overlay) -->
+<key>NSCameraUsageDescription</key>
+<string>WIPULSCAN uses the camera for AR visualization of WiFi signal strength in your environment.</string>
+
+<!-- Motion sensors (gyroscope/accelerometer for AR tracking) -->
+<key>NSMotionUsageDescription</key>
+<string>WIPULSCAN uses motion sensors to track your movement and position signal measurements in AR space.</string>
+
+<!-- Local network (speed test) -->
+<key>NSLocalNetworkUsageDescription</key>
+<string>WIPULSCAN measures your network connection quality to visualize WiFi signal strength.</string>
+
+<!-- Location (not used, but may be required for network APIs) -->
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>WIPULSCAN may use location to improve WiFi signal measurement accuracy.</string>

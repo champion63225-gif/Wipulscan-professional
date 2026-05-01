@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">WIPULSCAN PRO</string>
+    <string name="title_activity_main">WIPULSCAN PRO</string>
+    <string name="package_name">com.cobradynamics.wipulscan</string>
+    <string name="custom_url_scheme">com.cobradynamics.wipulscan</string>
+</resources>

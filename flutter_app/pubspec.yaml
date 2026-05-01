@@ -1,0 +1,64 @@
+name: wipulscan_pro
+description: Spatial WiFi Signal Scanner & AR Heatmap Visualizer
+publish_to: 'none'
+version: 5.2.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+  flutter: '>=3.16.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+
+  # AR
+  ar_flutter_plugin: ^0.7.3
+  camera: ^0.11.0
+  sensors_plus: ^4.0.2
+
+  # WiFi (Android native RSSI)
+  wifi_info_flutter: ^2.0.2
+  network_info_plus: ^5.0.0
+  connectivity_plus: ^6.0.2
+  permission_handler: ^11.3.0
+
+  # Speed/Latency measurement
+  http: ^1.2.1
+  dio: ^5.4.1
+
+  # In-App Purchase
+  in_app_purchase: ^3.1.13
+
+  # State + Storage
+  provider: ^6.1.2
+  shared_preferences: ^2.2.3
+
+  # UI
+  google_fonts: ^6.1.0
+  audioplayers: ^6.0.0
+  vibration: ^1.9.0
+
+  # Utilities
+  vector_math: ^2.1.4
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#000005"
+  adaptive_icon_foreground: "assets/icon/app_icon_fg.png"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/sounds/
+    - assets/icon/
+    - assets/i18n/

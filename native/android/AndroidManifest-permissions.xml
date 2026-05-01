@@ -1,0 +1,28 @@
+<!-- Add these permissions to android/app/src/main/AndroidManifest.xml -->
+<!-- Inside the <manifest> tag, before <application> -->
+
+<!-- WiFi Signal Scanning -->
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+<!-- Required for WiFi scanning on Android 10+ -->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+<!-- Android 13+ nearby WiFi devices -->
+<uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES"
+    android:usesPermissionFlags="neverForLocation"
+    tools:targetApi="33" />
+
+<!-- Camera for AR overlay -->
+<uses-permission android:name="android.permission.CAMERA" />
+
+<!-- Internet for speed tests -->
+<uses-permission android:name="android.permission.INTERNET" />
+
+<!-- AR features (optional) -->
+<uses-feature android:name="android.hardware.camera.ar" android:required="false" />
+<uses-feature android:name="android.hardware.sensor.gyroscope" android:required="false" />
+<uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+<uses-feature android:name="android.hardware.wifi" android:required="true" />
