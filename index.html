@@ -950,16 +950,24 @@ function sigToDBm(pct){return Math.round(pct/100*75-95);}
 
 // ─── COLOUR HELPERS ──────────────────────────────────────────
 function sigCol(s,a){
-  if(s>=72) return 'rgba(0,255,136,'+a+')';
-  if(s>=50) return 'rgba(212,175,55,'+a+')';
-  if(s>=28) return 'rgba(240,112,0,'+a+')';
-  return 'rgba(255,51,51,'+a+')';
+  if(s>=85) return 'rgba(0,200,255,'+a+')';     // cyan - excellent
+  if(s>=72) return 'rgba(0,255,136,'+a+')';     // green - good
+  if(s>=60) return 'rgba(180,255,80,'+a+')';    // yellow-green
+  if(s>=50) return 'rgba(255,220,60,'+a+')';     // yellow - medium
+  if(s>=40) return 'rgba(255,170,40,'+a+')';     // orange-yellow
+  if(s>=28) return 'rgba(255,120,30,'+a+')';    // orange
+  if(s>=15) return 'rgba(255,70,50,'+a+')';      // red-orange
+  return 'rgba(220,30,30,'+a+')';                 // red - poor
 }
 function sigColRGB(s){
+  if(s>=85) return '0,200,255';
   if(s>=72) return '0,255,136';
-  if(s>=50) return '212,175,55';
-  if(s>=28) return '240,112,0';
-  return '255,51,51';
+  if(s>=60) return '180,255,80';
+  if(s>=50) return '255,220,60';
+  if(s>=40) return '255,170,40';
+  if(s>=28) return '255,120,30';
+  if(s>=15) return '255,70,50';
+  return '220,30,30';
 }
 
 // ─── CANVAS + STATE ──────────────────────────────────────────
@@ -1728,60 +1736,76 @@ function drawHeatmap(){
 
 function drawARDirection(){
   var secs=computeSoftnessField();
-  if(!secs)return;
   var bestIdx=-1,bestScore=0;
-  secs.forEach(function(s,i){if(s.softness>bestScore){bestScore=s.softness;bestIdx=i;}});
-  if(bestIdx<0||bestScore<15)return;
+  var hasGps=!!secs;
+  if(hasGps){
+    secs.forEach(function(s,i){if(s.softness>bestScore){bestScore=s.softness;bestIdx=i;}});
+  }
+  // Fallback: if no GPS data yet, show arrow pointing toward current signal trend
+  if(bestIdx<0||bestScore<15){
+    var tr=signalTrend();
+    if(Math.abs(tr)<2) return; // no clear direction yet
+    // Default: point upward (north) as placeholder until we have GPS
+    bestIdx=0; bestScore=50;
+  }
   var ang=-Math.PI/2+(bestIdx+0.5)/8*Math.PI*2;
-  var cx=W*0.5,cy=H*0.55; // lower center so it doesn't block the view too much
-  var len=Math.min(W,H)*0.30; // much longer arrow
-  var pulse=0.82+0.18*Math.sin(Date.now()*0.003);
+  var cx=W*0.5,cy=H*0.55;
+  var len=Math.min(W,H)*0.36; // even longer arrow
+  var pulse=0.78+0.22*Math.sin(Date.now()*0.0035);
   var aLen=len*pulse;
   ctx.save();
-  // Rotating glow ring at base
-  var ringR=18+6*Math.sin(Date.now()*0.005);
+  // Stronger rotating glow ring at base
+  var ringR=22+8*Math.sin(Date.now()*0.005);
   ctx.beginPath();ctx.arc(cx,cy,ringR,0,Math.PI*2);
-  ctx.strokeStyle='rgba(212,175,55,0.35)';ctx.lineWidth=2;ctx.stroke();
-  ctx.beginPath();ctx.arc(cx,cy,ringR-6,0,Math.PI*2);
-  ctx.strokeStyle='rgba(212,175,55,0.15)';ctx.lineWidth=1;ctx.stroke();
-  // Thick glow shaft
+  ctx.strokeStyle='rgba(212,175,55,0.50)';ctx.lineWidth=3;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,ringR-8,0,Math.PI*2);
+  ctx.strokeStyle='rgba(212,175,55,0.25)';ctx.lineWidth=1.5;ctx.stroke();
+  // Strong outer glow shaft
+  ctx.strokeStyle='rgba(212,175,55,0.25)';ctx.lineWidth=18;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(ang)*aLen,cy+Math.sin(ang)*aLen);ctx.stroke();
+  // Thick colored shaft
   var grd=ctx.createLinearGradient(cx,cy,cx+Math.cos(ang)*aLen,cy+Math.sin(ang)*aLen);
-  grd.addColorStop(0,'rgba(212,175,55,0)');
-  grd.addColorStop(0.4,'rgba(212,175,55,0.65)');
-  grd.addColorStop(1,'rgba(245,224,112,0.95)');
-  ctx.strokeStyle=grd;ctx.lineWidth=8;ctx.lineCap='round';
+  grd.addColorStop(0,'rgba(212,175,55,0.15)');
+  grd.addColorStop(0.35,'rgba(212,175,55,0.75)');
+  grd.addColorStop(1,'rgba(255,235,140,0.98)');
+  ctx.strokeStyle=grd;ctx.lineWidth=10;ctx.lineCap='round';
   ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(ang)*aLen,cy+Math.sin(ang)*aLen);ctx.stroke();
   // Inner bright core line
-  ctx.strokeStyle='rgba(255,255,255,0.55)';ctx.lineWidth=2.5;
+  ctx.strokeStyle='rgba(255,255,255,0.70)';ctx.lineWidth=3;
   ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(ang)*aLen,cy+Math.sin(ang)*aLen);ctx.stroke();
-  // Large arrow head
+  // Large arrow head with strong glow
   var ax=cx+Math.cos(ang)*aLen,ay=cy+Math.sin(ang)*aLen;
-  var head=22;
-  ctx.fillStyle='rgba(245,224,112,0.98)';
-  ctx.shadowColor='rgba(212,175,55,0.55)';ctx.shadowBlur=16;
+  var head=28;
+  ctx.fillStyle='rgba(255,235,140,0.98)';
+  ctx.shadowColor='rgba(212,175,55,0.85)';ctx.shadowBlur=24;
   ctx.beginPath();
   ctx.moveTo(ax,ay);
   ctx.lineTo(ax+Math.cos(ang-2.6)*head,ay+Math.sin(ang-2.6)*head);
   ctx.lineTo(ax+Math.cos(ang+2.6)*head,ay+Math.sin(ang+2.6)*head);
   ctx.closePath();ctx.fill();
   ctx.shadowBlur=0;
-  // Direction label
-  ctx.font='700 15px "Space Grotesk",sans-serif';
+  // Direction label (bigger)
+  ctx.font='700 18px "Space Grotesk",sans-serif';
   ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillStyle='rgba(255,255,255,0.95)';
-  ctx.shadowColor='rgba(0,0,0,0.7)';ctx.shadowBlur=10;
+  ctx.fillStyle='rgba(255,255,255,0.98)';
+  ctx.shadowColor='rgba(0,0,0,0.8)';ctx.shadowBlur=12;
   var dirTxt=['N','NO','O','SO','S','SW','W','NW'][bestIdx];
-  ctx.fillText(dirTxt,cx+Math.cos(ang)*(aLen+38),cy+Math.sin(ang)*(aLen+38));
+  ctx.fillText(dirTxt,cx+Math.cos(ang)*(aLen+46),cy+Math.sin(ang)*(aLen+46));
   ctx.shadowBlur=0;
-  // Large trend indicator below arrow
+  // Signal quality label below center
+  ctx.font='700 14px "Space Mono",monospace';
+  ctx.textAlign='center';ctx.textBaseline='top';
+  ctx.fillStyle='rgba(212,175,55,0.90)';
+  ctx.fillText('▼ Signal verfolgen',cx,cy+50);
+  // Large trend indicator
   var tr=signalTrend();
-  if(Math.abs(tr)>3){
-    ctx.font='700 16px "Space Mono",monospace';
+  if(Math.abs(tr)>2){
+    ctx.font='700 18px "Space Mono",monospace';
     ctx.textAlign='center';ctx.textBaseline='top';
-    var tCol=tr>0?'rgba(0,255,136,0.92)':'rgba(255,72,50,0.88)';
+    var tCol=tr>0?'rgba(0,255,136,0.95)':'rgba(255,72,50,0.90)';
     ctx.fillStyle=tCol;
-    ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=6;
-    ctx.fillText(tr>0?'▲ '+Math.round(Math.abs(tr))+'%':'▼ '+Math.round(Math.abs(tr))+'%',cx,cy+aLen*0.35+20);
+    ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=8;
+    ctx.fillText(tr>0?'▲ '+Math.round(Math.abs(tr))+'%':'▼ '+Math.round(Math.abs(tr))+'%',cx,cy+aLen*0.30+28);
     ctx.shadowBlur=0;
   }
   ctx.restore();
