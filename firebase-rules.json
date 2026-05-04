@@ -1,0 +1,14 @@
+{
+  "rules": {
+    "sig": {
+      "$pushId": {
+        ".write": "newData.hasChildren(['la','lo','s','t']) && newData.child('la').isNumber() && newData.child('lo').isNumber() && newData.child('s').isNumber() && newData.child('t').isNumber() && newData.child('s').val() >= 0 && newData.child('s').val() <= 100 && newData.child('la').val() >= -90 && newData.child('la').val() <= 90 && newData.child('lo').val() >= -180 && newData.child('lo').val() <= 180 && newData.child('t').val() <= now + 60000"
+      },
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["la"]
+    },
+    ".read": false,
+    ".write": false
+  }
+}

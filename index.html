@@ -93,7 +93,10 @@
   <!-- TOP -->
   <div id="topbar">
     <div id="tb-logo">WIPULSCAN</div>
-    <div id="tb-conn">—</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div id="cloud-status" style="display:none;font-family:var(--font-data);font-size:7px;letter-spacing:.12em;align-items:center;gap:4px;"></div>
+      <div id="tb-conn">—</div>
+    </div>
   </div>
 
   <!-- BADGE -->
@@ -192,6 +195,14 @@
     <div class="ss">
       <div class="sst" id="s-feat">FEATURES</div>
       <ul class="feat-list" id="feat-list"></ul>
+    </div>
+    <div class="ss">
+      <div class="sst">DATEN / DATA / 数据</div>
+      <div class="sr">
+        <div><div class="srl">Export GPS-Trail</div><div class="srs">CSV / JSON · Save to device</div></div>
+        <button class="lb" onclick="exportData('csv')">CSV</button>
+        <button class="lb" onclick="exportData('json')" style="margin-left:4px;">JSON</button>
+      </div>
     </div>
     <div class="ss">
       <div class="sst">DSGVO / GDPR / 数据保护</div>
@@ -1221,14 +1232,17 @@ function drawRadar(){
 
 // ─── AR / CAMERA ─────────────────────────────────────────────
 function startCamera(){
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showToast('Kamera nicht verfügbar');return;}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){onCameraDenied();return;}
   var constraints={video:{facingMode:'environment'},audio:false};
   navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
     CAM.stream=stream;CAM.active=true;
     var v=$('cam-video');v.srcObject=stream;v.style.display='block';
     var ap=$('app');if(ap)ap.style.background='transparent';
     S.arMode=true;
-  }).catch(function(e){showToast('Kamera-Zugriff verweigert');console.log('cam err',e);});
+  }).catch(function(e){
+    console.warn('[CAM] access denied or unavailable:',e.name||e.message);
+    onCameraDenied();
+  });
 }
 function stopCamera(){
   if(CAM.stream){
@@ -1560,6 +1574,52 @@ function openImpressum(){var e=$('impressum-overlay');if(e) e.style.display='fle
 function closeImpressum(){var e=$('impressum-overlay');if(e) e.style.display='none';}
 function showToast(msg){var t=$('toast');if(!t) return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
 function resetConsent(){localStorage.removeItem('wps_consent');localStorage.removeItem('wps_lang');showToast('Reset. Neustart…');setTimeout(function(){location.reload();},1600);}
+
+// ─── DATA EXPORT ───────────────────────────────────────────
+function exportData(fmt){
+  if(!GEO.trail||GEO.trail.length===0){showToast('Keine Daten zum Exportieren');return;}
+  var fname='wipulscan-trail-'+new Date().toISOString().slice(0,19).replace(/:/g,'-');
+  var a=document.createElement('a');a.style.display='none';
+  if(fmt==='csv'){
+    var csv='timestamp,lat,lng,signal,download,rtt\n';
+    GEO.trail.forEach(function(p){
+      csv+=new Date(p.ts).toISOString()+','+p.lat+','+p.lng+','+p.sig+','+(p.dl||'')+','+(p.rtt||'')+'\n';
+    });
+    var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    a.href=URL.createObjectURL(blob);a.download=fname+'.csv';
+  }else{
+    var json=JSON.stringify({exportedAt:new Date().toISOString(),points:GEO.trail},null,2);
+    var blob=new Blob([json],{type:'application/json'});
+    a.href=URL.createObjectURL(blob);a.download=fname+'.json';
+  }
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  showToast(fmt.toUpperCase()+' exportiert · '+GEO.trail.length+' Punkte');
+}
+
+// ─── CLOUD SYNC STATUS ───────────────────────────────────────
+function updateCloudStatus(){
+  var el=$('cloud-status');if(!el)return;
+  if(!CLOUD.enabled){el.style.display='none';return;}
+  el.style.display='flex';
+  var now=Date.now();
+  if(now-CLOUD.lastUp<15000){
+    el.textContent='● Cloud · Live';el.style.color='var(--green)';
+  }else if(now-CLOUD.lastUp<60000){
+    el.textContent='● Cloud · '+Math.round((now-CLOUD.lastUp)/1000)+'s';el.style.color='var(--gold)';
+  }else{
+    el.textContent='● Cloud · Pause';el.style.color='var(--amber)';
+  }
+}
+setInterval(updateCloudStatus,3000);
+
+// ─── CAMERA FALLBACK ─────────────────────────────────────────
+function onCameraDenied(){
+  S.arMode=false;
+  showToast('AR-Modus: Kamera nicht verfügbar · Heatmap läuft');
+  var ap=$('app');if(ap)ap.style.background='var(--deep)';
+  var v=$('cam-video');if(v)v.style.display='none';
+  var c=$('cam-canvas');if(c)c.style.display='none';
+}
 
 // ─── INFO OVERLAY ────────────────────────────────────────────
 var INFO_CONTENT={
@@ -2024,7 +2084,7 @@ if('serviceWorker' in navigator){
 }
 
 // ─── PRIVACY TEXT ────────────────────────────────────────────
-var PRIVACY_TEXT="DATENSCHUTZERKLÄRUNG / PRIVACY POLICY\n© Cobra Dynamics 2026 — Version 5.2.0\n\n1. VERANTWORTLICHER\nCobra Dynamics, Dennis Stein & Christoph Frick\nNördliche Ringstraße 75, 63225 Langen\nE-Mail: dennis.stein@cobradynamics.de\n\n2. DATENERHEBUNG\nDiese App erhebt KEINE personenbezogenen Daten. Es werden keine Namen, E-Mail-Adressen, Standortdaten oder Gerätekennungen gespeichert oder übermittelt. Alle Messungen erfolgen ausschließlich lokal auf Ihrem Gerät.\n\n3. VERWENDETE WEB-APIs\n• NetworkInformation API (Verbindungsqualität, RTT, Downlink)\n• DeviceMotion API (optionale Bewegungssteuerung)\n• Web Audio API (Intro-Jingle, lokal)\n• Vibration API (haptisches Feedback)\n\n4. LOKALE SPEICHERUNG\nNur localStorage: Spracheinstellung (DE/EN/ZH) und Datenschutz-Zustimmung. Jederzeit löschbar über Einstellungen → Consent zurücksetzen (Art. 17 DSGVO).\n\n5. KEINE DRITTANBIETER\nKein Analytics, kein Tracking, keine Werbenetzwerke, keine externen Server.\n\n6. SCHRIFTARTEN\nGoogle Fonts (fonts.googleapis.com): Ihre IP-Adresse wird dabei übertragen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.\n\n7. RECHTE (DSGVO Art. 15–22)\nAuskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit, Widerspruch.\nAnfragen: dennis.stein@cobradynamics.de\n\n8. PREIS & LIZENZ\nEinmalzahlung: 1,99 EUR. Altersfreigabe: 4+. Kein Abo. Keine In-App-Käufe.\n\nENGLISH SUMMARY\nNo personal data collected. Local processing only. One-time purchase EUR 1.99. Age 4+.\n\n中文摘要\n不收集任何个人数据。纯本地处理。一次性购买1.99欧元。年龄评级4+。";
+var PRIVACY_TEXT="DATENSCHUTZERKLÄRUNG / PRIVACY POLICY\n© Cobra Dynamics 2026 — Version 5.2.0\n\n1. VERANTWORTLICHER\nCobra Dynamics, Dennis Stein & Christoph Frick\nNördliche Ringstraße 75, 63225 Langen\nE-Mail: dennis.stein@cobradynamics.de\n\n2. DATENERHEBUNG\nDiese App erhebt KEINE personenbezogenen Daten. Es werden keine Namen, E-Mail-Adressen, Standortdaten oder Gerätekennungen gespeichert oder übermittelt. Alle Messungen erfolgen ausschließlich lokal auf Ihrem Gerät.\n\n3. VERWENDETE WEB-APIs\n• NetworkInformation API (Verbindungsqualität, RTT, Downlink)\n• Geolocation API (GPS-Trail, optional — nur bei aktiviertem Scan)\n• Camera API (AR-Modus, optional — Kamera-Stream wird nur lokal angezeigt, nie aufgezeichnet oder übertragen)\n• DeviceMotion API (optionale Bewegungssteuerung)\n• Web Audio API (Intro-Jingle, lokal)\n• Vibration API (haptisches Feedback)\n\n4. LOKALE SPEICHERUNG\nNur localStorage: Spracheinstellung (DE/EN/ZH), Datenschutz-Zustimmung und optionaler GPS-Trail. Jederzeit löschbar über Einstellungen → Consent zurücksetzen (Art. 17 DSGVO).\n\n5. CLOUD-SYNC (OPTIONAL)\nWenn aktiviert (Einstellungen → Cloud): Anonymisierte Signal-Messungen werden zu Firebase Realtime Database übertragen. Koordinaten werden auf 4 Dezimalstellen (~11 m) gerundet. Keine persönlichen Daten. Deaktivierbar jederzeit.\n\n6. KEINE DRITTANBIETER\nKein Analytics, kein Tracking, keine Werbenetzwerke.\n\n6. SCHRIFTARTEN\nGoogle Fonts (fonts.googleapis.com): Ihre IP-Adresse wird dabei übertragen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.\n\n7. RECHTE (DSGVO Art. 15–22)\nAuskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit, Widerspruch.\nAnfragen: dennis.stein@cobradynamics.de\n\n8. PREIS & LIZENZ\nEinmalzahlung: 1,99 EUR. Altersfreigabe: 4+. Kein Abo. Keine In-App-Käufe.\n\nENGLISH SUMMARY\nNo personal data collected. Local processing only. One-time purchase EUR 1.99. Age 4+.\n\n中文摘要\n不收集任何个人数据。纯本地处理。一次性购买1.99欧元。年龄评级4+。";
 </script>
 
 <!-- Firebase SDK — wird von cloudInit() genutzt wenn CLOUD.enabled=true -->
