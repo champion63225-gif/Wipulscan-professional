@@ -982,6 +982,8 @@ var S={
   radarExpanded:false,
   arMode:false
 };
+// ─── PERFORMANCE CACHE ─────────────────────────────────────────
+var _softnessCache=null,_lastSoftnessTime=0,_SOFTNESS_CACHE_MS=500;
 var CAM={stream:null,active:false};
 var HAPTIC_BASE=380;
 var BUBBLES=[];
@@ -1032,9 +1034,13 @@ function cloudUpload(){
   if(!CLOUD.enabled||!CLOUD.db||!GEO.current) return;
   var now=Date.now();
   if(now-CLOUD.lastUp<CLOUD.upIv) return;
+  // Input validation: clamp values to prevent garbage/range attacks
+  var lat=GEO.current.lat, lng=GEO.current.lng;
+  if(typeof lat!=='number'||typeof lng!=='number'||Math.abs(lat)>90||Math.abs(lng)>180) return;
+  var sigVal=Math.max(0,Math.min(100,Math.round(S.dSig||0)));
   CLOUD.lastUp=now;
-  CLOUD.db.ref('sig').push().set({la:_pc(GEO.current.lat),lo:_pc(GEO.current.lng),s:Math.round(S.dSig),t:now})
-    .catch(function(){});
+  CLOUD.db.ref('sig').push().set({la:_pc(lat),lo:_pc(lng),s:sigVal,t:now})
+    .catch(function(e){console.warn('[CLOUD] upload failed',e.message);});
 }
 function cloudSubscribe(){
   if(!CLOUD.enabled||!CLOUD.db||!GEO.current) return;
@@ -1673,10 +1679,20 @@ function startCamera(){
   }).catch(function(e){showToast('Kamera-Zugriff verweigert');console.log('cam err',e);});
 }
 function stopCamera(){
-  if(CAM.stream){CAM.stream.getTracks().forEach(function(t){t.stop();});CAM.stream=null;}
+  if(CAM.stream){
+    CAM.stream.getTracks().forEach(function(t){t.stop();});
+    CAM.stream=null;
+  }
   CAM.active=false;
-  var v=$('cam-video');if(v){v.srcObject=null;v.style.display='none';}
-  var ap=$('app');if(ap)ap.style.background='var(--deep)';
+  var v=$('cam-video');
+  if(v){
+    v.pause();
+    v.srcObject=null;
+    v.removeAttribute('src');
+    v.load();
+    v.style.display='none';
+  }
+  var c=$('cam-canvas');if(c) c.style.display='none';
   S.arMode=false;
 }
 function toggleAR(){
@@ -1735,7 +1751,7 @@ function drawHeatmap(){
 }
 
 function drawARDirection(){
-  var secs=computeSoftnessField();
+  var secs=_softnessCache||computeSoftnessField();
   var bestIdx=-1,bestScore=0;
   var hasGps=!!secs;
   if(hasGps){
@@ -1852,6 +1868,12 @@ function frame(ts){
 
   ctx.clearRect(0,0,W,H);
 
+  // Performance: compute softness field once per frame (cached for 500ms)
+  var nowTs=Date.now();
+  if(nowTs-_lastSoftnessTime>_SOFTNESS_CACHE_MS){
+    _softnessCache=computeSoftnessField();
+    _lastSoftnessTime=nowTs;
+  }
   if(S.arMode){
     // ── AR OVERLAY MODE ──
     // No fake bubbles — only real signal data visualized
