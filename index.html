@@ -2084,7 +2084,51 @@ if('serviceWorker' in navigator){
 }
 
 // ─── PRIVACY TEXT ────────────────────────────────────────────
-var PRIVACY_TEXT="DATENSCHUTZERKLÄRUNG / PRIVACY POLICY\n© Cobra Dynamics 2026 — Version 5.2.0\n\n1. VERANTWORTLICHER\nCobra Dynamics, Dennis Stein & Christoph Frick\nNördliche Ringstraße 75, 63225 Langen\nE-Mail: dennis.stein@cobradynamics.de\n\n2. DATENERHEBUNG\nDiese App erhebt KEINE personenbezogenen Daten. Es werden keine Namen, E-Mail-Adressen, Standortdaten oder Gerätekennungen gespeichert oder übermittelt. Alle Messungen erfolgen ausschließlich lokal auf Ihrem Gerät.\n\n3. VERWENDETE WEB-APIs\n• NetworkInformation API (Verbindungsqualität, RTT, Downlink)\n• Geolocation API (GPS-Trail, optional — nur bei aktiviertem Scan)\n• Camera API (AR-Modus, optional — Kamera-Stream wird nur lokal angezeigt, nie aufgezeichnet oder übertragen)\n• DeviceMotion API (optionale Bewegungssteuerung)\n• Web Audio API (Intro-Jingle, lokal)\n• Vibration API (haptisches Feedback)\n\n4. LOKALE SPEICHERUNG\nNur localStorage: Spracheinstellung (DE/EN/ZH), Datenschutz-Zustimmung und optionaler GPS-Trail. Jederzeit löschbar über Einstellungen → Consent zurücksetzen (Art. 17 DSGVO).\n\n5. CLOUD-SYNC (OPTIONAL)\nWenn aktiviert (Einstellungen → Cloud): Anonymisierte Signal-Messungen werden zu Firebase Realtime Database übertragen. Koordinaten werden auf 4 Dezimalstellen (~11 m) gerundet. Keine persönlichen Daten. Deaktivierbar jederzeit.\n\n6. KEINE DRITTANBIETER\nKein Analytics, kein Tracking, keine Werbenetzwerke.\n\n6. SCHRIFTARTEN\nGoogle Fonts (fonts.googleapis.com): Ihre IP-Adresse wird dabei übertragen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.\n\n7. RECHTE (DSGVO Art. 15–22)\nAuskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit, Widerspruch.\nAnfragen: dennis.stein@cobradynamics.de\n\n8. PREIS & LIZENZ\nEinmalzahlung: 1,99 EUR. Altersfreigabe: 4+. Kein Abo. Keine In-App-Käufe.\n\nENGLISH SUMMARY\nNo personal data collected. Local processing only. One-time purchase EUR 1.99. Age 4+.\n\n中文摘要\n不收集任何个人数据。纯本地处理。一次性购买1.99欧元。年龄评级4+。";
+var PRIVACY_TEXT=`
+DATENSCHUTZERKLÄRUNG / PRIVACY POLICY
+© Cobra Dynamics 2026 — Version 5.2.0
+
+1. VERANTWORTLICHER
+Cobra Dynamics, Dennis Stein & Christoph Frick
+Nördliche Ringstraße 75, 63225 Langen
+E-Mail: dennis.stein@cobradynamics.de
+
+2. DATENERHEBUNG
+Diese App erhebt KEINE personenbezogenen Daten. Es werden keine Namen, E-Mail-Adressen, Standortdaten oder Gerätekennungen gespeichert oder übermittelt. Alle Messungen erfolgen ausschließlich lokal auf Ihrem Gerät.
+
+3. VERWENDETE WEB-APIs
+• NetworkInformation API (Verbindungsqualität, RTT, Downlink)
+• Geolocation API (GPS-Trail, optional — nur bei aktiviertem Scan)
+• Camera API (AR-Modus, optional — Kamera-Stream wird nur lokal angezeigt, nie aufgezeichnet oder übertragen)
+• DeviceMotion API (optionale Bewegungssteuerung)
+• Web Audio API (Intro-Jingle, lokal)
+• Vibration API (haptisches Feedback)
+
+4. LOKALE SPEICHERUNG
+Nur localStorage: Spracheinstellung (DE/EN/ZH), Datenschutz-Zustimmung und optionaler GPS-Trail. Jederzeit löschbar über Einstellungen → Consent zurücksetzen (Art. 17 DSGVO).
+
+5. CLOUD-SYNC (OPTIONAL)
+Wenn aktiviert (Einstellungen → Cloud): Anonymisierte Signal-Messungen werden zu Firebase Realtime Database übertragen. Koordinaten werden auf 4 Dezimalstellen (~11 m) gerundet. Keine persönlichen Daten. Deaktivierbar jederzeit.
+
+6. KEINE DRITTANBIETER
+Kein Analytics, kein Tracking, keine Werbenetzwerke.
+
+6. SCHRIFTARTEN
+Google Fonts (fonts.googleapis.com): Ihre IP-Adresse wird dabei übertragen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.
+
+7. RECHTE (DSGVO Art. 15–22)
+Auskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit, Widerspruch.
+Anfragen: dennis.stein@cobradynamics.de
+
+8. PREIS & LIZENZ
+Einmalzahlung: 1,99 EUR. Altersfreigabe: 4+. Kein Abo. Keine In-App-Käufe.
+
+ENGLISH SUMMARY
+No personal data collected. Local processing only. One-time purchase EUR 1.99. Age 4+.
+
+中文摘要
+不收集任何个人数据。纯本地处理。一次性购买1.99欧元。年龄评级4+。
+`;
 </script>
 
 <!-- Firebase SDK — wird von cloudInit() genutzt wenn CLOUD.enabled=true -->
