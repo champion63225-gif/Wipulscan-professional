@@ -2134,5 +2134,28 @@ No personal data collected. Local processing only. One-time purchase EUR 1.99. A
 <!-- Firebase SDK — wird von cloudInit() genutzt wenn CLOUD.enabled=true -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script>
+(function(){
+  function initEruda(){
+    if(typeof eruda==='undefined'){return;}
+    eruda.init();
+    // Drei-Finger-Geste öffnet die Konsole
+    window.addEventListener('touchstart',function(e){
+      if(e.touches&&e.touches.length===3){eruda.show();}},{passive:true});
+  }
+  // Warten bis Eruda geladen ist
+  if(typeof eruda==='undefined'){
+    var iv=setInterval(function(){if(typeof eruda!=='undefined'){clearInterval(iv);initEruda();}},120);
+  }else{initEruda();}
+  // Globaler Fehler-Handler
+  window.addEventListener('error',function(e){
+    try{console.error('[GlobalError]',e.message);}catch(_){}
+  });
+  window.addEventListener('unhandledrejection',function(e){
+    try{console.error('[PromiseRejection]',e.reason);}catch(_){}
+  });
+})();
+</script>
 </body>
 </html>
