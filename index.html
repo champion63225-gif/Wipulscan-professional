@@ -493,8 +493,9 @@ window.addEventListener('deviceorientation',function(e){window._lastOrientation=
 // ─── CONTROLS ──────────────────────────────────────────────────
 function startHunt(){
   if(!hasConsent){$('consent').classList.add('active');return}
+  if(huntRunning)return // Prevent duplicate starts
   initAudio()
-  if(audioCtx.state==='suspended')audioCtx.resume()
+  if(audioCtx && audioCtx.state==='suspended')audioCtx.resume().catch(function(){})
   huntRunning=true
   $('btn-start').style.display='none'
   $('btn-stop').style.display='inline-block'
