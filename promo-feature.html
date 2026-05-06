@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>WiFi Hunter — Feature Graphic Generator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#03060c;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Space Grotesk',system-ui,sans-serif}
+#canvas-wrap{box-shadow:0 20px 60px rgba(0,0,0,.6);border-radius:8px;overflow:hidden}
+canvas{display:block}
+#download{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:14px 32px;border:none;border-radius:60px;background:linear-gradient(135deg,#00d4aa,#00b894);color:#03060c;font-weight:700;font-size:1rem;cursor:pointer;box-shadow:0 8px 28px rgba(0,212,170,.4);transition:transform .2s;font-family:inherit}
+#download:hover{transform:translateX(-50%) scale(1.05)}
+</style>
+</head>
+<body>
+<div id="canvas-wrap"><canvas id="fg" width="1024" height="500"></canvas></div>
+<button id="download" onclick="savePNG()">📥 Feature Graphic als PNG speichern</button>
+<script>
+var c=document.getElementById('fg'),ctx=c.getContext('2d');
+
+// Background
+var bg=ctx.createRadialGradient(512,250,50,512,250,500);
+bg.addColorStop(0,'#0a1525');bg.addColorStop(1,'#03060c');
+ctx.fillStyle=bg;ctx.fillRect(0,0,1024,500);
+
+// Subtle grid lines
+ctx.strokeStyle='rgba(123,197,255,.04)';ctx.lineWidth=1;
+for(var i=0;i<1024;i+=64){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,500);ctx.stroke();}
+for(var i=0;i<500;i+=64){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(1024,i);ctx.stroke();}
+
+// Heatmap sphere
+var sx=512,sy=220,sr=140;
+var sph=ctx.createRadialGradient(sx,sy,10,sx,sy,sr);
+sph.addColorStop(0,'rgba(255,100,20,.55)');
+sph.addColorStop(.4,'rgba(255,180,60,.35)');
+sph.addColorStop(.7,'rgba(0,200,255,.15)');
+sph.addColorStop(1,'rgba(0,0,0,0)');
+ctx.fillStyle=sph;ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);ctx.fill();
+
+// Inner glow
+var glow=ctx.createRadialGradient(sx,sy,5,sx,sy,60);
+glow.addColorStop(0,'rgba(255,220,100,.3)');
+glow.addColorStop(1,'rgba(255,100,20,0)');
+ctx.fillStyle=glow;ctx.beginPath();ctx.arc(sx,sy,60,0,Math.PI*2);ctx.fill();
+
+// Compass ring
+ctx.strokeStyle='rgba(212,175,55,.25)';ctx.lineWidth=3;
+ctx.beginPath();ctx.arc(sx,sy,85,0,Math.PI*2);ctx.stroke();
+ctx.strokeStyle='rgba(212,175,55,.1)';ctx.lineWidth=1;
+ctx.beginPath();ctx.arc(sx,sy,100,0,Math.PI*2);ctx.stroke();
+
+// Needle
+ctx.save();ctx.translate(sx,sy);ctx.rotate(-.6);
+ctx.strokeStyle='rgba(255,100,20,.9)';ctx.lineWidth=5;ctx.lineCap='round';
+ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,-75);ctx.stroke();
+ctx.fillStyle='rgba(255,100,20,.9)';ctx.beginPath();ctx.moveTo(0,-75);ctx.lineTo(-6,-60);ctx.lineTo(6,-60);ctx.closePath();ctx.fill();
+ctx.restore();
+
+// Wave lines at bottom
+ctx.strokeStyle='rgba(123,197,255,.25)';ctx.lineWidth=2;
+for(var j=0;j<3;j++){
+ctx.beginPath();
+var yy=380+j*40,amp=15+j*5,frq=.008;
+for(var x=0;x<=1024;x+=4){
+var yy2=yy+Math.sin(x*frq+Date.now()*.001+j)*amp;
+if(x===0)ctx.moveTo(x,yy2);else ctx.lineTo(x,yy2);
+}
+ctx.stroke();
+}
+
+// WiFi icon in sphere
+ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='700 48px "Space Grotesk",sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText('📡',sx,sy);
+
+// Title
+ctx.fillStyle='#e8ecf1';ctx.font='700 72px "Space Grotesk",sans-serif';
+ctx.textAlign='center';ctx.textBaseline='alphabetic';
+ctx.fillText('WiFi Hunter',sx,420);
+
+// Subtitle
+ctx.fillStyle='#7bc5ff';ctx.font='500 28px "Space Mono",monospace';
+ctx.fillText('PREMIUM SIGNAL SCANNER · AR HEATMAP · AUDIO GUIDE',sx,460);
+
+// Brand badge bottom-left
+ctx.fillStyle='rgba(255,255,255,.08)';ctx.font='400 14px "Space Grotesk",sans-serif';
+ctx.textAlign='left';ctx.fillText('© Cobra Dynamics 2026',24,476);
+
+// Pro badge top-right
+ctx.fillStyle='rgba(212,175,55,.15)';ctx.strokeStyle='rgba(212,175,55,.3)';ctx.lineWidth=1;
+ctx.beginPath();ctx.roundRect(860,20,140,36,18);ctx.fill();ctx.stroke();
+ctx.fillStyle='#e8d5a3';ctx.font='700 14px "Space Grotesk",sans-serif';
+ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('PRO EDITION',930,38);
+
+function savePNG(){
+var a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='wifihunter-feature-graphic-1024x500.png';a.click();
+}
+</script>
+</body>
+</html>
