@@ -40,8 +40,8 @@
 <body>
 
 <!-- AUDIO -->
-<audio id="aud-intro" src="jingle-intro.wav" preload="auto"></audio>
-<audio id="aud-bg"    src="jingle-intro.wav"       preload="auto"></audio>
+<audio id="aud-intro" src="jingle-intro.wav" preload="auto" playsinline muted autoplay></audio>
+<audio id="aud-bg"    src="jingle-intro.wav"       preload="auto" playsinline muted autoplay></audio>
 
 <!-- ══════════════════ INTRO ══════════════════════ -->
 <div id="intro">
@@ -73,6 +73,7 @@
       <button class="lb" data-lang="ja" onclick="setLang('ja')">日</button>
       <button class="lb" data-lang="hr" onclick="setLang('hr')">HR</button>
       <button class="lb" data-lang="sr" onclick="setLang('sr')">СР</button>
+      <button class="lb" data-lang="uk" onclick="setLang('uk')">УК</button>
     </div>
     <div class="cc-h"  id="c-eye"></div>
     <div class="cc-p"  id="c-sub"></div>
@@ -188,7 +189,7 @@
       </div>
       <div class="sr">
         <div><div class="srl">Trail Radar</div></div>
-        <label class="tog"><input type="checkbox" id="tog-rad" checked/><div class="tog-t"></div><div class="tog-k"></div></label>
+        <label class="tog" style="display:none"><input type="checkbox" id="tog-rad"/><div class="tog-t"></div><div class="tog-k"></div></label>
       </div>
 
     </div>
@@ -368,10 +369,11 @@ var LANGS={
   ru:{tap_lbl:"· Нажмите для Запуска ·",c_eye:"Прочитайте политику конфиденциальности",c_sub:"Приложение работает полностью локально.<br>Без серверов. Без слежки.",c_chk:"Я прочитал(а) политику и согласен(на).",c_ok:"Начать",s_title:"НАСТРОЙКИ",s_opt:"ОПЦИИ",s_feat:"ФУНКЦИИ",h_ready:"ГОТОВ",h_scan:"СКАНИРОВАНИЕ",h_pause:"ПАУЗА",ml_sig:"СИГНАЛ",ml_dl:"ЗАГРУЗКА",ml_rtt:"ЗАДЕРЖКА",l_s:"СИЛЬНЫЙ",l_g:"ХОРОШИЙ",l_m:"СРЕДНИЙ",l_w:"СЛАБЫЙ",btn_start:"Начать сканирование",btn_stop:"Остановить сканирование",bd_current:"Активное соединение",bd_main:"Реальные данные",bd_est:"Оценочно",bd_stability:"СТАБИЛЬНОСТЬ",feats:["Реалтайм через NetworkInformation API","Интерактивные сетевые пузыри + AR","Кинематическое вступление 3.75с","10 языков интерфейса","Соответствие GDPR · только локально"],msgs:[{min:88,msg:"Отличный сигнал — качество волокна"},{min:72,msg:"Сильный сигнал — оптимальное соединение"},{min:50,msg:"Хороший сигнал — стабильный и надёжный"},{min:30,msg:"Средний сигнал — достаточно"},{min:12,msg:"Слабый сигнал — ограниченный приём"},{min:0,msg:"Критический сигнал — соединение нестабильно"}]},
   ja:{tap_lbl:"· タップして開始 ·",c_eye:"プライバシーポリシーをお読みください",c_sub:"このアプリは完全にローカルで動作します。<br>サーバーなし。トラッキングなし。",c_chk:"プライバシーポリシーを読み、同意します。",c_ok:"開始",s_title:"設定",s_opt:"オプション",s_feat:"機能一覧",h_ready:"準備完了",h_scan:"スキャン中",h_pause:"一時停止",ml_sig:"シグナル",ml_dl:"ダウンロード",ml_rtt:"遅延",l_s:"強",l_g:"良",l_m:"中",l_w:"弱",btn_start:"スキャン開始",btn_stop:"スキャン停止",bd_current:"アクティブな接続",bd_main:"実データ",bd_est:"推定値",bd_stability:"安定性",feats:["NetworkInformation APIによるリアルタイム","インタラクティブネットワークバブル + AR","3.75秒シネマティックイントロ","12言語対応","GDPR準拠 · ローカルのみ"],msgs:[{min:88,msg:"優れたシグナル — 光ファイバー品質"},{min:72,msg:"強いシグナル — 最適な接続"},{min:50,msg:"良好なシグナル — 安定・信頼性高"},{min:30,msg:"中程度のシグナル — 十分"},{min:12,msg:"弱いシグナル — 受信制限あり"},{min:0,msg:"クリティカルシグナル — 接続不安定"}]},
   hr:{tap_lbl:"· Dodirnite za Pokretanje ·",c_eye:"Molimo pročitajte Politiku privatnosti",c_sub:"Ova app radi potpuno lokalno.<br>Bez servera. Bez praćenja.",c_chk:"Pročitao/la sam Politiku privatnosti i slažem se.",c_ok:"Pokreni",s_title:"POSTAVKE",s_opt:"OPCIJE",s_feat:"FUNKCIJE",h_ready:"SPREMAN",h_scan:"SKENIRANJE",h_pause:"PAUZA",ml_sig:"SIGNAL",ml_dl:"PREUZIMANJE",ml_rtt:"LATENCIJA",l_s:"JAK",l_g:"DOBAR",l_m:"SREDNJI",l_w:"SLAB",btn_start:"Pokreni skeniranje",btn_stop:"Zaustavi skeniranje",bd_current:"Aktivna veza",bd_main:"Stvarni podaci",bd_est:"Procijenjeno",bd_stability:"STABILNOST",feats:["Stvarno vrijeme putem NetworkInformation API","Interaktivni mrežni mjehurići + AR","3.75s kinematski uvod + jingle","12 jezika dostupno","Sukladno GDPR-u · samo lokalno"],msgs:[{min:88,msg:"Izvrstan signal — kvaliteta optike"},{min:72,msg:"Jak signal — optimalna veza"},{min:50,msg:"Dobar signal — stabilan i pouzdan"},{min:30,msg:"Srednji signal — dovoljan"},{min:12,msg:"Slab signal — ograničen prijem"},{min:0,msg:"Kritičan signal — veza nestabilna"}]},
-  sr:{tap_lbl:"· Додирните за Почетак ·",c_eye:"Молимо прочитајте Политику приватности",c_sub:"Ова апп ради потпуно локално.<br>Без сервера. Без праћења.",c_chk:"Прочитао/ла сам Политику приватности и слажем се.",c_ok:"Покрени",s_title:"ПОДЕШАВАЊА",s_opt:"ОПЦИЈЕ",s_feat:"ФУНКЦИЈЕ",h_ready:"СПРЕМАН",h_scan:"СКЕНИРАЊЕ",h_pause:"ПАУЗА",ml_sig:"СИГНАЛ",ml_dl:"ПРЕУЗИМАЊЕ",ml_rtt:"ЛАТЕНЦИЈА",l_s:"ЈАК",l_g:"ДОБАР",l_m:"СРЕДЊИ",l_w:"САБ",btn_start:"Покрени скенирање",btn_stop:"Заустави скенирање",bd_current:"Активна веза",bd_main:"Стварни подаци",bd_est:"Процењено",bd_stability:"СТАБИЛНОСТ",feats:["Реално време преко NetworkInformation API","Интерактивни мрежни мехурићи + AR","3.75с кинематски увод + џингл","12 језика доступно","Усклађено са GDPR-ом · само локално"],msgs:[{min:88,msg:"Одличан сигнал — квалитет оптике"},{min:72,msg:"Јак сигнал — оптимална веза"},{min:50,msg:"Добар сигнал — стабилан и поуздан"},{min:30,msg:"Средњи сигнал — довољан"},{min:12,msg:"Слаб сигнал — ограничен пријем"},{min:0,msg:"Критичан сигнал — веза нестабилна"}]}
+  sr:{tap_lbl:"· Додирните за Почетак ·",c_eye:"Молимо прочитајте Политику приватности",c_sub:"Ова апп ради потпуно локално.<br>Без сервера. Без праћења.",c_chk:"Прочитао/ла сам Политику приватности и слажем се.",c_ok:"Покрени",s_title:"ПОДЕШАВАЊА",s_opt:"ОПЦИЈЕ",s_feat:"ФУНКЦИЈЕ",h_ready:"СПРЕМАН",h_scan:"СКЕНИРАЊЕ",h_pause:"ПАУЗА",ml_sig:"СИГНАЛ",ml_dl:"ПРЕУЗИМАЊЕ",ml_rtt:"ЛАТЕНЦИЈА",l_s:"ЈАК",l_g:"ДОБАР",l_m:"СРЕДЊИ",l_w:"САБ",btn_start:"Покрени скенирање",btn_stop:"Заустави скенирање",bd_current:"Активна веза",bd_main:"Стварни подаци",bd_est:"Процењено",bd_stability:"СТАБИЛНОСТ",feats:["Реално време преко NetworkInformation API","Интерактивни мрежни мехурићи + AR","3.75с кинематски увод + џингл","12 језика доступно","Усклађено са GDPR-ом · само локално"],msgs:[{min:88,msg:"Одличан сигнал — квалитет оптике"},{min:72,msg:"Јак сигнал — оптимална веза"},{min:50,msg:"Добар сигнал — стабилан и поуздан"},{min:30,msg:"Средњи сигнал — довољан"},{min:12,msg:"Слаб сигнал — ограничен пријем"},{min:0,msg:"Критичан сигнал — веза нестабилна"}]},
+  uk:{tap_lbl:"· Торкніться для Запуску ·",c_eye:"Будь ласка, прочитайте Політику конфіденційності",c_sub:"Цей додаток працює повністю локально.<br>Без серверів. Без відстеження.",c_chk:"Я прочитав(ла) Політику конфіденційності та погоджуюсь.",c_ok:"Почати",s_title:"НАЛАШТУВАННЯ",s_opt:"ОПЦІЇ",s_feat:"ФУНКЦІЇ",h_ready:"ГОТОВИЙ",h_scan:"СКАНУВАННЯ",h_pause:"ПАУЗА",ml_sig:"СИГНАЛ",ml_dl:"ЗАВАНТАЖЕННЯ",ml_rtt:"ЗАТРИМКА",l_s:"СИЛЬНИЙ",l_g:"ДОБРИЙ",l_m:"СРЕДНІЙ",l_w:"СЛАБКИЙ",btn_start:"Почати сканування",btn_stop:"Зупинити сканування",bd_current:"Активне з'єднання",bd_main:"Реальні дані",bd_est:"Оцінено",bd_stability:"СТАБІЛЬНІСТЬ",feats:["Реальний час через NetworkInformation API","Інтерактивні мережеві бульбашки + AR","3.75с кінематографічний вступ + джингл","12 мов доступно","Відповідає GDPR · лише локально"],msgs:[{min:88,msg:"Відмінний сигнал — якість оптики"},{min:72,msg:"Сильний сигнал — оптимальне з'єднання"},{min:50,msg:"Добрий сигнал — стабільний і надійний"},{min:30,msg:"Середній сигнал — достатній"},{min:12,msg:"Слабкий сигнал — обмежений прийом"},{min:0,msg:"Критичний сигнал — з'єднання нестабільне"}]}
 };
 // Mapping für den "Impressum/Legal"-Label pro Sprache
-var LEG={de:'Impressum',en:'Legal Notice',zh:'法律声明',es:'Aviso legal',hi:'कानूनी सूचना',ar:'إشعار قانوني',pt:'Aviso Legal',fr:'Mentions légales',ru:'Юридическая информация',ja:'法的通知',hr:'Pravna obavijest',sr:'Правне информације'};
+var LEG={de:'Impressum',en:'Legal Notice',zh:'法律声明',es:'Aviso legal',hi:'कानूनी सूचना',ar:'إشعار قانوني',pt:'Aviso Legal',fr:'Mentions légales',ru:'Юридическая информация',ja:'法的通知',hr:'Pravna obavijest',sr:'Правне информације',uk:'Юридична інформація'};
 
 var lang=localStorage.getItem('wps_lang')||'de', T=LANGS[lang];
 
@@ -1449,7 +1451,7 @@ function frame(ts){
     // No fake bubbles — only real signal data visualized
     drawHeatmap();
     drawARDirection();
-    drawRadar();
+    // drawRadar(); // disabled — app-store clean build
     playProximityTone();
   } else {
     // ── STANDARD MODE ──
@@ -1477,7 +1479,7 @@ function frame(ts){
     ctx.beginPath(); ctx.arc(W*0.5,H*0.5,orbR,0,2*Math.PI);
     ctx.strokeStyle=sigCol(S.dSig,0.20); ctx.lineWidth=1.5; ctx.stroke();
 
-    drawRadar();
+    // drawRadar(); // disabled — app-store clean build
   }
 
   updateUI(dt);
