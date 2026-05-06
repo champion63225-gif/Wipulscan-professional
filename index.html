@@ -738,20 +738,23 @@ setTimeout(function(){openModal('daily-modal')},4500)
 // Loading screen progress
 (function(){
   var fill=$('loader-fill'),txt=$('loader-text'),loader=$('loader')
+  if(!fill||!loader){return} // safety: loader elements must exist
   var steps=[{w:25,t:'Scanner wird kalibriert…'},{w:55,t:'Audio-Engine startet…'},{w:80,t:'Kompass initialisiert…'},{w:100,t:'Bereit.'}]
   var i=0
   function next(){
     if(i>=steps.length){
-      setTimeout(function(){loader.classList.add('done')},400)
-      setTimeout(function(){drawHeatmap(0.35);drawWave(0.35)},600)
+      setTimeout(function(){try{loader.classList.add('done')}catch(e){}},400)
+      setTimeout(function(){try{drawHeatmap(0.35);drawWave(0.35)}catch(e){}},600)
       return
     }
-    fill.style.width=steps[i].w+'%'
-    txt.textContent=steps[i].t
+    try{fill.style.width=steps[i].w+'%'}catch(e){}
+    try{txt.textContent=steps[i].t}catch(e){}
     i++
     setTimeout(next,280)
   }
   setTimeout(next,120)
+  // Hard fallback: hide loader after 3 seconds no matter what
+  setTimeout(function(){try{loader.classList.add('done')}catch(e){}},3000)
 })()
 // Wire monetization after app shows
 (function(){
