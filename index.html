@@ -7,12 +7,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="WiFi Hunter"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="-1"/>
 <meta name="description" content="WiFi Hunter Premium – Spatial Signal Scanner & AR Visualizer"/>
 <meta name="price" content="EUR 1.99"/>
-<link rel="manifest" href="manifest.json"/>
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
-<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png"/>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<link rel="manifest" href="manifest.json?v=1"/>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=1"/>
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=1"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=1"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <title>WiFi Hunter · Premium</title>
@@ -146,7 +149,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
 #loader-fill{height:100%;width:0%;background:linear-gradient(90deg,#00d4aa,#7bc5ff);border-radius:4px;transition:width .3s ease-out}
 #loader-text{font-size:.8rem;color:#5a6a7d;margin-top:.75rem}
 </style>
-<script src="capacitor.js"></script>
+<script>
+// Optional Capacitor bridge loader — only in native app, silently fails in browser
+(function(){
+  if(window.location.protocol==='file:' || /capacitor/.test(navigator.userAgent)){
+    var s=document.createElement('script');s.src='capacitor.js';s.onerror=function(){};document.head.appendChild(s)
+  }
+})()
+</script>
 </head>
 <body>
 
@@ -293,11 +303,13 @@ setTimeout(function(){
 
 // ─── CONSENT ───────────────────────────────────────────────────
 function acceptConsent(){
-  localStorage.setItem('wfh_consent','1')
-  $('consent').classList.remove('active')
-  setTimeout(function(){$('consent').style.display='none';$('app').style.display='flex'},400)
-  hasConsent=true
-  requestOrientation()
+  try{
+    localStorage.setItem('wfh_consent','1')
+    hasConsent=true
+  }catch(e){hasConsent=true}
+  var cc=$('consent');if(cc){cc.classList.remove('active');setTimeout(function(){cc.style.display='none';var ap=$('app');if(ap)ap.style.display='flex'},400)}
+  try{requestOrientation()}catch(e){}
+  try{startIntroAudio()}catch(e){}
 }
 
 // ─── ORIENTATION ───────────────────────────────────────────────
@@ -516,10 +528,12 @@ window.addEventListener('deviceorientation',function(e){window._lastOrientation=
 
 // ─── CONTROLS ──────────────────────────────────────────────────
 function startHunt(){
-  if(!hasConsent){$('consent').classList.add('active');return}
-  if(huntRunning)return // Prevent duplicate starts
-  initAudio()
-  if(audioCtx && audioCtx.state==='suspended')audioCtx.resume().catch(function(){})
+  if(!hasConsent){var cc=$('consent');if(cc)cc.classList.add('active');return}
+  if(huntRunning)return
+  try{
+    initAudio()
+    if(audioCtx && audioCtx.state==='suspended')audioCtx.resume().catch(function(){})
+  }catch(e){}
   huntRunning=true
   $('btn-start').style.display='none'
   $('btn-stop').style.display='inline-block'
@@ -707,19 +721,18 @@ setTimeout(function(){openModal('daily-modal')},4500)
 }
 
 // Hook into existing hunt functions
-var _origStartHunt=startHunt
-startHunt=function(){
-_origStartHunt()
-hotspotsFound++
-addPoints(5)
-checkAchievements()
-trackEvent('hunt_start',{})
-}
-var _origStopHunt=stopHunt
-stopHunt=function(){
-_origStopHunt()
-trackEvent('hunt_stop',{duration:Date.now()})
-}
+// Hook into existing hunt functions (safe wrappers)
+(function(){
+  var _origStartHunt=startHunt,_origStopHunt=stopHunt
+  window.startHunt=function(){
+    try{_origStartHunt()}catch(e){console.warn('startHunt error',e)}
+    try{hotspotsFound++;addPoints(5);checkAchievements();trackEvent('hunt_start',{})}catch(e){}
+  }
+  window.stopHunt=function(){
+    try{_origStopHunt()}catch(e){console.warn('stopHunt error',e)}
+    try{trackEvent('hunt_stop',{duration:Date.now()})}catch(e){}
+  }
+})()
 
 // ─── INIT ──────────────────────────────────────────────────────
 // Loading screen progress
@@ -741,11 +754,13 @@ trackEvent('hunt_stop',{duration:Date.now()})
   setTimeout(next,120)
 })()
 // Wire monetization after app shows
-var _origAccept=acceptConsent
-acceptConsent=function(){
-_origAccept()
-setTimeout(initMonetization,500)
-}
+(function(){
+  var _origAccept=acceptConsent
+  window.acceptConsent=function(){
+    try{_origAccept()}catch(e){console.warn('acceptConsent error',e)}
+    try{setTimeout(initMonetization,500)}catch(e){}
+  }
+})()
 </script>
 
 <!-- ─── CAPACITOR NATIVE BRIDGE ─────────────────────────────── -->
