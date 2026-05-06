@@ -1,0 +1,7 @@
+ÔêÜ Adding native android project in android in 626.99ms
+ÔêÜ add in 629.27ms
+├ù copy android - failed!
+[error] "." is not a valid value for webDir
+ÔêÜ Updating Android plugins in 6.66ms
+├ù update android - failed!
+[error] Error: ENOENT: no such file or directory, open 'C:\Users\STEIN\Desktop\Wipulscan proffesional 030526\Wipulscan-professional-c96dd126f5b7cb244636e10047c78096164032c9\android\app\src\main\assets\capacitor.plugins.json'

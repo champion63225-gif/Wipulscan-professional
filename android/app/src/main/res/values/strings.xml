@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">WiFi Hunter</string>
+    <string name="title_activity_main">WiFi Hunter</string>
+    <string name="package_name">com.cobradynamics.wifihunter</string>
+    <string name="custom_url_scheme">com.cobradynamics.wifihunter</string>
+</resources>
