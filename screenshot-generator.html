@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>WiFi Hunter — Screenshot Generator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a2e;color:#e8ecf1;font-family:'Space Grotesk',system-ui,sans-serif;padding:2rem}
+h1{text-align:center;margin-bottom:1rem;font-size:1.8rem}
+p.info{text-align:center;color:#7b8a9a;margin-bottom:2rem;font-size:.9rem}
+.controls{display:flex;gap:12px;justify-content:center;margin-bottom:2rem;flex-wrap:wrap}
+.controls button{padding:10px 20px;border:none;border-radius:12px;background:#2d4a6e;color:#fff;cursor:pointer;font-weight:600;transition:all .2s}
+.controls button:hover{background:#3e6a8e;transform:scale(1.02)}
+.controls button.active{background:#00d4aa;color:#03060c}
+.phone-wrap{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap}
+.device{position:relative;background:#000;border-radius:40px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.device-inner{border-radius:32px;overflow:hidden;background:#03060c;position:relative}
+.label{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);font-size:.75rem;color:#7b8a9a;white-space:nowrap}
+/* iPhone 14 Pro Max 1290x2796 */
+.iphone67{width:430px;height:932px}
+.iphone67 .inner{width:406px;height:908px}
+/* iPhone 14/15 1179x2556 */
+.iphone61{width:393px;height:852px}
+.iphone61 .inner{width:369px;height:828px}
+/* Android 1080x1920 */
+.android{width:360px;height:640px}
+.android .inner{width:336px;height:616px}
+/* Export button */
+.export-btn{position:absolute;top:12px;right:12px;z-index:10;padding:6px 12px;background:rgba(0,212,170,.85);border:none;border-radius:8px;color:#03060c;font-weight:700;font-size:.75rem;cursor:pointer;opacity:0;transition:opacity .2s}
+.device:hover .export-btn{opacity:1}
+</style>
+</head>
+<body>
+
+<h1>WiFi Hunter — Screenshot Generator</h1>
+<p class="info">Klicke auf ein Gerät, um den Screenshot als PNG zu exportieren. Benutze diese für App Store & Google Play.</p>
+
+<div class="controls">
+  <button onclick="loadScene(1,this)" class="active">1. Hero Heatmap</button>
+  <button onclick="loadScene(2,this)">2. Compass Detail</button>
+  <button onclick="loadScene(3,this)">3. Wave & Audio</button>
+  <button onclick="loadScene(4,this)">4. Gamification</button>
+  <button onclick="loadScene(5,this)">5. Privacy Trust</button>
+  <button onclick="loadScene(6,this)">6. Pro Upgrade</button>
+</div>
+
+<div class="phone-wrap">
+
+  <div class="device iphone67">
+    <div class="device-inner inner" id="iphone67">
+      <button class="export-btn" onclick="exportScreenshot('iphone67','iphone67')">Export PNG</button>
+      <iframe src="index.html" style="width:100%;height:100%;border:none;" id="ifr-iphone67"></iframe>
+    </div>
+    <div class="label">iPhone 14 Pro Max (1290×2796)</div>
+  </div>
+
+  <div class="device iphone61">
+    <div class="device-inner inner" id="iphone61">
+      <button class="export-btn" onclick="exportScreenshot('iphone61','iphone61')">Export PNG</button>
+      <iframe src="index.html" style="width:100%;height:100%;border:none;" id="ifr-iphone61"></iframe>
+    </div>
+    <div class="label">iPhone 14/15 (1179×2556)</div>
+  </div>
+
+  <div class="device android">
+    <div class="device-inner inner" id="android">
+      <button class="export-btn" onclick="exportScreenshot('android','android')">Export PNG</button>
+      <iframe src="index.html" style="width:100%;height:100%;border:none;" id="ifr-android"></iframe>
+    </div>
+    <div class="label">Android (1080×1920)</div>
+  </div>
+
+</div>
+
+<script>
+var currentScene=1
+function loadScene(n,btn){
+  currentScene=n
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'))
+  if(btn)btn.classList.add('active')
+  // Post message to iframes to switch scene
+  ['ifr-iphone67','ifr-iphone61','ifr-android'].forEach(function(id){
+    var fr=document.getElementById(id)
+    if(fr&&fr.contentWindow)fr.contentWindow.postMessage({type:'screenshotScene',scene:n},'*')
+  })
+}
+
+function exportScreenshot(deviceId,label){
+  var el=document.getElementById(deviceId)
+  var rect=el.getBoundingClientRect()
+  var canvas=document.createElement('canvas')
+  canvas.width=rect.width*2
+  canvas.height=rect.height*2
+  var ctx=canvas.getContext('2d')
+  ctx.scale(2,2)
+  // Note: Can't screenshot iframe due to cross-origin. 
+  // In production: use Puppeteer/Playwright or manual screenshot.
+  // This is a placeholder for the workflow.
+  ctx.fillStyle='#03060c'
+  ctx.fillRect(0,0,rect.width,rect.height)
+  ctx.fillStyle='#7bc5ff'
+  ctx.font='bold 24px "Space Grotesk",sans-serif'
+  ctx.textAlign='center'
+  ctx.fillText('Screenshot '+label,rect.width/2,rect.height/2-30)
+  ctx.font='16px sans-serif'
+  ctx.fillStyle='#7b8a9a'
+  ctx.fillText('Use browser devtools or Playwright for real capture',rect.width/2,rect.height/2+10)
+  ctx.fillText('Scene '+currentScene,rect.width/2,rect.height/2+40)
+  var a=document.createElement('a')
+  a.href=canvas.toDataURL('image/png')
+  a.download='wifihunter-'+label+'-scene'+currentScene+'.png'
+  a.click()
+}
+
+// Listen for messages from iframes (not possible cross-origin without cooperation)
+// In real usage, run: npx playwright screenshot --viewport-size=1290,2796 index.html screenshot1.png
+console.log('Tip: For production screenshots, run:')
+console.log('  npx playwright install')
+console.log('  npx playwright screenshot --viewport-size=1290,2796 --wait-for-timeout=3000 index.html shot1.png')
+</script>
+
+</body>
+</html>
