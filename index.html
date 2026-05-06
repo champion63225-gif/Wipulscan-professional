@@ -36,6 +36,54 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+Arabic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="src/styles/app.css"/>
+<style>
+/* Monetization Overlay — minimalist, professional */
+#monetization-bar{position:fixed;top:0;left:0;right:0;z-index:48;display:none;align-items:center;justify-content:space-between;padding:6px 12px;background:rgba(3,6,12,.75);backdrop-filter:blur(12px);border-bottom:1px solid rgba(212,175,55,.08);font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.04em}
+#monetization-bar.active{display:flex}
+.mon-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:12px;background:rgba(20,20,35,.5);border:1px solid rgba(212,175,55,.12);color:#e8d5a3}
+.mon-pill .icon{font-size:.9rem}
+.mon-pill .val{font-weight:700}
+.mon-icons{display:flex;gap:6px}
+.mon-icon-btn{width:28px;height:28px;border-radius:50%;background:rgba(20,20,35,.5);border:1px solid rgba(212,175,55,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;transition:all .2s;color:#e8d5a3}
+.mon-icon-btn:hover{background:rgba(212,175,55,.15);transform:scale(1.1)}
+.mon-icon-btn:active{transform:scale(.95)}
+
+/* Modals */
+.mon-modal{position:fixed;inset:0;z-index:199;display:none;align-items:center;justify-content:center;background:rgba(0,0,5,.88);backdrop-filter:blur(18px);padding:1rem}
+.mon-modal.active{display:flex}
+.mon-modal-card{max-width:340px;width:100%;background:rgba(12,12,25,.9);border:1px solid rgba(212,175,55,.15);border-radius:20px;padding:1.4rem;box-shadow:0 16px 48px rgba(0,0,0,.6);position:relative}
+.mon-modal-card h3{font-size:1.1rem;margin-bottom:1rem;color:#e8d5a3;text-align:center;font-family:'Space Grotesk',sans-serif}
+.mon-close{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:none;color:#7b8a9a;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.mon-close:hover{background:rgba(255,255,255,.18);color:#e8ecf1}
+
+/* Achievements */
+.ach-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ach-mini-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px 6px;text-align:center;transition:all .2s}
+.ach-mini-item.unlocked{background:rgba(0,212,170,.08);border-color:rgba(0,212,170,.25)}
+.ach-mini-item .ach-icon{font-size:1.5rem;margin-bottom:4px;display:block}
+.ach-mini-item .ach-title{font-size:.65rem;color:#7b8a9a}
+.ach-mini-item.unlocked .ach-title{color:#00d4aa;font-weight:600}
+
+/* Daily reward */
+.daily-mini-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:.8rem 0}
+.daily-mini-day{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:6px 2px;text-align:center;font-size:.65rem}
+.daily-mini-day.claimed{background:rgba(0,212,170,.1);border-color:rgba(0,212,170,.25);color:#00d4aa}
+.daily-mini-day .day-num{font-size:.55rem;color:#5a6a7d;margin-bottom:2px}
+.daily-mini-day .day-pts{font-weight:700;font-size:.75rem}
+.mon-btn{width:100%;padding:10px;border:none;border-radius:12px;background:linear-gradient(135deg,#00d4aa,#00b894);color:#03060c;font-weight:700;font-size:.9rem;cursor:pointer;transition:transform .2s;font-family:'Space Grotesk',sans-serif}
+.mon-btn:disabled{background:#1e2a3a;color:#5a6a7d;cursor:not-allowed}
+.mon-btn:not(:disabled):hover{transform:scale(1.02)}
+.mon-btn-sec{width:100%;margin-top:8px;padding:8px;border:none;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,.12);color:#7b8a9a;font-size:.8rem;cursor:pointer;font-family:'Space Grotesk',sans-serif}
+.mon-btn-sec:hover{background:rgba(255,255,255,.05)}
+
+/* Pro card */
+.pro-mini-card{background:linear-gradient(135deg,rgba(255,107,107,.08),rgba(201,42,42,.06));border:1px solid rgba(255,107,107,.2);border-radius:14px;padding:1rem;text-align:center;margin-top:.8rem}
+.pro-mini-card h4{font-size:1rem;margin-bottom:.4rem;color:#ff6b6b;font-family:'Space Grotesk',sans-serif}
+.pro-mini-card p{font-size:.75rem;color:#9aacbf;margin-bottom:.8rem;line-height:1.4}
+.pro-mini-price{font-size:1.3rem;font-weight:700;color:#e8ecf1;margin-bottom:.5rem}
+.pro-mini-btn{width:100%;padding:10px;border:none;border-radius:12px;background:linear-gradient(135deg,#ff6b6b,#c92a2a);color:#fff;font-weight:700;font-size:.9rem;cursor:pointer;transition:transform .2s;font-family:'Space Grotesk',sans-serif}
+.pro-mini-btn:hover{transform:scale(1.02)}
+</style>
 </head>
 <body>
 
@@ -83,6 +131,62 @@
       <label for="chk" id="c-chk"></label>
     </div>
     <button class="cta" id="cta" disabled onclick="acceptConsent()"></button>
+  </div>
+</div>
+
+<!-- ══════════════════ MONETIZATION BAR ═══════════ -->
+<div id="monetization-bar">
+  <div style="display:flex;align-items:center;gap:6px">
+    <div class="mon-pill"><span class="icon">⚡</span><span class="val" id="mon-pts">0</span></div>
+    <div class="mon-pill"><span class="icon">🔥</span><span class="val" id="mon-strk">0</span></div>
+  </div>
+  <div class="mon-icons">
+    <button class="mon-icon-btn" onclick="openMonModal('daily')" title="Daily Reward">🎁</button>
+    <button class="mon-icon-btn" onclick="openMonModal('ach')" title="Achievements">🏆</button>
+    <button class="mon-icon-btn" onclick="openMonModal('pro')" title="Pro Upgrade">💎</button>
+  </div>
+</div>
+
+<!-- DAILY REWARD MODAL -->
+<div id="mon-daily" class="mon-modal" onclick="if(event.target===this)closeMonModal('daily')">
+  <div class="mon-modal-card">
+    <button class="mon-close" onclick="closeMonModal('daily')">×</button>
+    <h3>📅 Tägliche Belohnung</h3>
+    <p style="text-align:center;color:#7b8a9a;font-size:.75rem;margin-bottom:.4rem">Komme jeden Tag zurück für Bonus-Punkte!</p>
+    <div class="daily-mini-grid" id="mon-daily-grid"></div>
+    <button class="mon-btn" id="mon-claim-btn" onclick="claimMonDaily()">Heute abholen</button>
+    <button class="mon-btn-sec" onclick="closeMonModal('daily')">✕ Schließen</button>
+  </div>
+</div>
+
+<!-- ACHIEVEMENTS MODAL -->
+<div id="mon-ach" class="mon-modal" onclick="if(event.target===this)closeMonModal('ach')">
+  <div class="mon-modal-card">
+    <button class="mon-close" onclick="closeMonModal('ach')">×</button>
+    <h3>🏆 Erfolge</h3>
+    <div class="ach-mini-grid" id="mon-ach-grid"></div>
+    <button class="mon-btn-sec" onclick="closeMonModal('ach')">✕ Schließen</button>
+  </div>
+</div>
+
+<!-- PRO UPGRADE MODAL -->
+<div id="mon-pro" class="mon-modal" onclick="if(event.target===this)closeMonModal('pro')">
+  <div class="mon-modal-card">
+    <button class="mon-close" onclick="closeMonModal('pro')">×</button>
+    <h3>💎 WiFi Hunter Pro</h3>
+    <div class="pro-mini-card">
+      <h4>Upgrade jetzt</h4>
+      <p>Echtzeit-WLAN-Scan · Unbegrenzte Heatmaps · Cloud-Sync · Keine Werbung</p>
+      <div class="pro-mini-price">9,99 €</div>
+      <button class="pro-mini-btn" onclick="buyMonPro()">Einmalig kaufen</button>
+    </div>
+    <div class="pro-mini-card" style="background:linear-gradient(135deg,rgba(123,197,255,.08),rgba(62,106,142,.06));border-color:rgba(123,197,255,.2)">
+      <h4 style="color:#7bc5ff">Pro Abo</h4>
+      <p>Alle Pro-Features · Neue Themes monatlich · Priorität-Support</p>
+      <div class="pro-mini-price" style="color:#7bc5ff">4,99 €<span style="font-size:.8rem;color:#5a6a7d">/Monat</span></div>
+      <button class="pro-mini-btn" style="background:linear-gradient(135deg,#2d4a6e,#3e6a8e)" onclick="buyMonProSub()">Abo starten</button>
+    </div>
+    <button class="mon-btn-sec" style="margin-top:8px" onclick="closeMonModal('pro')">✕ Später</button>
   </div>
 </div>
 
@@ -2025,6 +2129,7 @@ window.acceptConsent=function(){
       cc.style.display='none';
       var intro=$('intro'); if(intro) intro.style.display='flex';
       runIntro();
+      setTimeout(initMonetization,800);
     },650);
   }
 };
@@ -2050,6 +2155,7 @@ window.acceptConsent=function(){
         startIntroAudio();
         if(intro) intro.style.display='flex';
         runIntro();
+        setTimeout(initMonetization,800);
       }, {once:true});
     }
   } else {
@@ -2170,6 +2276,21 @@ No personal data collected. Local processing only. One-time purchase EUR 1.99. A
     try{console.error('[PromiseRejection]',e.reason);}catch(_){}
   });
 })();
+
+// ─── MONETIZATION ENGINE ─────────────────────────────────────
+var MON={pts:parseInt(localStorage.getItem('wfh_pts')||'0',10),strk:parseInt(localStorage.getItem('wfh_strk')||'0',10),lastClaim:localStorage.getItem('wfh_lastclaim')||'',ach:JSON.parse(localStorage.getItem('wfh_ach')||'[]')};
+var MON_DEFS=[{id:'first',icon:'🎯',title:'Erster Scan',req:1},{id:'ten',icon:'🔥',title:'10 Hotspots',req:10},{id:'fifty',icon:'⚡',title:'50 Hotspots',req:50},{id:'hundred',icon:'👑',title:'100 Hotspots',req:100},{id:'streak3',icon:'🔥',title:'3-Tage-Streak',req:3},{id:'streak7',icon:'🌟',title:'7-Tage-Streak',req:7},{id:'maxsig',icon:'📡',title:'Max Signal',req:1},{id:'share',icon:'📤',title:'Teilen',req:1}];
+function monSave(){localStorage.setItem('wfh_pts',MON.pts);localStorage.setItem('wfh_strk',MON.strk);localStorage.setItem('wfh_lastclaim',MON.lastClaim);localStorage.setItem('wfh_ach',JSON.stringify(MON.ach));}
+function monAdd(n){MON.pts+=n;var el=document.getElementById('mon-pts');if(el)el.textContent=MON.pts;monSave();}
+function openMonModal(t){document.getElementById('mon-'+t).classList.add('active');if(t==='daily')initMonDaily();if(t==='ach')initMonAch();}
+function closeMonModal(t){document.getElementById('mon-'+t).classList.remove('active');}
+function initMonDaily(){var today=new Date().toISOString().slice(0,10);var g=document.getElementById('mon-daily-grid');if(!g)return;var rw=[50,75,100,150,200,300,500];g.innerHTML='';var dn=['So','Mo','Di','Mi','Do','Fr','Sa'];for(var i=0;i<7;i++){var d=document.createElement('div');d.className='daily-mini-day';var di=(new Date().getDay()+i)%7;var cl=i===0&&MON.lastClaim===today;d.innerHTML='<div class="day-num">'+dn[di]+'</div><div class="day-pts">'+rw[i]+'</div>';if(cl)d.classList.add('claimed');g.appendChild(d);}var b=document.getElementById('mon-claim-btn');if(MON.lastClaim===today){b.disabled=true;b.textContent='Bereits abgeholt';}else{b.disabled=false;b.textContent='Heute abholen';}}
+function claimMonDaily(){var today=new Date().toISOString().slice(0,10);if(MON.lastClaim===today)return;var yest=new Date(Date.now()-86400000).toISOString().slice(0,10);if(MON.lastClaim===yest){MON.strk++;}else{MON.strk=1;}MON.lastClaim=today;var rw=[50,75,100,150,200,300,500];var pts=rw[0]*MON.strk;monAdd(pts);initMonDaily();monSave();var el=document.getElementById('mon-strk');if(el)el.textContent=MON.strk;closeMonModal('daily');}
+function initMonAch(){var g=document.getElementById('mon-ach-grid');if(!g)return;g.innerHTML='';MON_DEFS.forEach(function(a){var un=MON.ach.indexOf(a.id)>=0;var d=document.createElement('div');d.className='ach-mini-item'+(un?' unlocked':'');d.innerHTML='<span class="ach-icon">'+a.icon+'</span><span class="ach-title">'+a.title+'</span>';g.appendChild(d);});}
+function monCheckAch(){MON_DEFS.forEach(function(a){if(MON.ach.indexOf(a.id)>=0)return;var ok=false;if(a.id==='first')ok=true;if(a.id==='streak3'&&MON.strk>=3)ok=true;if(a.id==='streak7'&&MON.strk>=7)ok=true;if(ok){MON.ach.push(a.id);monAdd(a.req*10);}});monSave();}
+function buyMonPro(){alert('💎 Pro-Checkout wird vorbereitet...');}
+function buyMonProSub(){alert('💎 Pro-Abo wird vorbereitet...');}
+function initMonetization(){var el=document.getElementById('monetization-bar');if(el)el.classList.add('active');var p=document.getElementById('mon-pts');if(p)p.textContent=MON.pts;var s=document.getElementById('mon-strk');if(s)s.textContent=MON.strk;}
 </script>
 </body>
 </html>
