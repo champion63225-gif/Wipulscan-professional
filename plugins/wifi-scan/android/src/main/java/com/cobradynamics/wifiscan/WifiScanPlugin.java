@@ -3,15 +3,12 @@ package com.cobradynamics.wifiscan;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -19,8 +16,6 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.annotation.Permission;
 import com.getcapacitor.annotation.PermissionCallback;
-
-import java.util.List;
 
 @CapacitorPlugin(
     name = "WifiScan",
@@ -84,32 +79,29 @@ public class WifiScanPlugin extends Plugin {
 
     @PluginMethod
     public void scan(PluginCall call) {
+        // Privacy-first: only return the CURRENTLY CONNECTED network
+        // Never scan or expose neighboring/friend networks
         if (wifiManager == null) {
             call.reject("WifiManager not available");
             return;
         }
 
-        boolean success = wifiManager.startScan();
-        if (!success) {
-            call.reject("Scan failed to start");
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        if (wifiInfo == null || wifiInfo.getNetworkId() == -1) {
+            call.reject("Not connected to any WiFi network");
             return;
         }
 
-        List<ScanResult> results = wifiManager.getScanResults();
-        JSArray networks = new JSArray();
-
-        for (ScanResult result : results) {
-            JSObject network = new JSObject();
-            network.put("ssid", result.SSID);
-            network.put("bssid", result.BSSID);
-            network.put("signal", result.level);
-            network.put("frequency", result.frequency);
-            network.put("capabilities", result.capabilities);
-            networks.put(network);
-        }
+        JSObject network = new JSObject();
+        network.put("ssid", wifiInfo.getSSID());
+        network.put("bssid", wifiInfo.getBSSID());
+        network.put("signal", wifiInfo.getRssi());
+        network.put("frequency", wifiInfo.getFrequency());
+        network.put("capabilities", "[CURRENT]");
+        network.put("isHome", true);
 
         JSObject ret = new JSObject();
-        ret.put("networks", networks);
+        ret.put("networks", new com.getcapacitor.JSArray().put(network));
         call.resolve(ret);
     }
 }

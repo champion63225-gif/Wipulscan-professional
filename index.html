@@ -2067,6 +2067,12 @@ window.acceptConsent=function(){
   // CRITICAL: start audio immediately in gesture handler (before setTimeout)
   startIntroAudio();
   localStorage.setItem('wps_consent','1');
+  // iOS 13+ requires explicit permission for DeviceOrientation
+  if(window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission==='function'){
+    DeviceOrientationEvent.requestPermission().then(function(state){
+      if(state==='granted') console.log('[iOS] Orientation granted');
+    }).catch(function(e){console.log('[iOS] Orientation permission:',e);});
+  }
   var cc=$('consent');
   if(cc){
     cc.style.transition='opacity .65s'; cc.style.opacity='0';
@@ -2267,8 +2273,31 @@ function openShare(){
   }catch(e){showToast('Teilen nicht möglich');}
 }
 
-function buyPro(){showToast('💎 Pro-Checkout bald verfügbar!');trackEvent('pro_click',{type:'onetime'});}
-function buyProSub(){showToast('💎 Pro-Abo bald verfügbar!');trackEvent('pro_click',{type:'subscription'});}
+// Stripe Checkout links – replace with your actual Stripe payment links
+var STRIPE_PRO_LINK='https://buy.stripe.com/YOUR_PRO_LINK_HERE';
+var STRIPE_SUB_LINK='https://buy.stripe.com/YOUR_SUB_LINK_HERE';
+
+function buyPro(){
+  trackEvent('pro_click',{type:'onetime'});
+  if(STRIPE_PRO_LINK.indexOf('YOUR_PRO_LINK')===-1){
+    window.open(STRIPE_PRO_LINK,'_blank');
+  }else{
+    // Fallback: email payment request
+    var body='Hallo Cobra Dynamics,%0A%0AIch möchte WIPULSCAN PRO kaufen (9,99 €).%0ABitte senden Sie mir Zahlungsinformationen (PayPal/Bank).%0A%0AMit freundlichen Grüßen';
+    window.location.href='mailto:dennis.stein@cobradynamics.de?subject=WIPULSCAN PRO Kauf (9,99 €)&body='+body;
+    showToast('📧 Zahlungsanfrage per Mail gesendet!');
+  }
+}
+function buyProSub(){
+  trackEvent('pro_click',{type:'subscription'});
+  if(STRIPE_SUB_LINK.indexOf('YOUR_SUB_LINK')===-1){
+    window.open(STRIPE_SUB_LINK,'_blank');
+  }else{
+    var body='Hallo Cobra Dynamics,%0A%0AIch möchte WIPULSCAN PRO+ Abo starten (4,99 €/Monat).%0ABitte senden Sie mir Zahlungsinformationen.%0A%0AMit freundlichen Grüßen';
+    window.location.href='mailto:dennis.stein@cobradynamics.de?subject=WIPULSCAN PRO+ Abo (4,99 €/Monat)&body='+body;
+    showToast('📧 Abo-Anfrage per Mail gesendet!');
+  }
+}
 
 function updateSocialProof(){
   var base=280+Math.floor((Date.now()/3600000)%200);
