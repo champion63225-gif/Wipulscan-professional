@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
-<meta name="theme-color" content="#0a0f1e"/>
+<meta name="theme-color" content="#000005"/>
+<meta name="application-name" content="WIPULSCAN PRO"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="application-name" content="WIPULSCAN PRO"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -36,48 +36,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+Arabic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="src/styles/app.css"/>
-<script src="capacitor.js"></script>
-<style>
-/* ─── MONETIZATION OVERLAY ───────────────────────────────────── */
-#top-bar{position:fixed;top:0;left:0;right:0;z-index:50;display:none;align-items:center;justify-content:space-between;padding:8px 14px;background:rgba(0,0,5,.75);backdrop-filter:blur(14px);border-bottom:1px solid rgba(212,175,55,.15)}
-#score-box{display:flex;align-items:center;gap:10px}
-.score-pill{background:rgba(20,20,35,.55);border:1px solid rgba(212,175,55,.2);border-radius:18px;padding:5px 12px;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:5px;color:#e8d5a3;font-family:'Space Mono',monospace}
-#streak-flame{color:#ff9f43}
-#share-btn,#ach-btn,#pro-btn{background:rgba(20,20,35,.55);border:1px solid rgba(212,175,55,.2);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1rem;color:#e8d5a3}
-#share-btn:hover,#ach-btn:hover,#pro-btn:hover{background:rgba(212,175,55,.2);transform:scale(1.08)}
-#social-proof{position:fixed;top:46px;left:50%;transform:translateX(-50%);z-index:45;background:rgba(0,180,120,.12);border:1px solid rgba(0,212,170,.25);border-radius:18px;padding:5px 14px;font-size:.72rem;color:#00d4aa;backdrop-filter:blur(8px);opacity:0;transition:opacity .5s;pointer-events:none;white-space:nowrap;font-family:'Space Mono',monospace}
-#social-proof.show{opacity:1}
-.modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(0,0,5,.88);backdrop-filter:blur(18px);padding:1rem}
-.modal.active{display:flex}
-.modal.active .modal-card{pointer-events:auto}
-.modal.active::before{content:'';position:absolute;inset:0;z-index:-1}
-.modal-card{max-width:380px;width:100%;background:rgba(15,15,30,.8);border:1px solid rgba(212,175,55,.15);border-radius:24px;padding:1.4rem;box-shadow:0 16px 48px rgba(0,0,0,.6);max-height:85vh;overflow-y:auto;position:relative}
-.modal-card h3{font-size:1.15rem;margin-bottom:.8rem;color:#e8d5a3;text-align:center;font-family:'Space Grotesk',sans-serif}
-.modal-close{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#e8ecf1;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.modal-close:hover{background:rgba(255,255,255,.25);color:#fff}
-.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.ach-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:10px 6px;text-align:center}
-.ach-item.unlocked{background:rgba(0,212,170,.08);border-color:rgba(0,212,170,.25)}
-.ach-item .ach-icon{font-size:1.6rem;margin-bottom:4px;display:block}
-.ach-item .ach-title{font-size:.65rem;color:#7b8a9a}
-.ach-item.unlocked .ach-title{color:#00d4aa;font-weight:600}
-.daily-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:.8rem 0}
-.daily-day{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:8px 3px;text-align:center;font-size:.7rem}
-.daily-day.claimed{background:rgba(0,212,170,.1);border-color:rgba(0,212,170,.25);color:#00d4aa}
-.daily-day .day-num{font-size:.6rem;color:#5a6a7d;margin-bottom:3px}
-.daily-day .day-pts{font-weight:700;font-size:.82rem}
-#claim-btn{width:100%;padding:10px;border:none;border-radius:14px;background:linear-gradient(135deg,#d4af37,#b8941d);color:#000005;font-weight:700;font-size:.95rem;cursor:pointer;transition:transform .2s;font-family:'Space Grotesk',sans-serif}
-#claim-btn:disabled{background:#1a1a2e;color:#5a5a7a;cursor:not-allowed}
-#claim-btn:not(:disabled):hover{transform:scale(1.02)}
-.pro-card{background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(180,140,30,.06));border:1px solid rgba(212,175,55,.2);border-radius:18px;padding:1rem;text-align:center;margin-top:.8rem}
-.pro-card h4{font-size:1rem;margin-bottom:.4rem;color:#d4af37;font-family:'Space Grotesk',sans-serif}
-.pro-card p{font-size:.75rem;color:#9aacbf;margin-bottom:.8rem}
-.pro-price{font-size:1.3rem;font-weight:700;color:#e8d5a3;margin-bottom:.4rem;font-family:'Space Mono',monospace}
-.pro-btn-full{width:100%;padding:10px;border:none;border-radius:14px;background:linear-gradient(135deg,#d4af37,#b8941d);color:#000005;font-weight:700;font-size:.95rem;cursor:pointer;transition:transform .2s;font-family:'Space Grotesk',sans-serif}
-.pro-btn-full:hover{transform:scale(1.02)}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120px);z-index:300;background:rgba(15,15,30,.92);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:10px 20px;color:#e8d5a3;font-size:.85rem;font-weight:500;backdrop-filter:blur(12px);transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;font-family:'Space Mono',monospace}
-#toast.show{transform:translateX(-50%) translateY(0)}
-</style>
 </head>
 <body>
 
@@ -388,24 +346,6 @@ https://ec.europa.eu/consumers/odr
     <span class="pwa-sub" id="pwa-sub">Zum Homescreen hinzufügen</span>
   </div>
 </div>
-
-<!-- MONETIZATION UI -->
-<div id="top-bar">
-  <div id="score-box">
-    <div class="score-pill"><span class="icon">⚡</span><span id="pts-val">0</span></div>
-    <div class="score-pill"><span class="icon" id="streak-flame">🔥</span><span id="strk-val">0</span></div>
-  </div>
-  <div style="display:flex;gap:8px">
-    <button id="share-btn" onclick="openShare()" title="Teilen">📤</button>
-    <button id="ach-btn" onclick="openAchievements()" title="Erfolge">🏆</button>
-    <button id="pro-btn" onclick="openPro()" title="Pro">💎</button>
-  </div>
-</div>
-<div id="social-proof">🔥 Heute haben <strong id="sp-count">342</strong> User einen Hotspot gefunden</div>
-
-<div id="daily-modal" class="modal" onclick="if(event.target===this)closeModal('daily-modal')"><div style="position:relative"><button class="modal-close" onclick="closeModal('daily-modal')">×</button><div class="modal-card"><h3>📅 Tägliche Belohnung</h3><p style="text-align:center;color:#7b8a9a;font-size:.8rem;margin-bottom:.4rem">Komme jeden Tag zurück für Bonus-Punkte!</p><div class="daily-grid" id="daily-grid"></div><button id="claim-btn" onclick="claimDaily()">Heute abholen</button><button onclick="closeModal('daily-modal')" style="width:100%;margin-top:10px;padding:10px;border:none;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,.15);color:#7b8a9a;font-size:.9rem;cursor:pointer;font-weight:500;font-family:inherit">✕ Schließen</button></div></div></div>
-<div id="ach-modal" class="modal" onclick="if(event.target===this)closeModal('ach-modal')"><div style="position:relative"><button class="modal-close" onclick="closeModal('ach-modal')">×</button><div class="modal-card"><h3>🏆 Erfolge</h3><div class="ach-grid" id="ach-grid"></div><button onclick="closeModal('ach-modal')" style="width:100%;margin-top:12px;padding:10px;border:none;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,.15);color:#7b8a9a;font-size:.9rem;cursor:pointer;font-weight:500;font-family:inherit">✕ Schließen</button></div></div></div>
-<div id="pro-modal" class="modal" onclick="if(event.target===this)closeModal('pro-modal')"><div style="position:relative"><button class="modal-close" onclick="closeModal('pro-modal')">×</button><div class="modal-card"><h3>💎 WiFi Hunter Pro</h3><div class="pro-card"><h4>Upgrade jetzt</h4><p>Echtzeit-WLAN-Scan · Unbegrenzte Heatmaps · Cloud-Sync · Keine Werbung</p><div class="pro-price">9,99 €</div><button class="pro-btn-full" onclick="buyPro()">Einmalig kaufen</button></div><div class="pro-card" style="background:linear-gradient(135deg,rgba(123,197,255,.08),rgba(62,106,142,.06));border-color:rgba(123,197,255,.2)"><h4 style="color:#7bc5ff">Pro Abo</h4><p>Alle Pro-Features · Neue Themes monatlich · Priorität-Support</p><div class="pro-price" style="color:#7bc5ff">4,99 €<span style="font-size:.85rem;color:#5a6a7d">/Monat</span></div><button class="pro-btn-full" style="background:linear-gradient(135deg,#2d4a6e,#3e6a8e)" onclick="buyProSub()">Abo starten</button></div></div></div></div>
 
 <div id="toast"></div>
 
@@ -1332,7 +1272,6 @@ function toggleAR(){
 
 // ─── HEATMAP CLOUD ───────────────────────────────────────────
 function drawHeatmap(){
-  if(!navigator.connection||typeof navigator.connection.downlink==='undefined'){return;}
   if(!GEO.current||GEO.trail.length<2)return;
   var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
   var scl=24,now=Date.now(); // larger scale = bigger clouds on screen
@@ -1389,14 +1328,22 @@ function drawARDirection(){
   if(hasGps){
     secs.forEach(function(s,i){if(s.softness>bestScore){bestScore=s.softness;bestIdx=i;}});
   }
-  // Fallback: if no GPS data yet, show arrow pointing toward current signal trend
+  // Fallback: if no GPS data yet, use device orientation to show a ghost arrow
   if(bestIdx<0||bestScore<15){
     var tr=signalTrend();
-    if(Math.abs(tr)<2) return; // no clear direction yet
-    // Default: point upward (north) as placeholder until we have GPS
-    bestIdx=0; bestScore=50;
+    // Always show arrow — use trend if available, else animate gently
+    if(Math.abs(tr)>=2){
+      bestIdx=0; bestScore=50;
+    } else {
+      // Ghost mode: arrow slowly rotates, inviting user to move/scan
+      bestIdx=0; bestScore=50;
+    }
   }
-  var ang=-Math.PI/2+(bestIdx+0.5)/8*Math.PI*2;
+  // Base hotspot angle (fixed in physical space)
+  var hotspotAngle=-Math.PI/2+(bestIdx+0.5)/8*Math.PI*2;
+  // Subtract device heading so arrow stays fixed in real world when phone rotates
+  var headingRad=(GEO.heading||0)*Math.PI/180;
+  var ang=hotspotAngle-headingRad;
   var cx=W*0.5,cy=H*0.55;
   var len=Math.min(W,H)*0.36; // even longer arrow
   var pulse=0.78+0.22*Math.sin(Date.now()*0.0035);
@@ -2070,12 +2017,6 @@ window.acceptConsent=function(){
   // CRITICAL: start audio immediately in gesture handler (before setTimeout)
   startIntroAudio();
   localStorage.setItem('wps_consent','1');
-  // iOS 13+ requires explicit permission for DeviceOrientation
-  if(window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission==='function'){
-    DeviceOrientationEvent.requestPermission().then(function(state){
-      if(state==='granted') console.log('[iOS] Orientation granted');
-    }).catch(function(e){console.log('[iOS] Orientation permission:',e);});
-  }
   var cc=$('consent');
   if(cc){
     cc.style.transition='opacity .65s'; cc.style.opacity='0';
@@ -2085,7 +2026,6 @@ window.acceptConsent=function(){
       runIntro();
     },650);
   }
-  setTimeout(initMonetization,800);
 };
 
 // ─── INIT ────────────────────────────────────────────────────
@@ -2109,7 +2049,6 @@ window.acceptConsent=function(){
         startIntroAudio();
         if(intro) intro.style.display='flex';
         runIntro();
-        setTimeout(initMonetization,3500);
       }, {once:true});
     }
   } else {
@@ -2156,202 +2095,6 @@ window.addEventListener('resize',resizeCv);
 if('serviceWorker' in navigator){
   navigator.serviceWorker.getRegistrations().then(function(regs){regs.forEach(function(r){r.unregister();});});
 }
-
-// ─── NATIVE WiFi SIGNAL (Capacitor) ────────────────────────────
-var _nativeSignal=-70,_nativeSSID='unknown',_hasNativeWifi=false,_nativeInterval=null;
-function fetchNativeSignal(){
-  if(typeof Capacitor!=='undefined' && Capacitor.Plugins && Capacitor.Plugins.WifiScan){
-    Capacitor.Plugins.WifiScan.getCurrentSignal().then(function(r){
-      _nativeSignal=r.signal; _nativeSSID=r.ssid; _hasNativeWifi=true;
-    }).catch(function(){_hasNativeWifi=false;});
-  }
-}
-
-// ─── MONETIZATION / RETENTION ──────────────────────────────────
-var POINTS=parseInt(localStorage.getItem('wfh_pts')||'0',10);
-var STREAK=parseInt(localStorage.getItem('wfh_strk')||'0',10);
-var LAST_CLAIM=localStorage.getItem('wfh_lastclaim')||'';
-var PRO=localStorage.getItem('wfh_pro')==='1';
-var ACHS=JSON.parse(localStorage.getItem('wfh_ach')||'[]');
-var ANALYTICS=JSON.parse(localStorage.getItem('wfh_analytics')||'{"events":[]}');
-var hotspotsFound=0;
-
-var ACH_DEFS=[
-{id:'first',icon:'🎯',title:'Erster Scan',desc:'Starte deine erste Jagd',req:1},
-{id:'ten',icon:'🔥',title:'10 Hotspots',desc:'Finde 10 Hotspots',req:10},
-{id:'fifty',icon:'⚡',title:'50 Hotspots',desc:'Finde 50 Hotspots',req:50},
-{id:'hundred',icon:'👑',title:'100 Hotspots',desc:'Finde 100 Hotspots',req:100},
-{id:'streak3',icon:'🔥',title:'3-Tage-Streak',desc:'Komme 3 Tage zurück',req:3},
-{id:'streak7',icon:'🌟',title:'7-Tage-Streak',desc:'Komme 7 Tage zurück',req:7},
-{id:'maxsig',icon:'📡',title:'Max Signal',desc:'Erreiche 95% Signal',req:1},
-{id:'share',icon:'📤',title:'Teilen',desc:'Teile deine Heatmap',req:1}
-];
-
-function saveData(){localStorage.setItem('wfh_pts',POINTS);localStorage.setItem('wfh_strk',STREAK);localStorage.setItem('wfh_ach',JSON.stringify(ACHS));localStorage.setItem('wfh_analytics',JSON.stringify(ANALYTICS));}
-function trackEvent(name,props){ANALYTICS.events.push({t:Date.now(),n:name,p:props||{}});if(ANALYTICS.events.length>200)ANALYTICS.events.shift();saveData();}
-function addPoints(n){POINTS+=n;$('pts-val').textContent=POINTS;saveData();showToast('+'+n+' Punkte!');trackEvent('points',{amount:n});}
-function showToast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
-
-function openModal(id){$(id).classList.add('active');}
-function closeModal(id){$(id).classList.remove('active');}
-function openAchievements(){renderAchievements();openModal('ach-modal');}
-function openPro(){openModal('pro-modal');}
-
-function renderAchievements(){
-  var g=$('ach-grid');if(!g)return;g.innerHTML='';
-  ACH_DEFS.forEach(function(a){
-    var unlocked=ACHS.indexOf(a.id)>=0;
-    var el=document.createElement('div');
-    el.className='ach-item'+(unlocked?' unlocked':'');
-    el.innerHTML='<span class="ach-icon">'+a.icon+'</span><span class="ach-title">'+a.title+'</span>';
-    g.appendChild(el);
-  });
-}
-
-function checkAchievements(){
-  ACH_DEFS.forEach(function(a){
-    if(ACHS.indexOf(a.id)>=0)return;
-    var ok=false;
-    if(a.id==='first'&&hotspotsFound>=1)ok=true;
-    if(a.id==='ten'&&hotspotsFound>=10)ok=true;
-    if(a.id==='fifty'&&hotspotsFound>=50)ok=true;
-    if(a.id==='hundred'&&hotspotsFound>=100)ok=true;
-    if(a.id==='streak3'&&STREAK>=3)ok=true;
-    if(a.id==='streak7'&&STREAK>=7)ok=true;
-    if(a.id==='maxsig'&&window._lastMaxSig>=95)ok=true;
-    if(a.id==='share'&&window._hasShared)ok=true;
-    if(ok){ACHS.push(a.id);addPoints(a.req*10);showToast('🏆 Erfolg: '+a.title);trackEvent('achievement',{id:a.id});}
-  });
-  saveData();
-}
-
-function initDaily(){
-  var today=new Date().toISOString().slice(0,10);
-  var grid=$('daily-grid');if(!grid)return;
-  var rewards=[50,75,100,150,200,300,500];
-  grid.innerHTML='';
-  var dayNames=['So','Mo','Di','Mi','Do','Fr','Sa'];
-  for(var i=0;i<7;i++){
-    var d=document.createElement('div');
-    d.className='daily-day';
-    var dayIdx=(new Date().getDay()+i)%7;
-    var pts=rewards[i];
-    var isToday=i===0;
-    var claimed=isToday&&LAST_CLAIM===today;
-    d.innerHTML='<div class="day-num">'+dayNames[dayIdx]+'</div><div class="day-pts">'+pts+'</div>';
-    if(claimed)d.classList.add('claimed');
-    grid.appendChild(d);
-  }
-  var btn=$('claim-btn');
-  if(LAST_CLAIM===today){btn.disabled=true;btn.textContent='Bereits abgeholt';}
-  else{btn.disabled=false;btn.textContent='Heute abholen';}
-}
-
-function claimDaily(){
-  var today=new Date().toISOString().slice(0,10);
-  if(LAST_CLAIM===today)return;
-  var yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
-  if(LAST_CLAIM===yesterday){STREAK++;showToast('🔥 Streak x'+STREAK);}
-  else{STREAK=1;showToast('Neue Streak gestartet!');}
-  LAST_CLAIM=today;
-  var rewards=[50,75,100,150,200,300,500];
-  var pts=rewards[0]*STREAK;
-  addPoints(pts);
-  initDaily();saveData();trackEvent('daily_claim',{streak:STREAK,points:pts});
-  // Auto-close modal after claiming
-  setTimeout(function(){closeModal('daily-modal');},800);
-}
-
-function openShare(){
-  var c=$('cv');
-  if(!c){showToast('Canvas nicht bereit');return;}
-  try{
-    var url=c.toDataURL('image/png');
-    var link='https://champion63225-gif.github.io/Wipulscan-professional/?ref='+Math.random().toString(36).slice(2,8);
-    if(navigator.share){
-      navigator.share({title:'WIPULSCAN PRO – Mein Signal-Sweep!',text:'Schau meinen WLAN-Hotspot-Fund an! '+link,url:link}).then(function(){window._hasShared=true;addPoints(25);checkAchievements();});
-    }else{
-      var a=document.createElement('a');a.href=url;a.download='wipulscan-heatmap.png';a.click();
-      showToast('Bild gespeichert! Teile es manuell.');window._hasShared=true;addPoints(25);checkAchievements();
-    }
-    trackEvent('share',{});
-  }catch(e){showToast('Teilen nicht möglich');}
-}
-
-// Stripe Checkout links – replace with your actual Stripe payment links
-var STRIPE_PRO_LINK='https://buy.stripe.com/YOUR_PRO_LINK_HERE';
-var STRIPE_SUB_LINK='https://buy.stripe.com/YOUR_SUB_LINK_HERE';
-
-function buyPro(){
-  trackEvent('pro_click',{type:'onetime'});
-  if(STRIPE_PRO_LINK.indexOf('YOUR_PRO_LINK')===-1){
-    window.open(STRIPE_PRO_LINK,'_blank');
-  }else{
-    // Fallback: email payment request
-    var body='Hallo Cobra Dynamics,%0A%0AIch möchte WIPULSCAN PRO kaufen (9,99 €).%0ABitte senden Sie mir Zahlungsinformationen (PayPal/Bank).%0A%0AMit freundlichen Grüßen';
-    window.location.href='mailto:dennis.stein@cobradynamics.de?subject=WIPULSCAN PRO Kauf (9,99 €)&body='+body;
-    showToast('📧 Zahlungsanfrage per Mail gesendet!');
-  }
-}
-function buyProSub(){
-  trackEvent('pro_click',{type:'subscription'});
-  if(STRIPE_SUB_LINK.indexOf('YOUR_SUB_LINK')===-1){
-    window.open(STRIPE_SUB_LINK,'_blank');
-  }else{
-    var body='Hallo Cobra Dynamics,%0A%0AIch möchte WIPULSCAN PRO+ Abo starten (4,99 €/Monat).%0ABitte senden Sie mir Zahlungsinformationen.%0A%0AMit freundlichen Grüßen';
-    window.location.href='mailto:dennis.stein@cobradynamics.de?subject=WIPULSCAN PRO+ Abo (4,99 €/Monat)&body='+body;
-    showToast('📧 Abo-Anfrage per Mail gesendet!');
-  }
-}
-
-function updateSocialProof(){
-  var base=280+Math.floor((Date.now()/3600000)%200);
-  $('sp-count').textContent=base;
-  setTimeout(function(){$('social-proof').classList.add('show');},3000);
-}
-
-function initMonetization(){
-  $('pts-val').textContent=POINTS;
-  $('strk-val').textContent=STREAK;
-  $('top-bar').style.display='flex';
-  initDaily();
-  updateSocialProof();
-  var today=new Date().toISOString().slice(0,10);
-  var last=localStorage.getItem('wfh_lastopen')||'';
-  if(last&&last!==today){
-    var lastDate=new Date(last);
-    var todayDate=new Date(today);
-    var diff=Math.floor((todayDate-lastDate)/(86400000));
-    if(diff>1){STREAK=0;saveData();$('strk-val').textContent=0;showToast('Streak zurückgesetzt. Komme morgen wieder!');}
-  }
-  localStorage.setItem('wfh_lastopen',today);
-  // Only auto-open daily reward if not already claimed today
-  var today=new Date().toISOString().slice(0,10);
-  if(LAST_CLAIM!==today){
-    setTimeout(function(){openModal('daily-modal');},4500);
-  }
-}
-
-// Hook monetization into scan start
-var _origToggle=toggleScan;
-toggleScan=function(){
-  _origToggle();
-  if(S.scanning){
-    hotspotsFound++;
-    addPoints(5);
-    checkAchievements();
-    trackEvent('scan_start',{});
-    // Native WiFi
-    if(typeof Capacitor!=='undefined' && Capacitor.Plugins && Capacitor.Plugins.WifiScan){
-      Capacitor.Plugins.WifiScan.requestPermissions().then(function(r){
-        if(r.granted){fetchNativeSignal();_nativeInterval=setInterval(fetchNativeSignal,1500);showToast('📡 Echtes WLAN-Scanning aktiv');}
-      }).catch(function(){});
-    }
-  }else{
-    if(_nativeInterval){clearInterval(_nativeInterval);_nativeInterval=null;}
-    trackEvent('scan_stop',{});
-  }
-};
 
 // ─── PRIVACY TEXT ────────────────────────────────────────────
 var PRIVACY_TEXT=`
