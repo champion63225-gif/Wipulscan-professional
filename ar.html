@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+<meta name="theme-color" content="#000005"/>
+<meta name="application-name" content="WIPULSCAN PRO"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="WIPULSCAN PRO"/>
+<meta name="description" content="Wipulscan PRO · Spatial WiFi Signal Scanner & AR Visualizer · Cobra Dynamics"/>
+<meta property="og:title" content="WIPULSCAN PRO"/>
+<meta property="og:description" content="Spatial WiFi Signal Scanner & AR Visualizer by Cobra Dynamics"/>
+<meta property="og:image" content="icon-512.png"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="WIPULSCAN PRO"/>
+<meta name="rating" content="general"/>
+<meta name="revisit-after" content="7 days"/>
+<meta name="robots" content="index,follow"/>
+<meta name="author" content="Cobra Dynamics — Dennis Stein &amp; Christoph Frick"/>
+<meta name="copyright" content="© Cobra Dynamics 2026"/>
+<meta name="price" content="EUR 1.99"/>
+<meta name="google-play-app" content="app-id=com.cobradynamics.wipulscanpro"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"WIPULSCAN PRO","operatingSystem":"ANDROID, IOS","applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"1.99","priceCurrency":"EUR"},"description":"Spatial WiFi Signal Scanner & AR Visualizer","author":{"@type":"Organization","name":"Cobra Dynamics","contactPoint":{"@type":"ContactPoint","email":"dennis.stein@cobradynamics.de"}},"inLanguage":["de","en","zh"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5","ratingCount":"1"}}</script>
+<title>WIPULSCAN · PRO</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+Arabic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════════════
+   WIPULSCAN PRO v5.2 · © Cobra Dynamics 2026
+   Dennis Stein & Christoph Frick · Nördliche Ringstraße 75 · 63225 Langen
+   Real NetworkInformation API · DE/EN/ZH · Bubble Network Viz
+═══════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --gold:#d4af37;--gold-lt:#f5e070;--gold-dk:#7a5c10;
+  --deep:#000005;--ink:#000010;
+  --green:#00ff88;--amber:#f07000;--red:#ff3333;--cyan:#00c8ff;
+  --font-ui:'Space Grotesk',sans-serif;
+  --font-data:'Space Mono',monospace;
+  --font-zh:'Noto Sans SC',sans-serif;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+  --sl:env(safe-area-inset-left,0px);--sr:env(safe-area-inset-right,0px);
+}
+
+html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);
+  font-family:var(--font-ui);color:#fff;touch-action:none;
+  -webkit-user-select:none;user-select:none;}
+
+/* ── INTRO ─────────────────────────────────────────────── */
+#intro{
+  position:fixed;inset:0;z-index:9000;background:#000002;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#icv{position:absolute;inset:0;width:100%;height:100%;}
+
+.il{opacity:0;transform:translateY(14px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);}
+.il.vis{opacity:1;transform:none;}
+.il.fast{transition-duration:.45s;}
+
+#il-pre{
+  font-family:var(--font-data);font-size:clamp(8px,1.8vw,11px);
+  letter-spacing:.42em;color:rgba(212,175,55,.4);text-transform:uppercase;
+  margin-bottom:20px;position:relative;z-index:2;
+}
+#il-brand{
+  font-family:var(--font-ui);font-size:clamp(38px,10vw,64px);font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  background:linear-gradient(150deg,var(--gold-lt) 0%,var(--gold) 45%,var(--gold-dk) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  position:relative;z-index:4;line-height:1;
+  opacity:0;transform:scale(0);
+}
+#il-brand.shoot{animation:brand-shoot 1.1s cubic-bezier(.12,.8,.2,1) forwards;}
+@keyframes brand-shoot{
+  0%  {opacity:0;transform:scale(0);filter:brightness(4) blur(2px);}
+  12% {opacity:1;transform:scale(1.28);filter:brightness(3) blur(0);}
+  30% {transform:scale(0.92);filter:brightness(1.8);}
+  50% {transform:scale(1.10);filter:brightness(1.3);}
+  70% {transform:scale(0.97);filter:brightness(1.1);}
+  88% {transform:scale(1.03);filter:brightness(1.02);}
+  100%{opacity:1;transform:scale(1);filter:brightness(1);}
+}
+#intro-flash{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 48%,rgba(245,224,112,.95) 0%,rgba(212,175,55,.55) 22%,rgba(180,130,20,.15) 48%,transparent 70%);
+  opacity:0;
+}
+#intro-flash.burst{animation:flash-burst 1.4s ease-out forwards;}
+@keyframes flash-burst{0%{opacity:0;}6%{opacity:1;}28%{opacity:.35;}100%{opacity:0;}}
+#il-sub{
+  font-family:var(--font-data);font-size:clamp(8px,1.9vw,11px);
+  letter-spacing:.32em;color:rgba(212,175,55,.5);text-transform:uppercase;
+  margin-top:10px;position:relative;z-index:2;
+}
+#il-desc{
+  font-family:var(--font-ui);font-size:clamp(10px,2.4vw,13px);font-weight:300;
+  letter-spacing:.06em;color:rgba(255,255,255,.28);
+  margin-top:36px;position:relative;z-index:2;text-align:center;
+}
+#intro-bar-wrap{
+  position:absolute;bottom:56px;left:50%;transform:translateX(-50%);
+  width:min(260px,58vw);height:1px;background:rgba(212,175,55,.1);
+  border-radius:1px;z-index:2;opacity:0;transition:opacity .5s;
+}
+#intro-bar{height:100%;width:0%;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-lt));
+  border-radius:1px;transition:width .06s linear;}
+#intro-foot{
+  position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+  font-family:var(--font-data);font-size:8px;letter-spacing:.24em;
+  color:rgba(212,175,55,.22);text-transform:uppercase;z-index:2;
+  opacity:0;transition:opacity 1s;white-space:nowrap;
+}
+
+/* ── CONSENT ────────────────────────────────────────────── */
+#consent{
+  position:fixed;inset:0;z-index:8000;
+  background:rgba(0,0,8,.97);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.cc{
+  background:linear-gradient(160deg,rgba(10,10,30,.99),rgba(0,0,14,.99));
+  border:1px solid rgba(212,175,55,.2);border-radius:16px;
+  padding:clamp(20px,5vw,34px);max-width:440px;width:100%;
+  box-shadow:0 0 80px rgba(0,0,0,.95),0 0 160px rgba(212,175,55,.03);
+}
+.cc-logo{font-family:var(--font-ui);font-size:20px;font-weight:700;letter-spacing:.16em;
+  background:linear-gradient(135deg,var(--gold-lt),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-align:center;margin-bottom:4px;}
+.cc-by{font-family:var(--font-data);font-size:8px;letter-spacing:.3em;
+  color:rgba(212,175,55,.35);text-align:center;margin-bottom:20px;text-transform:uppercase;}
+.cc-h{font-size:15px;font-weight:600;color:#fff;text-align:center;margin-bottom:10px;}
+.cc-p{font-size:11px;color:rgba(255,255,255,.45);line-height:1.6;text-align:center;margin-bottom:18px;}
+.lang-row{display:flex;gap:6px;justify-content:center;margin-bottom:18px;flex-wrap:wrap;}
+body[dir=rtl] .lang-row{direction:ltr;}
+body[dir=rtl] #topbar,body[dir=rtl] #metrics,body[dir=rtl] #smsg{direction:rtl;text-align:right;}
+body[dir=rtl] .sr{flex-direction:row-reverse;}
+body[dir=rtl] #filterbar{direction:rtl;}
+.lb{font-family:var(--font-data);font-size:9px;letter-spacing:.18em;
+  padding:5px 14px;border-radius:20px;border:1px solid rgba(212,175,55,.25);
+  background:transparent;color:rgba(212,175,55,.5);cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.lb.on,.lb:hover{background:rgba(212,175,55,.1);border-color:var(--gold);color:var(--gold);}
+.legal{max-height:120px;overflow-y:auto;background:rgba(0,0,0,.3);
+  border:1px solid rgba(212,175,55,.08);border-radius:10px;
+  padding:10px 12px;margin-bottom:16px;font-size:9.5px;
+  color:rgba(255,255,255,.32);line-height:1.75;white-space:pre-wrap;
+  scrollbar-width:thin;scrollbar-color:rgba(212,175,55,.25) transparent;}
+.chk-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:18px;}
+.chk-row input{width:17px;height:17px;flex-shrink:0;accent-color:var(--gold);margin-top:2px;cursor:pointer;}
+.chk-row label{font-size:10.5px;color:rgba(255,255,255,.55);line-height:1.5;cursor:pointer;}
+.cta{width:100%;padding:13px;border-radius:10px;border:none;cursor:pointer;
+  font-family:var(--font-ui);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  background:linear-gradient(135deg,var(--gold-dk),var(--gold) 50%,var(--gold-lt));
+  color:var(--ink);box-shadow:0 4px 28px rgba(212,175,55,.22);transition:opacity .2s,transform .15s;}
+.cta:disabled{opacity:.3;cursor:not-allowed;}
+.cta:not(:disabled):active{transform:scale(.97);}
+
+/* ── APP ────────────────────────────────────────────────── */
+#app{position:fixed;inset:0;display:none;flex-direction:column;background:var(--deep);}
+#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;z-index:1;}
+#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:none;background:#000;}
+
+/* TOP BAR */
+#topbar{
+  position:absolute;top:0;left:0;right:0;z-index:100;
+  padding:calc(var(--st) + 10px) 16px 10px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(180deg,rgba(0,0,10,.96) 0%,transparent 100%);
+  pointer-events:none;
+}
+#tb-logo{font-family:var(--font-ui);font-size:16px;font-weight:700;letter-spacing:.18em;
+  background:linear-gradient(90deg,var(--gold-lt),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#tb-conn{font-family:var(--font-data);font-size:8px;letter-spacing:.18em;color:rgba(212,175,55,.4);text-transform:uppercase;}
+
+/* BADGE */
+#badge{position:absolute;top:0;left:50%;transform:translateX(-50%);padding:calc(var(--st)+10px) 0 0;z-index:101;}
+#badge-inner{
+  font-family:var(--font-data);font-size:8px;letter-spacing:.28em;color:rgba(212,175,55,.45);
+  text-transform:uppercase;padding:4px 14px;border-radius:20px;
+  border:1px solid rgba(212,175,55,.12);background:rgba(0,0,10,.6);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .4s;
+}
+#badge-inner.on{color:var(--gold);border-color:rgba(212,175,55,.32);}
+#badge-inner.off{color:var(--amber);}
+
+/* SCAN BUTTON */
+#scan-btn{
+  position:absolute;left:50%;transform:translateX(-50%);
+  bottom:calc(var(--sb) + 128px);
+  width:clamp(130px,38vw,170px);height:clamp(130px,38vw,170px);
+  border-radius:50%;border:none;cursor:pointer;z-index:110;
+  background:radial-gradient(ellipse at 36% 30%,rgba(245,224,112,.12) 0%,#000 65%);
+  box-shadow:0 0 0 1px rgba(212,175,55,.2),0 0 0 6px rgba(212,175,55,.04),0 8px 40px rgba(0,0,0,.85),inset 0 1px 0 rgba(212,175,55,.12);
+  transition:box-shadow .35s,transform .15s;-webkit-tap-highlight-color:transparent;
+}
+#scan-btn:active{transform:translateX(-50%) scale(.95);}
+@keyframes pulse-ring{
+  0%  {box-shadow:0 0 0 1px rgba(212,175,55,.5),0 0 0 6px rgba(212,175,55,.08),0 0 36px rgba(212,175,55,.16),0 8px 40px rgba(0,0,0,.7),inset 0 1px 0 rgba(212,175,55,.18);}
+  60% {box-shadow:0 0 0 1px rgba(212,175,55,.4),0 0 0 18px rgba(212,175,55,.0),0 0 52px rgba(212,175,55,.12),0 8px 40px rgba(0,0,0,.7),inset 0 1px 0 rgba(212,175,55,.18);}
+  100%{box-shadow:0 0 0 1px rgba(212,175,55,.5),0 0 0 6px rgba(212,175,55,.08),0 0 36px rgba(212,175,55,.16),0 8px 40px rgba(0,0,0,.7),inset 0 1px 0 rgba(212,175,55,.18);}
+}
+#scan-btn.on{animation:pulse-ring 2.2s ease-in-out infinite;}
+#orb{position:absolute;inset:14px;border-radius:50%;overflow:hidden;
+  background:radial-gradient(ellipse at 38% 30%,rgba(245,224,112,.06) 0%,rgba(0,0,8,.97) 70%);
+  border:1px solid rgba(212,175,55,.1);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;}
+#orb-val{font-family:var(--font-data);font-size:clamp(24px,7.5vw,32px);font-weight:700;color:var(--gold);line-height:1;}
+#orb-unit{font-family:var(--font-data);font-size:8px;color:rgba(212,175,55,.4);letter-spacing:.2em;margin-top:2px;}
+#orb-dbm{font-family:var(--font-data);font-size:9px;color:rgba(255,255,255,.28);margin-top:5px;}
+#btn-icon{font-size:clamp(20px,6vw,28px);display:block;line-height:1;margin-bottom:1px;}
+#btn-lbl{font-family:var(--font-ui);font-size:clamp(9px,2.2vw,11px);font-weight:700;
+  letter-spacing:.16em;color:var(--gold);text-transform:uppercase;display:block;margin-top:5px;}
+
+/* METRICS */
+#metrics{
+  position:absolute;bottom:0;left:0;right:0;z-index:100;
+  padding:12px 12px calc(var(--sb)+12px);
+  background:linear-gradient(0deg,rgba(0,0,10,.97) 0%,rgba(0,0,10,.7) 60%,transparent 100%);
+}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.mc{
+  background:rgba(255,255,255,.022);border:1px solid rgba(212,175,55,.07);
+  border-radius:10px;padding:9px 7px 7px;text-align:center;
+  position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s;
+}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,.22),transparent);}
+.mc.live{border-color:rgba(212,175,55,.22);box-shadow:0 0 12px rgba(212,175,55,.04);}
+.ml{font-family:var(--font-data);font-size:7.5px;letter-spacing:.22em;
+  color:rgba(212,175,55,.4);text-transform:uppercase;margin-bottom:4px;}
+.mv{font-family:var(--font-data);font-size:clamp(17px,4.8vw,23px);font-weight:700;color:var(--gold);line-height:1;}
+.mv.g{color:var(--green);}.mv.o{color:var(--gold);}.mv.a{color:var(--amber);}.mv.r{color:var(--red);}
+.mu{font-size:8px;color:rgba(255,255,255,.28);margin-top:2px;}
+
+/* LEGEND */
+#legend{position:absolute;right:12px;z-index:100;}
+.li{display:flex;align-items:center;gap:5px;margin-bottom:5px;}
+.ld{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.ll{font-family:var(--font-data);font-size:7.5px;letter-spacing:.1em;color:rgba(255,255,255,.38);}
+
+/* STATUS MSG */
+#smsg{position:absolute;left:50%;transform:translateX(-50%);z-index:105;
+  font-family:var(--font-ui);font-size:clamp(10px,2.5vw,11.5px);
+  color:rgba(255,255,255,.38);letter-spacing:.05em;text-align:center;
+  width:min(280px,76vw);pointer-events:none;transition:opacity .5s;}
+
+/* GEAR + INFO BUTTONS */
+#f-set,#info-btn{
+  position:absolute;z-index:120;
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(212,175,55,.18);background:rgba(0,0,10,.72);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .2s,background .2s;
+}
+#f-set{left:14px;font-size:17px;}
+#info-btn{right:14px;font-family:var(--font-data);font-size:15px;font-weight:700;color:rgba(212,175,55,.65);}
+#f-set:hover,#f-set:active,#info-btn:hover,#info-btn:active{border-color:rgba(212,175,55,.45);background:rgba(0,0,22,.92);color:var(--gold);}
+
+/* FILTER BAR */
+#filterbar{
+  position:absolute;left:50%;transform:translateX(-50%);z-index:108;
+  display:flex;gap:6px;
+  overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+  padding:0 6px;max-width:calc(100vw - 28px);
+}
+#filterbar::-webkit-scrollbar{display:none;}
+.fb{
+  font-family:var(--font-data);font-size:8px;letter-spacing:.14em;
+  padding:5px 12px;border-radius:20px;
+  border:1px solid rgba(212,175,55,.16);
+  background:rgba(0,0,10,.75);color:rgba(212,175,55,.4);
+  cursor:pointer;transition:all .2s;text-transform:uppercase;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  white-space:nowrap;flex-shrink:0;
+}
+.fb.on,.fb:active{background:rgba(212,175,55,.11);border-color:var(--gold);color:var(--gold);}
+
+
+/* TOAST */
+#toast{position:fixed;bottom:calc(var(--sb)+88px);left:50%;transform:translateX(-50%);
+  z-index:9999;font-family:var(--font-ui);font-size:11px;letter-spacing:.07em;
+  padding:9px 20px;border-radius:20px;background:rgba(4,4,20,.95);
+  border:1px solid rgba(212,175,55,.28);color:rgba(255,255,255,.75);
+  opacity:0;pointer-events:none;transition:opacity .35s;white-space:nowrap;}
+#toast.show{opacity:1;}
+
+/* PWA INSTALL */
+#pwa-install{
+  position:fixed;bottom:calc(var(--sb)+14px);right:14px;z-index:200;
+  display:none;align-items:center;gap:8px;padding:10px 16px 10px 12px;
+  border-radius:24px;border:1px solid rgba(212,175,55,.3);
+  background:rgba(0,0,12,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  cursor:pointer;box-shadow:0 4px 24px rgba(0,0,0,.6),0 0 0 1px rgba(212,175,55,.06);
+  transition:box-shadow .3s,transform .15s;
+  opacity:0;transform:translateY(12px) scale(.94);
+}
+#pwa-install.visible{
+  display:flex;
+  animation:pwa-entrance .8s cubic-bezier(.22,1,.36,1) forwards,pwa-glow 1.6s ease-out .8s 1 forwards;
+}
+#pwa-install:active{transform:scale(.96)!important;}
+@keyframes pwa-entrance{
+  0%  {opacity:0;transform:translateY(12px) scale(.94);}
+  60% {opacity:1;transform:translateY(-3px) scale(1.04);}
+  80% {transform:translateY(1px) scale(.99);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+@keyframes pwa-glow{
+  0%  {box-shadow:0 4px 24px rgba(0,0,0,.6),0 0 0 rgba(212,175,55,0);}
+  30% {box-shadow:0 4px 32px rgba(0,0,0,.4),0 0 28px rgba(212,175,55,.28),0 0 0 4px rgba(212,175,55,.12);}
+  70% {box-shadow:0 4px 28px rgba(0,0,0,.5),0 0 14px rgba(212,175,55,.12),0 0 0 2px rgba(212,175,55,.06);}
+  100%{box-shadow:0 4px 24px rgba(0,0,0,.6),0 0 0 rgba(212,175,55,0);}
+}
+.pwa-icon{font-size:18px;line-height:1;}
+.pwa-txt{display:flex;flex-direction:column;}
+.pwa-lbl{font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;}
+.pwa-sub{font-family:var(--font-data);font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.35);margin-top:1px;}
+/* ── GPS PERMISSION DIALOG ── */
+#gps-permit{position:fixed;inset:0;z-index:4500;background:rgba(0,0,10,.90);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;}
+#gps-permit.open{display:flex;}
+#gps-card{background:linear-gradient(160deg,#000a18 0%,#000510 100%);border:1px solid rgba(0,180,255,.18);border-radius:20px;padding:28px 24px 20px;max-width:310px;width:88%;text-align:center;box-shadow:0 0 40px rgba(0,180,255,.08),0 20px 60px rgba(0,0,0,.7);}
+#gps-card-icon{font-size:36px;margin-bottom:14px;display:block;filter:drop-shadow(0 0 14px rgba(0,180,255,.5));}
+#gps-card-title{font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.28em;color:rgba(0,200,255,.9);margin-bottom:10px;}
+#gps-card-desc{font-family:var(--font-data);font-size:10px;color:rgba(255,255,255,.38);line-height:1.7;margin-bottom:22px;}
+#gps-card-desc b{color:rgba(0,200,255,.6);}
+#gps-grant{width:100%;padding:13px;margin-bottom:10px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.35);border-radius:24px;color:rgba(0,200,255,.9);font-family:var(--font-ui);font-size:9px;font-weight:700;letter-spacing:.22em;cursor:pointer;transition:background .2s;}
+#gps-grant:active{background:rgba(0,180,255,.18);}
+#gps-skip{background:none;border:none;color:rgba(255,255,255,.22);font-family:var(--font-data);font-size:8px;letter-spacing:.12em;cursor:pointer;padding:6px;}
+
+/* ── BUBBLE DETAIL OVERLAY (bottom sheet) ───────────────── */
+#bdetail{
+  position:fixed;bottom:0;left:0;right:0;z-index:3000;
+  pointer-events:none;
+  transform:translateY(100%);transition:transform .42s cubic-bezier(.22,1,.36,1);
+}
+#bdetail.open{transform:translateY(0);pointer-events:all;}
+#bdetail-sheet{
+  background:linear-gradient(170deg,rgba(6,6,22,.99),rgba(0,0,10,.99));
+  border:1px solid rgba(212,175,55,.16);border-bottom:none;
+  border-radius:20px 20px 0 0;
+  padding:10px 18px calc(var(--sb) + 22px);
+  box-shadow:0 -8px 48px rgba(0,0,0,.85),0 0 0 1px rgba(212,175,55,.05);
+}
+#bdetail-drag{width:38px;height:3px;border-radius:2px;
+  background:rgba(212,175,55,.18);margin:0 auto 14px;cursor:grab;}
+#bdetail-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+#bdetail-name{font-family:var(--font-ui);font-size:15px;font-weight:700;letter-spacing:.1em;
+  background:linear-gradient(90deg,var(--gold-lt),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#bdetail-dbm{font-family:var(--font-data);font-size:9px;color:rgba(255,255,255,.32);margin-top:4px;}
+.bd-close{width:30px;height:30px;border-radius:50%;border:1px solid rgba(212,175,55,.18);
+  background:transparent;color:var(--gold);font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.bd-close:hover{background:rgba(212,175,55,.1);}
+#bdetail-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px;}
+.bd-cell{background:rgba(255,255,255,.025);border:1px solid rgba(212,175,55,.07);
+  border-radius:10px;padding:9px 10px;}
+.bd-lbl{font-family:var(--font-data);font-size:7px;letter-spacing:.22em;
+  color:rgba(212,175,55,.38);text-transform:uppercase;margin-bottom:4px;}
+.bd-val{font-family:var(--font-data);font-size:14px;font-weight:700;color:var(--gold);}
+.bd-note{font-size:8px;color:rgba(255,255,255,.26);margin-top:2px;}
+#bdetail-spark-lbl{font-family:var(--font-data);font-size:7px;letter-spacing:.22em;
+  color:rgba(212,175,55,.32);text-transform:uppercase;margin-bottom:7px;}
+#bdetail-spark{width:100%;height:46px;display:block;border-radius:6px;}
+
+/* ── SETTINGS PANEL ─────────────────────────────────────── */
+#settings{
+  position:fixed;inset:0;z-index:5000;background:rgba(0,0,8,.98);
+  display:none;flex-direction:column;overflow-y:auto;
+  padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);
+}
+#settings.open{display:flex;}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding-top:14px;}
+.st{font-family:var(--font-ui);font-size:17px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  background:linear-gradient(90deg,var(--gold-lt),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sx{width:34px;height:34px;border-radius:50%;border:1px solid rgba(212,175,55,.22);
+  background:transparent;color:var(--gold);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.sx:hover{background:rgba(212,175,55,.1);}
+.ss{margin-bottom:20px;}
+.sst{font-family:var(--font-data);font-size:8px;letter-spacing:.28em;color:rgba(212,175,55,.38);
+  text-transform:uppercase;padding-bottom:7px;border-bottom:1px solid rgba(212,175,55,.07);margin-bottom:10px;}
+.sr{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.srl{font-size:12.5px;color:rgba(255,255,255,.65);}
+.srs{font-size:9.5px;color:rgba(255,255,255,.28);margin-top:2px;}
+.tog{position:relative;width:42px;height:22px;flex-shrink:0;}
+.tog input{opacity:0;width:0;height:0;}
+.tog-t{position:absolute;inset:0;border-radius:11px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(212,175,55,.18);cursor:pointer;transition:background .25s;}
+.tog input:checked+.tog-t{background:rgba(212,175,55,.3);border-color:var(--gold);}
+.tog-k{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;
+  background:rgba(255,255,255,.45);transition:transform .25s,background .25s;pointer-events:none;}
+.tog input:checked~.tog-k{transform:translateX(20px);background:var(--gold);}
+.feat-list{list-style:none;}
+.feat-list li{padding:7px 0;font-size:11.5px;color:rgba(255,255,255,.45);
+  border-bottom:1px solid rgba(255,255,255,.03);display:flex;align-items:center;gap:9px;}
+.feat-list li::before{content:'◆';color:var(--gold-dk);font-size:6px;}
+
+/* ── TAP TO START ───────────────────────────────────────── */
+#tap-start{
+  position:fixed;inset:0;z-index:9500;
+  background:#000005;
+  display:none;align-items:center;justify-content:center;flex-direction:column;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+#tap-start-logo{
+  font-family:var(--font-ui);font-size:clamp(32px,9vw,56px);font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  background:linear-gradient(150deg,var(--gold-lt) 0%,var(--gold) 50%,var(--gold-dk) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:14px;
+}
+#tap-start-hint{
+  font-family:var(--font-data);font-size:clamp(9px,2.2vw,12px);letter-spacing:.38em;
+  color:rgba(212,175,55,.45);text-transform:uppercase;margin-bottom:52px;
+}
+#tap-start-orb{
+  width:clamp(70px,18vw,90px);height:clamp(70px,18vw,90px);border-radius:50%;
+  background:radial-gradient(ellipse at 38% 32%,rgba(245,224,112,.10) 0%,rgba(0,0,8,.98) 70%);
+  border:1px solid rgba(212,175,55,.22);
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(26px,7vw,36px);
+  animation:tap-pulse 2s ease-in-out infinite;
+}
+@keyframes tap-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.28),0 0 24px rgba(212,175,55,.08);}
+  50%{box-shadow:0 0 0 18px rgba(212,175,55,0),0 0 40px rgba(212,175,55,.18);}
+}
+#tap-start-label{
+  font-family:var(--font-data);font-size:clamp(8px,2vw,10px);letter-spacing:.32em;
+  color:rgba(212,175,55,.3);text-transform:uppercase;margin-top:22px;
+}
+
+/* ── INFO OVERLAY ───────────────────────────────────────── */
+#info-overlay{
+  position:fixed;inset:0;z-index:6000;background:rgba(0,0,8,.99);
+  display:none;flex-direction:column;overflow-y:auto;
+  padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);
+}
+#info-overlay.open{display:flex;}
+.io-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding-top:14px;}
+.io-title{font-family:var(--font-ui);font-size:17px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  background:linear-gradient(90deg,var(--gold-lt),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.io-sec{margin-bottom:22px;}
+.io-sec-title{font-family:var(--font-data);font-size:8px;letter-spacing:.28em;color:rgba(212,175,55,.38);
+  text-transform:uppercase;padding-bottom:7px;border-bottom:1px solid rgba(212,175,55,.07);margin-bottom:12px;}
+.io-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.io-icon{font-size:18px;width:28px;flex-shrink:0;text-align:center;line-height:1.4;}
+.io-item-title{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.82);margin-bottom:3px;}
+.io-item-desc{font-size:11px;color:rgba(255,255,255,.38);line-height:1.65;}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(212,175,55,.2);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- AUDIO -->
+<audio id="aud-intro" src="jingle-intro.wav" preload="auto"></audio>
+<audio id="aud-bg"    src="jingle.wav"       preload="auto"></audio>
+
+<!-- ══════════════════ INTRO ══════════════════════ -->
+<div id="intro">
+  <canvas id="icv"></canvas>
+  <div id="intro-flash"></div>
+  <div id="il-pre"  class="il">COBRA DYNAMICS PRESENTS</div>
+  <div id="il-brand">WIPULSCAN</div>
+  <div id="il-sub"  class="il">PRO EDITION · v5.2</div>
+  <div id="il-desc" class="il">Spatial WiFi Signal Scanner &amp; AR Visualizer</div>
+  <div id="intro-bar-wrap"><div id="intro-bar"></div></div>
+  <div id="intro-foot">© Cobra Dynamics 2026 · Dennis Stein &amp; Christoph Frick · Langen, Germany</div>
+</div>
+
+<!-- ══════════════════ CONSENT ════════════════════ -->
+<div id="consent">
+  <div class="cc">
+    <div class="cc-logo">WIPULSCAN PRO</div>
+    <div class="cc-by">Cobra Dynamics · 2026</div>
+    <div class="lang-row">
+      <button class="lb on" data-lang="de" onclick="setLang('de')">DE</button>
+      <button class="lb" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lb" data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lb" data-lang="es" onclick="setLang('es')">ES</button>
+      <button class="lb" data-lang="hi" onclick="setLang('hi')">हि</button>
+      <button class="lb" data-lang="ar" onclick="setLang('ar')">ع</button>
+      <button class="lb" data-lang="pt" onclick="setLang('pt')">PT</button>
+      <button class="lb" data-lang="fr" onclick="setLang('fr')">FR</button>
+      <button class="lb" data-lang="ru" onclick="setLang('ru')">РУ</button>
+      <button class="lb" data-lang="ja" onclick="setLang('ja')">日</button>
+      <button class="lb" data-lang="hr" onclick="setLang('hr')">HR</button>
+      <button class="lb" data-lang="sr" onclick="setLang('sr')">СР</button>
+    </div>
+    <div class="cc-h"  id="c-eye"></div>
+    <div class="cc-p"  id="c-sub"></div>
+    <div class="legal" id="c-leg"></div>
+    <div class="chk-row">
+      <input type="checkbox" id="chk" onchange="document.getElementById('cta').disabled=!this.checked"/>
+      <label for="chk" id="c-chk"></label>
+    </div>
+    <button class="cta" id="cta" disabled onclick="acceptConsent()"></button>
+  </div>
+</div>
+
+<!-- ══════════════════ APP ════════════════════════ -->
+<div id="app">
+  <video id="cam-video" autoplay playsinline muted></video>
+  <canvas id="cv"></canvas>
+
+  <!-- TOP -->
+  <div id="topbar">
+    <div id="tb-logo">WIPULSCAN</div>
+    <div id="tb-conn">—</div>
+  </div>
+
+  <!-- BADGE -->
+  <div id="badge"><div id="badge-inner">—</div></div>
+
+
+  <!-- GEAR + INFO -->
+  <div id="f-set" onclick="openSettings()">⚙</div>
+  <div id="info-btn" onclick="openInfo()">?</div>
+
+  <!-- STATUS -->
+  <div id="smsg"></div>
+
+  <!-- SCAN BUTTON -->
+  <button id="scan-btn" onclick="toggleScan()">
+    <div id="orb">
+      <span id="orb-val">–</span>
+      <span id="orb-unit">%</span>
+      <span id="orb-dbm">– dBm</span>
+    </div>
+    <span id="btn-icon">📡</span>
+    <span id="btn-lbl"></span>
+  </button>
+
+  <!-- FILTER BAR -->
+  <div id="filterbar">
+    <button class="fb on" data-f="all"      onclick="setFilter('all')">ALLE</button>
+    <button class="fb"    data-f="wifi"     onclick="setFilter('wifi')">WiFi</button>
+    <button class="fb"    data-f="cellular" onclick="setFilter('cellular')">LTE</button>
+    <button class="fb"    data-f="strong"   onclick="setFilter('strong')">≥ −70 dBm</button>
+    <button class="fb"    data-f="5ghz"     onclick="setFilter('5ghz')">5 GHz</button>
+  </div>
+
+  <!-- METRICS -->
+  <div id="metrics">
+    <div class="mgrid">
+      <div class="mc" id="mc-sig">
+        <div class="ml" id="ml-sig">SIGNAL</div>
+        <div class="mv" id="mv-sig">–</div>
+        <div class="mu">%</div>
+      </div>
+      <div class="mc" id="mc-dl">
+        <div class="ml" id="ml-dl">DOWNLOAD</div>
+        <div class="mv" id="mv-dl">–</div>
+        <div class="mu">Mbps</div>
+      </div>
+      <div class="mc" id="mc-rtt">
+        <div class="ml" id="ml-rtt">LATENZ</div>
+        <div class="mv" id="mv-rtt">–</div>
+        <div class="mu">ms</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div id="legend">
+    <div class="li"><div class="ld" style="background:var(--green)"></div><span class="ll" id="l-s"></span></div>
+    <div class="li"><div class="ld" style="background:var(--gold)"></div> <span class="ll" id="l-g"></span></div>
+    <div class="li"><div class="ld" style="background:var(--amber)"></div><span class="ll" id="l-m"></span></div>
+    <div class="li"><div class="ld" style="background:var(--red)"></div>  <span class="ll" id="l-w"></span></div>
+  </div>
+
+  <!-- SETTINGS PANEL -->
+  <div id="settings">
+    <div class="sh">
+      <div class="st" id="s-title">EINSTELLUNGEN</div>
+      <button class="sx" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="ss">
+      <div class="sst">SPRACHE / LANGUAGE / 语言</div>
+      <div class="lang-row" style="justify-content:flex-start;">
+        <button class="lb on" data-lang="de" onclick="setLang('de')">DE</button>
+        <button class="lb" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lb" data-lang="zh" onclick="setLang('zh')">中文</button>
+        <button class="lb" data-lang="es" onclick="setLang('es')">ES</button>
+        <button class="lb" data-lang="hi" onclick="setLang('hi')">हि</button>
+        <button class="lb" data-lang="ar" onclick="setLang('ar')">ع</button>
+        <button class="lb" data-lang="pt" onclick="setLang('pt')">PT</button>
+        <button class="lb" data-lang="fr" onclick="setLang('fr')">FR</button>
+        <button class="lb" data-lang="ru" onclick="setLang('ru')">РУ</button>
+        <button class="lb" data-lang="ja" onclick="setLang('ja')">日</button>
+      </div>
+    </div>
+    <div class="ss">
+      <div class="sst" id="s-opt">OPTIONEN</div>
+      <div class="sr">
+        <div><div class="srl">Haptic Feedback</div></div>
+        <label class="tog"><input type="checkbox" id="tog-hap" checked/><div class="tog-t"></div><div class="tog-k"></div></label>
+      </div>
+      <div class="sr">
+        <div><div class="srl">Trail Radar</div></div>
+        <label class="tog"><input type="checkbox" id="tog-rad" checked/><div class="tog-t"></div><div class="tog-k"></div></label>
+      </div>
+      <div class="sr">
+        <div><div class="srl">AR Kamera-Modus</div><div class="srs">Heatmap über Kamera</div></div>
+        <label class="tog"><input type="checkbox" id="tog-ar" onchange="toggleAR()"/><div class="tog-t"></div><div class="tog-k"></div></label>
+      </div>
+
+    </div>
+    <div class="ss">
+      <div class="sst" id="s-feat">FEATURES</div>
+      <ul class="feat-list" id="feat-list"></ul>
+    </div>
+    <div class="ss">
+      <div class="sst">DSGVO / GDPR / 数据保护</div>
+      <div class="sr">
+        <div><div class="srl">Consent zurücksetzen</div><div class="srs">Neustart der App</div></div>
+        <button class="lb" onclick="resetConsent()">Reset</button>
+      </div>
+      <div class="sr">
+        <div><div class="srl">Datenschutzerklärung</div><div class="srs">Privacy Policy · 隐私政策</div></div>
+        <button class="lb" onclick="openPrivacy()">→</button>
+      </div>
+      <div class="sr">
+        <div><div class="srl">Impressum</div><div class="srs">Legal Notice · 法律声明</div></div>
+        <button class="lb" onclick="openImpressum()">→</button>
+      </div>
+    </div>
+    <div class="ss">
+      <div class="sst">LIZENZ / LICENSE / 许可</div>
+      <div class="sr">
+        <div><div class="srl">WIPULSCAN PRO</div><div class="srs">Einzellizenz · Single License · 单一许可</div></div>
+        <span style="font-family:var(--font-data);font-size:11px;color:var(--gold);font-weight:700;">1,99 €</span>
+      </div>
+      <div class="sr">
+        <div><div class="srl">Altersfreigabe</div><div class="srs">Age Rating · 年龄评级</div></div>
+        <span style="font-family:var(--font-data);font-size:10px;color:rgba(255,255,255,.5);">4+ / E</span>
+      </div>
+      <div class="sr">
+        <div><div class="srl">Version</div></div>
+        <span style="font-family:var(--font-data);font-size:10px;color:rgba(255,255,255,.4);">5.2.0</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:14px;">
+      <div style="font-family:var(--font-data);font-size:8px;letter-spacing:.2em;color:rgba(212,175,55,.18);text-transform:uppercase;">
+        WIPULSCAN PRO v5.2 · © Cobra Dynamics 2026<br/>Dennis Stein &amp; Christoph Frick · Langen, Germany
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ TAP TO START ══════ -->
+<div id="tap-start">
+  <div id="tap-start-logo">WIPULSCAN</div>
+  <div id="tap-start-hint">PRO · v5.2</div>
+  <div id="tap-start-orb">📡</div>
+  <div id="tap-start-label" id="tsl">· Tippen zum Starten ·</div>
+</div>
+
+<!-- ══════ BUBBLE DETAIL OVERLAY ══════ -->
+<div id="bdetail">
+  <div id="bdetail-sheet">
+    <div id="bdetail-drag"></div>
+    <div id="bdetail-hdr">
+      <div>
+        <div id="bdetail-name">—</div>
+        <div id="bdetail-dbm">—</div>
+      </div>
+      <button class="bd-close" onclick="closeBubbleDetail()">✕</button>
+    </div>
+    <div id="bdetail-grid"></div>
+    <div id="bdetail-spark-lbl">SIGNAL · VERLAUF</div>
+    <canvas id="bdetail-spark"></canvas>
+  </div>
+</div>
+
+<!-- ══════ INFO OVERLAY ══════ -->
+<div id="info-overlay">
+  <div class="io-hdr">
+    <div class="io-title" id="io-title">FUNKTIONEN</div>
+    <button class="sx" onclick="closeInfo()">✕</button>
+  </div>
+  <div id="io-content"></div>
+</div>
+
+<!-- ══════ PRIVACY POLICY OVERLAY ══════ -->
+<div id="privacy-overlay" style="position:fixed;inset:0;z-index:7000;background:rgba(0,0,8,.99);display:none;flex-direction:column;padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);overflow-y:auto;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:14px;">
+    <div style="font-family:var(--font-ui);font-size:16px;font-weight:700;letter-spacing:.1em;background:linear-gradient(90deg,var(--gold-lt),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">DATENSCHUTZ</div>
+    <button class="sx" onclick="closePrivacy()">✕</button>
+  </div>
+  <div style="font-family:var(--font-data);font-size:9px;letter-spacing:.28em;color:rgba(212,175,55,.38);text-transform:uppercase;padding-bottom:7px;border-bottom:1px solid rgba(212,175,55,.07);margin-bottom:14px;">PRIVACY POLICY · 隐私政策 — Stand: April 2026</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.8;white-space:pre-wrap;" id="privacy-body"></div>
+</div>
+
+<!-- ══════ IMPRESSUM OVERLAY ══════ -->
+<div id="impressum-overlay" style="position:fixed;inset:0;z-index:7000;background:rgba(0,0,8,.99);display:none;flex-direction:column;padding:calc(var(--st)+16px) 20px calc(var(--sb)+20px);overflow-y:auto;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:14px;">
+    <div style="font-family:var(--font-ui);font-size:16px;font-weight:700;letter-spacing:.1em;background:linear-gradient(90deg,var(--gold-lt),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">IMPRESSUM</div>
+    <button class="sx" onclick="closeImpressum()">✕</button>
+  </div>
+  <div style="font-family:var(--font-data);font-size:9px;letter-spacing:.28em;color:rgba(212,175,55,.38);text-transform:uppercase;padding-bottom:7px;border-bottom:1px solid rgba(212,175,55,.07);margin-bottom:14px;">LEGAL NOTICE · 法律声明</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.8;">
+<b style="color:var(--gold);">Angaben gemäß § 5 TMG</b>
+
+Cobra Dynamics
+Dennis Stein &amp; Christoph Frick
+Nördliche Ringstraße 75
+63225 Langen, Deutschland
+
+<b style="color:var(--gold);">Kontakt</b>
+E-Mail: dennis.stein@cobradynamics.de
+
+<b style="color:var(--gold);">Verantwortlich für den Inhalt</b>
+Dennis Stein &amp; Christoph Frick (Anschrift wie oben)
+
+<b style="color:var(--gold);">App-Informationen</b>
+App-Name: WIPULSCAN PRO · Version: 5.2.0
+Preis: 1,99 EUR (Einzellizenz) · Altersfreigabe: 4+
+Plattformen: Android (PWA / Play Store), iOS (PWA / App Store)
+
+<b style="color:var(--gold);">Haftungsausschluss</b>
+Signalmessungen sind Näherungswerte via NetworkInformation-Web-API. Keine Garantie auf Messgenauigkeit.
+
+<b style="color:var(--gold);">Urheberrecht</b>
+© Cobra Dynamics 2026. Alle Rechte vorbehalten.
+
+<b style="color:var(--gold);">Streitbeilegung (EU)</b>
+https://ec.europa.eu/consumers/odr
+  </div>
+</div>
+
+<!-- GPS PERMISSION -->
+<div id="gps-permit">
+  <div id="gps-card">
+    <span id="gps-card-icon">📍</span>
+    <div id="gps-card-title">STANDORT · GPS</div>
+    <div id="gps-card-desc">
+      WIPULSCAN benötigt deinen Standort um den <b>Signalpfad</b> aufzuzeichnen
+      und dir zu zeigen, <b>in welche Richtung</b> du für besseren Empfang gehen solltest.
+    </div>
+    <button id="gps-grant" onclick="grantGps()">STANDORT FREIGEBEN</button>
+    <button id="gps-skip" onclick="skipGps()">Ohne GPS weiter</button>
+  </div>
+</div>
+
+<!-- PWA INSTALL -->
+<div id="pwa-install" onclick="triggerPwaInstall()">
+  <span class="pwa-icon">⬇</span>
+  <div class="pwa-txt">
+    <span class="pwa-lbl" id="pwa-lbl">App installieren</span>
+    <span class="pwa-sub" id="pwa-sub">Zum Homescreen hinzufügen</span>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── UTILS ───────────────────────────────────────────────────
+function $(id){return document.getElementById(id);}
+function setText(id,t){var e=$(id);if(e)e.textContent=t;}
+function setHTML(id,t){var e=$(id);if(e)e.innerHTML=t;}
+function clamp(v,mn,mx){return Math.min(Math.max(v,mn),mx);}
+
+// ─── I18N ────────────────────────────────────────────────────
+var LEG={
+  de:"Diese App (WIPULSCAN PRO) wird von Cobra Dynamics, Dennis Stein & Christoph Frick, Nördliche Ringstraße 75, 63225 Langen betrieben.\n\nDie App liest ausschließlich Gerätedaten via Web-APIs. Keine personenbezogenen Daten erhoben, gespeichert oder übermittelt.\n\nRechtsgrundlage: DSGVO Art. 6 Abs. 1 lit. b.\nKontakt: dennis.stein@cobradynamics.de",
+  en:"This app (WIPULSCAN PRO) is operated by Cobra Dynamics, Dennis Stein & Christoph Frick, Langen, Germany.\n\nThe app reads device data only via Web APIs. No personal data is collected, stored or transmitted.\n\nLegal basis: GDPR Art. 6(1)(b). Contact: dennis.stein@cobradynamics.de",
+  zh:"本应用由 Cobra Dynamics 运营。不收集任何个人数据。联系：dennis.stein@cobradynamics.de",
+  es:"Esta app es operada por Cobra Dynamics, Langen, Alemania. Solo lee datos del dispositivo. No se recopilan datos personales.\nContacto: dennis.stein@cobradynamics.de",
+  hi:"यह ऐप Cobra Dynamics द्वारा संचालित है। केवल डिवाइस डेटा पढ़ी जाती है। कोई व्यक्तिगत डेटा एकत्र नहीं किया जाता।\nसंपर्क: dennis.stein@cobradynamics.de",
+  ar:"يُشغَّل هذا التطبيق من قِبَل Cobra Dynamics. لا تُجمع أي بيانات شخصية.\nالتواصل: dennis.stein@cobradynamics.de",
+  pt:"Este app é operado pela Cobra Dynamics, Langen, Alemanha. Nenhum dado pessoal é coletado.\nContato: dennis.stein@cobradynamics.de",
+  fr:"Cette application est gérée par Cobra Dynamics, Langen, Allemagne. Aucune donnée personnelle n'est collectée.\nContact: dennis.stein@cobradynamics.de",
+  ru:"Приложение управляется Cobra Dynamics, Лангена, Германия. Личные данные не собираются.\nКонтакт: dennis.stein@cobradynamics.de",
+  ja:"このアプリはCobra Dynamics（ドイツ）が運営します。個人データの収集は一切行いません。\n連絡先: dennis.stein@cobradynamics.de"
+};
+var LANGS={
+  de:{tap_lbl:"· Tippen zum Starten ·",c_eye:"Bitte lies die Datenschutzerklärung",c_sub:"Diese App läuft vollständig lokal.<br>Keine Server. Keine Tracking-Daten.",c_chk:"Ich habe die Datenschutzerklärung gelesen und stimme zu.",c_ok:"Starten",s_title:"EINSTELLUNGEN",s_opt:"OPTIONEN",s_feat:"FEATURES",h_ready:"BEREIT",h_scan:"SCANNING",h_pause:"PAUSIERT",ml_sig:"SIGNAL",ml_dl:"DOWNLOAD",ml_rtt:"LATENZ",l_s:"STARK",l_g:"GUT",l_m:"MITTEL",l_w:"SCHWACH",btn_start:"Scan Starten",btn_stop:"Scan Stoppen",bd_current:"Aktuelle Verbindung",bd_main:"Echtdaten",bd_est:"Geschätzt",bd_stability:"STABILITÄT",feats:["Echtzeit via NetworkInformation API","Interaktive Netzwerk-Bubbles + AR","3.75s Cinematic Intro + Jingle","10 Sprachen verfügbar","DSGVO-konform · lokal only"],msgs:[{min:88,msg:"Exzellentes Signal — Glasfaser-Qualität"},{min:72,msg:"Starkes Signal — optimale Verbindung"},{min:50,msg:"Gutes Signal — stabil und zuverlässig"},{min:30,msg:"Mittleres Signal — ausreichend"},{min:12,msg:"Schwaches Signal — eingeschränkt"},{min:0,msg:"Kritisches Signal — Verbindung instabil"}]},
+  en:{tap_lbl:"· Tap to Start ·",c_eye:"Please read the Privacy Policy",c_sub:"This app runs entirely locally.<br>No servers. No tracking.",c_chk:"I have read the Privacy Policy and agree.",c_ok:"Start",s_title:"SETTINGS",s_opt:"OPTIONS",s_feat:"FEATURES",h_ready:"READY",h_scan:"SCANNING",h_pause:"PAUSED",ml_sig:"SIGNAL",ml_dl:"DOWNLOAD",ml_rtt:"LATENCY",l_s:"STRONG",l_g:"GOOD",l_m:"MEDIUM",l_w:"WEAK",btn_start:"Start Scan",btn_stop:"Stop Scan",bd_current:"Active Connection",bd_main:"Real data",bd_est:"Estimated",bd_stability:"STABILITY",feats:["Real-time via NetworkInformation API","Interactive Network Bubbles + AR","3.75s Cinematic Intro + Jingle","10 languages available","GDPR-compliant · local only"],msgs:[{min:88,msg:"Excellent signal — fiber quality"},{min:72,msg:"Strong signal — optimal connection"},{min:50,msg:"Good signal — stable & reliable"},{min:30,msg:"Medium signal — adequate"},{min:12,msg:"Weak signal — limited reception"},{min:0,msg:"Critical signal — connection unstable"}]},
+  zh:{tap_lbl:"· 点击开始 ·",c_eye:"请阅读隐私政策",c_sub:"本应用完全在本地运行。<br>无服务器。无追踪。",c_chk:"我已阅读并同意隐私政策。",c_ok:"开始",s_title:"设置",s_opt:"选项",s_feat:"功能说明",h_ready:"就绪",h_scan:"扫描中",h_pause:"已暂停",ml_sig:"信号",ml_dl:"下载",ml_rtt:"延迟",l_s:"强",l_g:"良",l_m:"中",l_w:"弱",btn_start:"开始扫描",btn_stop:"停止扫描",bd_current:"当前连接",bd_main:"真实数据",bd_est:"估算",bd_stability:"稳定性",feats:["实时 NetworkInformation API","交互式网络气泡 + AR","3.75秒电影级开场","10种语言","符合GDPR · 纯本地"],msgs:[{min:88,msg:"极佳信号 — 光纤级质量"},{min:72,msg:"强信号 — 最佳连接"},{min:50,msg:"良好信号 — 稳定可靠"},{min:30,msg:"中等信号 — 基本够用"},{min:12,msg:"弱信号 — 接收受限"},{min:0,msg:"极弱信号 — 连接不稳定"}]},
+  es:{tap_lbl:"· Toca para Iniciar ·",c_eye:"Lee la política de privacidad",c_sub:"Esta app funciona completamente en local.<br>Sin servidores. Sin rastreo.",c_chk:"He leído la política de privacidad y acepto.",c_ok:"Iniciar",s_title:"AJUSTES",s_opt:"OPCIONES",s_feat:"FUNCIONES",h_ready:"LISTO",h_scan:"ESCANEANDO",h_pause:"PAUSADO",ml_sig:"SEÑAL",ml_dl:"DESCARGA",ml_rtt:"LATENCIA",l_s:"FUERTE",l_g:"BUENA",l_m:"MEDIA",l_w:"DÉBIL",btn_start:"Iniciar Escaneo",btn_stop:"Detener Escaneo",bd_current:"Conexión activa",bd_main:"Datos reales",bd_est:"Estimado",bd_stability:"ESTABILIDAD",feats:["Tiempo real via NetworkInformation API","Burbujas de red interactivas + AR","Intro cinemático 3.75s + jingle","10 idiomas disponibles","Conforme GDPR · solo local"],msgs:[{min:88,msg:"Señal excelente — calidad fibra"},{min:72,msg:"Señal fuerte — conexión óptima"},{min:50,msg:"Buena señal — estable y fiable"},{min:30,msg:"Señal media — suficiente"},{min:12,msg:"Señal débil — recepción limitada"},{min:0,msg:"Señal crítica — conexión inestable"}]},
+  hi:{tap_lbl:"· शुरू करने के लिए टैप करें ·",c_eye:"कृपया गोपनीयता नीति पढ़ें",c_sub:"यह ऐप पूरी तरह स्थानीय रूप से चलती है।<br>कोई सर्वर नहीं। कोई ट्रैकिंग नहीं।",c_chk:"मैंने गोपनीयता नीति पढ़ी है और सहमत हूँ।",c_ok:"शुरू करें",s_title:"सेटिंग्स",s_opt:"विकल्प",s_feat:"सुविधाएँ",h_ready:"तैयार",h_scan:"स्कैनिंग",h_pause:"रुका हुआ",ml_sig:"सिग्नल",ml_dl:"डाउनलोड",ml_rtt:"विलंब",l_s:"मजबूत",l_g:"अच्छा",l_m:"मध्यम",l_w:"कमजोर",btn_start:"स्कैन शुरू",btn_stop:"स्कैन रोकें",bd_current:"सक्रिय कनेक्शन",bd_main:"वास्तविक डेटा",bd_est:"अनुमानित",bd_stability:"स्थिरता",feats:["NetworkInformation API रियलटाइम","इंटरैक्टिव नेटवर्क बबल + AR","3.75s सिनेमाई इंट्रो + जिंगल","10 भाषाएँ उपलब्ध","GDPR अनुपालन · केवल स्थानीय"],msgs:[{min:88,msg:"बेहतरीन सिग्नल — फाइबर गुणवत्ता"},{min:72,msg:"मजबूत सिग्नल — इष्टतम कनेक्शन"},{min:50,msg:"अच्छा सिग्नल — स्थिर और विश्वसनीय"},{min:30,msg:"मध्यम सिग्नल — पर्याप्त"},{min:12,msg:"कमजोर सिग्नल — सीमित रिसेप्शन"},{min:0,msg:"क्रिटिकल सिग्नल — कनेक्शन अस्थिर"}]},
+  ar:{tap_lbl:"· انقر للبدء ·",c_eye:"يُرجى قراءة سياسة الخصوصية",c_sub:"يعمل هذا التطبيق محلياً بالكامل.<br>لا خوادم. لا تتبع.",c_chk:"لقد قرأت سياسة الخصوصية وأوافق عليها.",c_ok:"ابدأ",s_title:"الإعدادات",s_opt:"خيارات",s_feat:"الميزات",h_ready:"جاهز",h_scan:"جارٍ المسح",h_pause:"متوقف",ml_sig:"إشارة",ml_dl:"تحميل",ml_rtt:"استجابة",l_s:"قوية",l_g:"جيدة",l_m:"متوسطة",l_w:"ضعيفة",btn_start:"بدء المسح",btn_stop:"إيقاف المسح",bd_current:"الاتصال النشط",bd_main:"بيانات حقيقية",bd_est:"تقديري",bd_stability:"الاستقرار",feats:["مسح فوري عبر NetworkInformation API","فقاعات شبكة تفاعلية + AR","مقدمة سينمائية 3.75 ثانية","10 لغات متاحة","متوافق مع GDPR · محلي فقط"],msgs:[{min:88,msg:"إشارة ممتازة — جودة الألياف"},{min:72,msg:"إشارة قوية — اتصال مثالي"},{min:50,msg:"إشارة جيدة — مستقرة وموثوقة"},{min:30,msg:"إشارة متوسطة — كافية"},{min:12,msg:"إشارة ضعيفة — استقبال محدود"},{min:0,msg:"إشارة حرجة — الاتصال غير مستقر"}]},
+  pt:{tap_lbl:"· Toque para Iniciar ·",c_eye:"Por favor leia a política de privacidade",c_sub:"Este app funciona completamente em local.<br>Sem servidores. Sem rastreamento.",c_chk:"Li a política de privacidade e concordo.",c_ok:"Iniciar",s_title:"CONFIGURAÇÕES",s_opt:"OPÇÕES",s_feat:"RECURSOS",h_ready:"PRONTO",h_scan:"ESCANEANDO",h_pause:"PAUSADO",ml_sig:"SINAL",ml_dl:"DOWNLOAD",ml_rtt:"LATÊNCIA",l_s:"FORTE",l_g:"BOA",l_m:"MÉDIA",l_w:"FRACA",btn_start:"Iniciar Scan",btn_stop:"Parar Scan",bd_current:"Conexão ativa",bd_main:"Dados reais",bd_est:"Estimado",bd_stability:"ESTABILIDADE",feats:["Tempo real via NetworkInformation API","Bolhas de rede interativas + AR","Intro cinemático 3.75s + jingle","10 idiomas disponíveis","Conforme GDPR · apenas local"],msgs:[{min:88,msg:"Sinal excelente — qualidade fibra"},{min:72,msg:"Sinal forte — conexão ideal"},{min:50,msg:"Bom sinal — estável e confiável"},{min:30,msg:"Sinal médio — suficiente"},{min:12,msg:"Sinal fraco — recepção limitada"},{min:0,msg:"Sinal crítico — conexão instável"}]},
+  fr:{tap_lbl:"· Appuyer pour Démarrer ·",c_eye:"Veuillez lire la politique de confidentialité",c_sub:"Cette app fonctionne entièrement en local.<br>Pas de serveurs. Pas de suivi.",c_chk:"J'ai lu la politique de confidentialité et j'accepte.",c_ok:"Démarrer",s_title:"PARAMÈTRES",s_opt:"OPTIONS",s_feat:"FONCTIONNALITÉS",h_ready:"PRÊT",h_scan:"SCAN EN COURS",h_pause:"EN PAUSE",ml_sig:"SIGNAL",ml_dl:"TÉLÉCHARGEMENT",ml_rtt:"LATENCE",l_s:"FORT",l_g:"BON",l_m:"MOYEN",l_w:"FAIBLE",btn_start:"Démarrer le scan",btn_stop:"Arrêter le scan",bd_current:"Connexion active",bd_main:"Données réelles",bd_est:"Estimé",bd_stability:"STABILITÉ",feats:["Temps réel via NetworkInformation API","Bulles réseau interactives + AR","Intro cinématique 3.75s + jingle","10 langues disponibles","Conforme RGPD · local uniquement"],msgs:[{min:88,msg:"Signal excellent — qualité fibre"},{min:72,msg:"Signal fort — connexion optimale"},{min:50,msg:"Bon signal — stable et fiable"},{min:30,msg:"Signal moyen — suffisant"},{min:12,msg:"Signal faible — réception limitée"},{min:0,msg:"Signal critique — connexion instable"}]},
+  ru:{tap_lbl:"· Нажмите для Запуска ·",c_eye:"Прочитайте политику конфиденциальности",c_sub:"Приложение работает полностью локально.<br>Без серверов. Без слежки.",c_chk:"Я прочитал(а) политику и согласен(на).",c_ok:"Начать",s_title:"НАСТРОЙКИ",s_opt:"ОПЦИИ",s_feat:"ФУНКЦИИ",h_ready:"ГОТОВ",h_scan:"СКАНИРОВАНИЕ",h_pause:"ПАУЗА",ml_sig:"СИГНАЛ",ml_dl:"ЗАГРУЗКА",ml_rtt:"ЗАДЕРЖКА",l_s:"СИЛЬНЫЙ",l_g:"ХОРОШИЙ",l_m:"СРЕДНИЙ",l_w:"СЛАБЫЙ",btn_start:"Начать сканирование",btn_stop:"Остановить сканирование",bd_current:"Активное соединение",bd_main:"Реальные данные",bd_est:"Оценочно",bd_stability:"СТАБИЛЬНОСТЬ",feats:["Реалтайм через NetworkInformation API","Интерактивные сетевые пузыри + AR","Кинематическое вступление 3.75с","10 языков интерфейса","Соответствие GDPR · только локально"],msgs:[{min:88,msg:"Отличный сигнал — качество волокна"},{min:72,msg:"Сильный сигнал — оптимальное соединение"},{min:50,msg:"Хороший сигнал — стабильный и надёжный"},{min:30,msg:"Средний сигнал — достаточно"},{min:12,msg:"Слабый сигнал — ограниченный приём"},{min:0,msg:"Критический сигнал — соединение нестабильно"}]},
+  ja:{tap_lbl:"· タップして開始 ·",c_eye:"プライバシーポリシーをお読みください",c_sub:"このアプリは完全にローカルで動作します。<br>サーバーなし。トラッキングなし。",c_chk:"プライバシーポリシーを読み、同意します。",c_ok:"開始",s_title:"設定",s_opt:"オプション",s_feat:"機能一覧",h_ready:"準備完了",h_scan:"スキャン中",h_pause:"一時停止",ml_sig:"シグナル",ml_dl:"ダウンロード",ml_rtt:"遅延",l_s:"強",l_g:"良",l_m:"中",l_w:"弱",btn_start:"スキャン開始",btn_stop:"スキャン停止",bd_current:"アクティブな接続",bd_main:"実データ",bd_est:"推定値",bd_stability:"安定性",feats:["NetworkInformation APIによるリアルタイム","インタラクティブネットワークバブル + AR","3.75秒シネマティックイントロ","12言語対応","GDPR準拠 · ローカルのみ"],msgs:[{min:88,msg:"優れたシグナル — 光ファイバー品質"},{min:72,msg:"強いシグナル — 最適な接続"},{min:50,msg:"良好なシグナル — 安定・信頼性高"},{min:30,msg:"中程度のシグナル — 十分"},{min:12,msg:"弱いシグナル — 受信制限あり"},{min:0,msg:"クリティカルシグナル — 接続不安定"}]},
+  hr:{tap_lbl:"· Dodirnite za Pokretanje ·",c_eye:"Molimo pročitajte Politiku privatnosti",c_sub:"Ova app radi potpuno lokalno.<br>Bez servera. Bez praćenja.",c_chk:"Pročitao/la sam Politiku privatnosti i slažem se.",c_ok:"Pokreni",s_title:"POSTAVKE",s_opt:"OPCIJE",s_feat:"FUNKCIJE",h_ready:"SPREMAN",h_scan:"SKENIRANJE",h_pause:"PAUZA",ml_sig:"SIGNAL",ml_dl:"PREUZIMANJE",ml_rtt:"LATENCIJA",l_s:"JAK",l_g:"DOBAR",l_m:"SREDNJI",l_w:"SLAB",btn_start:"Pokreni skeniranje",btn_stop:"Zaustavi skeniranje",bd_current:"Aktivna veza",bd_main:"Stvarni podaci",bd_est:"Procijenjeno",bd_stability:"STABILNOST",feats:["Stvarno vrijeme putem NetworkInformation API","Interaktivni mrežni mjehurići + AR","3.75s kinematski uvod + jingle","12 jezika dostupno","Sukladno GDPR-u · samo lokalno"],msgs:[{min:88,msg:"Izvrstan signal — kvaliteta optike"},{min:72,msg:"Jak signal — optimalna veza"},{min:50,msg:"Dobar signal — stabilan i pouzdan"},{min:30,msg:"Srednji signal — dovoljan"},{min:12,msg:"Slab signal — ograničen prijem"},{min:0,msg:"Kritičan signal — veza nestabilna"}]},
+  sr:{tap_lbl:"· Додирните за Почетак ·",c_eye:"Молимо прочитајте Политику приватности",c_sub:"Ова апп ради потпуно локално.<br>Без сервера. Без праћења.",c_chk:"Прочитао/ла сам Политику приватности и слажем се.",c_ok:"Покрени",s_title:"ПОДЕШАВАЊА",s_opt:"ОПЦИЈЕ",s_feat:"ФУНКЦИЈЕ",h_ready:"СПРЕМАН",h_scan:"СКЕНИРАЊЕ",h_pause:"ПАУЗА",ml_sig:"СИГНАЛ",ml_dl:"ПРЕУЗИМАЊЕ",ml_rtt:"ЛАТЕНЦИЈА",l_s:"ЈАК",l_g:"ДОБАР",l_m:"СРЕДЊИ",l_w:"САБ",btn_start:"Покрени скенирање",btn_stop:"Заустави скенирање",bd_current:"Активна веза",bd_main:"Стварни подаци",bd_est:"Процењено",bd_stability:"СТАБИЛНОСТ",feats:["Реално време преко NetworkInformation API","Интерактивни мрежни мехурићи + AR","3.75с кинематски увод + џингл","12 језика доступно","Усклађено са GDPR-ом · само локално"],msgs:[{min:88,msg:"Одличан сигнал — квалитет оптике"},{min:72,msg:"Јак сигнал — оптимална веза"},{min:50,msg:"Добар сигнал — стабилан и поуздан"},{min:30,msg:"Средњи сигнал — довољан"},{min:12,msg:"Слаб сигнал — ограничен пријем"},{min:0,msg:"Критичан сигнал — веза нестабилна"}]}
+};
+var lang=localStorage.getItem('wps_lang')||'de', T=LANGS[lang];
+
+function setLang(l){
+  lang=l; localStorage.setItem('wps_lang',l); T=LANGS[l];
+  var fmap={zh:"'Noto Sans SC'",ar:"'Noto Sans Arabic'",ja:"'Noto Sans JP'",hi:"'Noto Sans Devanagari'"};
+  document.body.style.fontFamily=(fmap[l]||"'Space Grotesk'")+",sans-serif";
+  document.body.dir=l==='ar'?'rtl':'ltr';
+  applyLang();
+}
+function applyLang(){
+  T=LANGS[lang];
+  setText('c-eye',T.c_eye); setHTML('c-sub',T.c_sub); setText('c-chk',T.c_chk); setText('cta',T.c_ok);
+  var cl=$(  'c-leg'); if(cl) cl.textContent=LEG[lang];
+  setText('s-title',T.s_title); setText('s-opt',T.s_opt); setText('s-feat',T.s_feat);
+  setText('ml-sig',T.ml_sig); setText('ml-dl',T.ml_dl); setText('ml-rtt',T.ml_rtt);
+  setText('l-s',T.l_s); setText('l-g',T.l_g); setText('l-m',T.l_m); setText('l-w',T.l_w);
+  var bi=$('badge-inner');
+  if(bi) bi.textContent=S.scanning?T.h_scan:S.paused?T.h_pause:T.h_ready;
+  setText('btn-lbl',S.scanning?T.btn_stop:T.btn_start);
+  var fl=$('feat-list');
+  if(fl){fl.innerHTML='';T.feats.forEach(function(f){var li=document.createElement('li');li.textContent=f;fl.appendChild(li);});}
+  document.querySelectorAll('[data-lang]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-lang')===lang);});
+  var tsl=$('tap-start-label'); if(tsl) tsl.textContent=T.tap_lbl||'· Tap to Start ·';
+}
+
+// ─── NETWORK API ─────────────────────────────────────────────
+var NET={supported:false,type:'unknown',effectiveType:'4g',rtt:0,downlink:0,sigPct:0};
+
+// Real HTTP-RTT measurement — actual fetch roundtrip, not Navigator estimate
+var _rttBuf=[], _dlBuf=[], _rttIdx=0;
+var RTT_TARGETS=[
+  'https://1.1.1.1/cdn-cgi/trace',       // Cloudflare – schnell, weit verbreitet
+  'https://dns.google/resolve?name=a.a',  // Google DNS
+  'https://8.8.8.8'                        // Google fallback
+];
+
+function measureRealRTT(){
+  var url=RTT_TARGETS[(_rttIdx++)%RTT_TARGETS.length]+'?_='+Date.now();
+  var t0=performance.now();
+  return fetch(url,{mode:'no-cors',cache:'no-store'})
+    .then(function(){
+      var rtt=Math.round(performance.now()-t0);
+      _rttBuf.push(rtt);
+      if(_rttBuf.length>8) _rttBuf.shift();
+      // Median of buffer — robust against outliers
+      var sorted=_rttBuf.slice().sort(function(a,b){return a-b;});
+      NET.rtt=sorted[Math.floor(sorted.length/2)];
+      return NET.rtt;
+    })
+    .catch(function(){return NET.rtt;});
+}
+
+// Real download speed — fetch known payload, measure throughput
+var _dlMeasuring=false;
+function measureRealDownload(){
+  if(_dlMeasuring) return;
+  _dlMeasuring=true;
+  // Use Cloudflare's 100kB speed-test endpoint
+  var url='https://speed.cloudflare.com/__down?bytes=102400&_='+Date.now();
+  var t0=performance.now();
+  fetch(url,{cache:'no-store'})
+    .then(function(r){return r.arrayBuffer();})
+    .then(function(buf){
+      var elapsed=(performance.now()-t0)/1000;
+      var mbps=(buf.byteLength*8/1000000)/elapsed;
+      mbps=Math.round(mbps*10)/10;
+      _dlBuf.push(mbps);
+      if(_dlBuf.length>4) _dlBuf.shift();
+      var avg=_dlBuf.reduce(function(a,b){return a+b;},0)/_dlBuf.length;
+      NET.downlink=Math.round(avg*10)/10;
+      _dlMeasuring=false;
+    })
+    .catch(function(){_dlMeasuring=false;});
+}
+
+function estimateBand(){
+  var c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  if(!c) return 'unknown';
+  if(c.type==='cellular') return 'LTE';
+  if(c.type==='ethernet') return 'LAN';
+  if(c.type==='wifi'){
+    // Use real measured RTT for band estimation
+    var rtt=NET.rtt||c.rtt||999;
+    var dl=NET.downlink||c.downlink||0;
+    if(rtt<20&&dl>50) return '6';   // WiFi 6E / ax
+    if(rtt<30&&dl>20) return '5';
+    if(rtt<60) return '5';
+    return '2.4';
+  }
+  return 'unknown';
+}
+
+// Signal quality from REAL measured RTT + downlink
+function calcSigPct(){
+  var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  var rtt=NET.rtt||(conn?conn.rtt:0)||150;
+  var dl=NET.downlink||(conn?conn.downlink:0)||1;
+  var et=conn?conn.effectiveType:'4g';
+  // Base from effective type
+  var base=et==='4g'?65:et==='3g'?38:et==='2g'?16:5;
+  // Real RTT score: 0ms→+30, 300ms→0, >500ms→-15
+  var rttScore=clamp(Math.round(30-rtt*0.10),-15,30);
+  // Real download score: 0Mbps→0, 100Mbps→+25
+  var dlScore=clamp(Math.round(dl*0.25),0,25);
+  // Connection type bonus
+  var typeBonus=conn?(conn.type==='wifi'?5:conn.type==='ethernet'?10:0):0;
+  return clamp(base+rttScore+dlScore+typeBonus,2,99);
+}
+
+function initNetworkAPI(){
+  var a=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  NET.supported=true; // We have fetch-based measurement as fallback
+  if(a){
+    NET.type=a.type||'unknown';
+    NET.effectiveType=a.effectiveType||'4g';
+    a.addEventListener('change',function(){
+      NET.type=a.type||'unknown';
+      NET.effectiveType=a.effectiveType||'4g';
+    });
+  }
+  // Kick off first real measurements immediately
+  measureRealRTT().then(function(){
+    NET.sigPct=calcSigPct();
+    if(S.scanning) applyRealData();
+  });
+  measureRealDownload();
+  // Poll RTT every 1.5s — real, variable values
+  setInterval(function(){
+    measureRealRTT().then(function(){
+      NET.sigPct=calcSigPct();
+      if(S.scanning) applyRealData();
+    });
+  },1500);
+  // Poll download every 8s — heavier request
+  setInterval(measureRealDownload,8000);
+}
+function applyRealData(){
+  S.dSig=NET.sigPct; S.dPing=NET.rtt; S.dDL=NET.downlink; S.dDBm=sigToDBm(NET.sigPct);
+}
+function sigToDBm(pct){return Math.round(pct/100*75-95);}
+
+// ─── COLOUR HELPERS ──────────────────────────────────────────
+function sigCol(s,a){
+  if(s>=72) return 'rgba(0,255,136,'+a+')';
+  if(s>=50) return 'rgba(212,175,55,'+a+')';
+  if(s>=28) return 'rgba(240,112,0,'+a+')';
+  return 'rgba(255,51,51,'+a+')';
+}
+function sigColRGB(s){
+  if(s>=72) return '0,255,136';
+  if(s>=50) return '212,175,55';
+  if(s>=28) return '240,112,0';
+  return '255,51,51';
+}
+
+// ─── CANVAS + STATE ──────────────────────────────────────────
+var S={
+  scanning:false,paused:false,
+  dSig:0,dPing:0,dDL:0,dDBm:-95,
+  dots:[],maxDots:120,
+  sweep:0,sweepSpd:0.016,
+  hapticIv:null,raf:null,
+  msgTimer:0,msgIdx:0,lastT:0,
+  filterActive:'all',
+  radarExpanded:false,
+  arMode:false
+};
+var CAM={stream:null,active:false};
+var HAPTIC_BASE=380;
+var BUBBLES=[];
+var SELECTED_BUBBLE=null;
+
+// ─── GPS / COMPASS STATE ──────────────────────────────────────
+var GEO={
+  watching:false, watchId:null,
+  heading:null,
+  current:null,   // {lat,lng,acc,ts}
+  origin:null,    // first fix when scan starts
+  trail:[],       // [{dx,dy,sig,rtt,stab,ts}] meters offset from origin
+  scale:50,       // meters at radar radius
+  maxTrail:200
+};
+
+/* ── CLOUD CONFIG ───────────────────────────────────────────────
+   Setzt ein Firebase-Projekt voraus. Schritte:
+   1. console.firebase.google.com → Projekt erstellen
+   2. Realtime Database aktivieren (Testmodus)
+   3. Unten deine Werte eintragen und enabled:true setzen
+   ──────────────────────────────────────────────────────────── */
+var CLOUD={
+  enabled:false,
+  cfg:{
+    apiKey:'YOUR_API_KEY',
+    authDomain:'YOUR_PROJECT.firebaseapp.com',
+    databaseURL:'https://YOUR_PROJECT-default-rtdb.firebaseio.com',
+    projectId:'YOUR_PROJECT_ID',
+    storageBucket:'YOUR_PROJECT.appspot.com',
+    messagingSenderId:'YOUR_SENDER_ID',
+    appId:'YOUR_APP_ID'
+  },
+  db:null, unsub:null,
+  field:[],          // [{la,lo,s,t}] crowd measurements
+  lastUp:0, upIv:9000,
+  radius:0.003       // ~300 m in Grad (Datenschutz-Auflösung ~11 m)
+};
+function _pc(v){return Math.round(v*10000)/10000;} // privacy-coord
+function cloudInit(){
+  if(!CLOUD.enabled||!window.firebase) return;
+  try{
+    if(!firebase.apps.length) firebase.initializeApp(CLOUD.cfg);
+    CLOUD.db=firebase.database();
+  }catch(e){console.warn('[CLOUD]',e.message);CLOUD.enabled=false;}
+}
+function cloudUpload(){
+  if(!CLOUD.enabled||!CLOUD.db||!GEO.current) return;
+  var now=Date.now();
+  if(now-CLOUD.lastUp<CLOUD.upIv) return;
+  CLOUD.lastUp=now;
+  CLOUD.db.ref('sig').push().set({la:_pc(GEO.current.lat),lo:_pc(GEO.current.lng),s:Math.round(S.dSig),t:now})
+    .catch(function(){});
+}
+function cloudSubscribe(){
+  if(!CLOUD.enabled||!CLOUD.db||!GEO.current) return;
+  if(CLOUD.unsub) CLOUD.unsub();
+  var la=GEO.current.lat, r=CLOUD.radius;
+  CLOUD.db.ref('sig').orderByChild('la').startAt(_pc(la-r)).endAt(_pc(la+r)).limitToLast(400)
+    .on('value',function(snap){
+      var d=snap.val()||{}, cut=Date.now()-3600000, lng=GEO.current?GEO.current.lng:0;
+      CLOUD.field=Object.values(d).filter(function(m){return m.t>cut&&Math.abs(m.lo-lng)<r;});
+    });
+  CLOUD.unsub=function(){CLOUD.db.ref('sig').off();};
+}
+function cloudStop(){if(CLOUD.unsub){CLOUD.unsub();CLOUD.unsub=null;} CLOUD.field=[];}
+
+var cv=$('cv'),ctx=cv.getContext('2d'),W=0,H=0,DPR=1;
+
+function resizeCv(){
+  DPR=Math.min(window.devicePixelRatio||1,3);
+  W=window.innerWidth; H=window.innerHeight;
+  cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+  cv.style.width=W+'px'; cv.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  positionUI();
+  if(S.scanning) repositionBubbleHomes();
+}
+function sbPx(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sb'))||0;}
+function positionUI(){
+  var btnR=Math.max(44,Math.round(0.115*Math.min(W,H)));
+  var sb=sbPx();
+  var gearBot=sb+128+2*btnR+10;
+  var gear=$('f-set'), info=$('info-btn'), fb=$('filterbar');
+  if(gear){gear.style.bottom=gearBot+'px'; gear.style.left='14px';}
+  if(info){info.style.bottom=gearBot+'px'; info.style.right='14px';}
+  if(fb) fb.style.bottom=(sb+104)+'px';
+  var leg=$('legend'); if(leg){leg.style.top=(H*0.33)+'px'; leg.style.right='12px';}
+  var smsg=$('smsg'); if(smsg) smsg.style.top=(H*0.17)+'px';
+}
+
+// ─── BUBBLE SYSTEM ───────────────────────────────────────────
+function initBubbles(){
+  BUBBLES=[];
+  var mainSig=NET.sigPct||65;
+  var cx=W*0.50, cy=H*0.40;
+  // Main connection bubble
+  BUBBLES.push({
+    id:'main', x:cx, y:cy, homeX:cx, homeY:cy, vx:0, vy:0,
+    r:clamp(48+mainSig*0.52,48,100),
+    sig:mainSig, baseSig:mainSig,
+    dbm:sigToDBm(mainSig),
+    type:NET.type||'wifi', band:estimateBand(),
+    effectiveType:NET.effectiveType||'4g',
+    isMain:true, label:'', history:[mainSig], histTimer:0
+  });
+  // Simulated neighbor APs
+  var count=4+Math.floor(Math.random()*3);
+  var bands=['2.4','5','2.4','5','6','2.4'];
+  for(var i=0;i<count;i++){
+    var angle=(i/count)*Math.PI*2+(Math.random()-0.5)*0.7;
+    var minD=BUBBLES[0].r+38+Math.random()*20;
+    var dist=minD+Math.random()*70;
+    var nsig=clamp(mainSig-10-Math.random()*45,4,90);
+    var nx=clamp(cx+Math.cos(angle)*dist,52,W-52);
+    var ny=clamp(cy+Math.sin(angle)*dist,75,H-185);
+    BUBBLES.push({
+      id:'ap'+i, x:nx, y:ny, homeX:nx, homeY:ny,
+      vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4,
+      r:clamp(18+nsig*0.38,18,56),
+      sig:nsig, baseSig:nsig,
+      dbm:sigToDBm(nsig),
+      type:'wifi', band:bands[i%bands.length],
+      effectiveType:nsig>70?'4g':nsig>40?'3g':'2g',
+      isMain:false, label:'AP-'+(i+1<10?'0':'')+(i+1),
+      history:[nsig], histTimer:0
+    });
+  }
+}
+function repositionBubbleHomes(){
+  if(!BUBBLES.length) return;
+  var cx=W*0.50, cy=H*0.40;
+  BUBBLES[0].homeX=cx; BUBBLES[0].homeY=cy;
+}
+function updateBubblePhysics(dt){
+  BUBBLES.forEach(function(b){
+    // Update main from real data
+    if(b.isMain&&NET.supported){
+      b.sig=NET.sigPct; b.dbm=sigToDBm(NET.sigPct);
+      b.r=clamp(48+NET.sigPct*0.52,48,100);
+      b.effectiveType=NET.effectiveType; b.type=NET.type;
+    } else if(!b.isMain){
+      // Gentle signal noise for realism
+      b.sig=clamp(b.sig+(Math.random()-0.5)*0.5,b.baseSig-6,b.baseSig+6);
+      b.dbm=sigToDBm(b.sig);
+    }
+    // History (every ~500ms)
+    b.histTimer=(b.histTimer||0)+dt;
+    if(b.histTimer>=500){
+      b.histTimer=0;
+      b.history.push(Math.round(b.sig));
+      if(b.history.length>40) b.history.shift();
+    }
+    // Spring physics — smooth, not nervous
+    var dx=b.homeX-b.x, dy=b.homeY-b.y;
+    b.vx+=dx*0.006+(Math.random()-0.5)*0.10;
+    b.vy+=dy*0.006+(Math.random()-0.5)*0.10;
+    b.vx*=0.88; b.vy*=0.88;
+    var spd=dt*0.055;
+    b.x+=b.vx*spd; b.y+=b.vy*spd;
+    // Soft boundary
+    var m=b.r+8, topM=72, botM=170;
+    if(b.x<m) b.vx+=0.6;
+    if(b.x>W-m) b.vx-=0.6;
+    if(b.y<topM+m) b.vy+=0.6;
+    if(b.y>H-botM-m) b.vy-=0.6;
+  });
+}
+function drawBubbles(){
+  var af=S.filterActive;
+  BUBBLES.forEach(function(b){
+    // Filter
+    var vis=true;
+    if(af==='wifi'&&b.type!=='wifi') vis=false;
+    if(af==='cellular'&&b.type!=='cellular') vis=false;
+    if(af==='strong'&&b.sig<70) vis=false;
+    if(af==='5ghz'&&b.band!=='5') vis=false;
+    var alpha=vis?1:0.1;
+    var rgb=sigColRGB(b.sig);
+    var pulse=b.isMain?(0.84+0.16*Math.sin(Date.now()*0.0022)):1;
+
+    // Outer bloom glow
+    var bR=b.r*(b.isMain?3.0:2.2);
+    var glow=ctx.createRadialGradient(b.x,b.y,b.r*0.4,b.x,b.y,bR);
+    glow.addColorStop(0,'rgba('+rgb+','+(0.13*alpha*pulse)+')');
+    glow.addColorStop(1,'rgba('+rgb+',0)');
+    ctx.beginPath(); ctx.arc(b.x,b.y,bR,0,Math.PI*2); ctx.fillStyle=glow; ctx.fill();
+
+    // Glass bubble body
+    var body=ctx.createRadialGradient(b.x-b.r*0.28,b.y-b.r*0.28,0,b.x,b.y,b.r);
+    body.addColorStop(0,'rgba('+rgb+','+(0.30*alpha)+')');
+    body.addColorStop(0.55,'rgba('+rgb+','+(0.09*alpha)+')');
+    body.addColorStop(1,'rgba('+rgb+','+(0.02*alpha)+')');
+    ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fillStyle=body; ctx.fill();
+
+    // Rim
+    ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+    ctx.strokeStyle='rgba('+rgb+','+(0.62*alpha*pulse)+')';
+    ctx.lineWidth=b.isMain?1.6:0.9; ctx.stroke();
+
+    // Specular highlight (glass gleam)
+    var sx=b.x-b.r*0.28, sy=b.y-b.r*0.30, sr=b.r*0.22;
+    var spec=ctx.createRadialGradient(sx,sy,0,sx,sy,sr);
+    spec.addColorStop(0,'rgba(255,255,255,'+(0.14*alpha)+')');
+    spec.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2); ctx.fillStyle=spec; ctx.fill();
+
+    // Labels
+    if(b.r>=20){
+      var fs=clamp(Math.round(b.r*0.30),8,15);
+      ctx.font='bold '+fs+'px "Space Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle='rgba('+rgb+','+(0.96*alpha)+')';
+      var labelY=b.r>=36?b.y-fs*0.5:b.y;
+      ctx.fillText(Math.round(b.sig)+'%',b.x,labelY);
+      if(b.r>=36){
+        var fs2=clamp(Math.round(b.r*0.18),7,11);
+        ctx.font='500 '+fs2+'px "Space Grotesk",sans-serif';
+        ctx.fillStyle='rgba(255,255,255,'+(0.42*alpha)+')';
+        ctx.fillText(b.dbm+' dBm',b.x,b.y+fs*0.5+fs2*0.2);
+      }
+      if(b.r>=52&&b.band&&b.band!=='unknown'){
+        var bs=clamp(Math.round(b.r*0.16),7,10);
+        ctx.font='500 '+bs+'px "Space Grotesk",sans-serif';
+        ctx.fillStyle='rgba(212,175,55,'+(0.48*alpha)+')';
+        var bandTxt=b.band==='5'?'5 GHz':b.band==='2.4'?'2.4 GHz':b.band;
+        ctx.fillText(bandTxt,b.x,b.y+fs*0.5+fs2*0.5+bs+2);
+      }
+    }
+    // Label tag for small bubbles
+    if(b.r<20&&vis){
+      ctx.font='bold 8px "Space Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='top';
+      ctx.fillStyle='rgba('+rgb+',0.7)';
+      ctx.fillText(b.label,b.x,b.y+b.r+3);
+    }
+  });
+}
+
+// ─── BUBBLE INTERACTION ──────────────────────────────────────
+function handleCanvasTouch(e){
+  if(!S.scanning) return;
+  var touch=e.changedTouches?e.changedTouches[0]:e;
+  var rect=cv.getBoundingClientRect();
+  var mx=touch.clientX-rect.left, my=touch.clientY-rect.top;
+  // Radar tap — toggle expanded
+  if($('tog-rad')&&$('tog-rad').checked){
+    if(S.radarExpanded){S.radarExpanded=false;return;}
+    var sb2r=sbPx(), rR=Math.min(Math.max(36,Math.round(0.115*Math.min(W,H))),52);
+    var rrx=16+rR, rry=H-sb2r-16-rR;
+    if(Math.sqrt((mx-rrx)*(mx-rrx)+(my-rry)*(my-rry))<=rR+18){S.radarExpanded=true;return;}
+  }
+  // Bubble tap
+  for(var i=BUBBLES.length-1;i>=0;i--){
+    var b=BUBBLES[i];
+    var d=Math.sqrt((mx-b.x)*(mx-b.x)+(my-b.y)*(my-b.y));
+    if(d<=b.r+10){showBubbleDetail(b);return;}
+  }
+}
+function showBubbleDetail(b){
+  SELECTED_BUBBLE=b;
+  var name=b.isMain?T.bd_current:b.label;
+  setText('bdetail-name',name);
+  var hint=b.isMain?T.bd_main:T.bd_est;
+  setText('bdetail-dbm',b.dbm+' dBm · '+hint+(b.isMain?'':' · NetworkInformation API'));
+  var stab=calcStability(b);
+  var band=b.band==='5'?'5 GHz':b.band==='2.4'?'2.4 GHz':b.band==='6'?'6 GHz':b.band==='LTE'?'LTE/4G':b.band;
+  var tp=b.type==='wifi'?'WiFi':b.type==='cellular'?'Mobilfunk':b.type;
+  var rttTxt=b.isMain?(NET.rtt?NET.rtt+' ms':'—'):'—';
+  var dlTxt=b.isMain?(NET.downlink?NET.downlink+' Mbps':'—'):'—';
+  var grid=$('bdetail-grid');
+  if(grid) grid.innerHTML=[
+    bdCell('SIGNAL',Math.round(b.sig)+'%',''),
+    bdCell('BAND',band||'—',b.isMain?'':T.bd_est),
+    bdCell('TYPE',tp||'—',''),
+    bdCell('EFF.',b.effectiveType?b.effectiveType.toUpperCase():'—',''),
+    bdCell('RTT',rttTxt,''),
+    bdCell('DOWNLOAD',dlTxt,''),
+    bdCell(T.bd_stability,stab+'%','letzte '+b.history.length+' Messg.'),
+    bdCell('QUALITÄT',stab>80?'stabil':stab>55?'mittel':'variabel','')
+  ].join('');
+  drawSparkline(b);
+  var ov=$('bdetail'); if(ov) ov.classList.add('open');
+  if(navigator.vibrate) navigator.vibrate(6);
+}
+function bdCell(lbl,val,note){
+  return '<div class="bd-cell"><div class="bd-lbl">'+lbl+'</div><div class="bd-val">'+val+'</div>'+(note?'<div class="bd-note">'+note+'</div>':'')+'</div>';
+}
+function calcStability(b){
+  if(!b.history||b.history.length<2) return 100;
+  var sum=0;
+  for(var i=1;i<b.history.length;i++) sum+=Math.abs(b.history[i]-b.history[i-1]);
+  return Math.round(clamp(100-sum/(b.history.length-1)*3,0,100));
+}
+function drawSparkline(b){
+  var canvas=$('bdetail-spark'); if(!canvas||!b.history||b.history.length<2) return;
+  var sc=canvas.getContext('2d');
+  var sw=canvas.offsetWidth||300, sh=46;
+  canvas.width=sw; canvas.height=sh;
+  sc.clearRect(0,0,sw,sh);
+  var data=b.history;
+  var mn=Math.min.apply(null,data), mx=Math.max.apply(null,data), rng=mx-mn||1;
+  var rgb=sigColRGB(b.sig);
+  sc.beginPath();
+  data.forEach(function(v,i){
+    var x=(i/(data.length-1))*sw;
+    var y=sh-4-((v-mn)/rng)*(sh-8);
+    i===0?sc.moveTo(x,y):sc.lineTo(x,y);
+  });
+  sc.strokeStyle='rgba('+rgb+',0.9)'; sc.lineWidth=1.5; sc.lineJoin='round'; sc.stroke();
+  sc.lineTo(sw,sh); sc.lineTo(0,sh); sc.closePath();
+  var fill=sc.createLinearGradient(0,0,0,sh);
+  fill.addColorStop(0,'rgba('+rgb+',0.20)'); fill.addColorStop(1,'rgba('+rgb+',0)');
+  sc.fillStyle=fill; sc.fill();
+}
+function closeBubbleDetail(){
+  var ov=$('bdetail'); if(ov) ov.classList.remove('open');
+}
+
+// ─── FILTER ──────────────────────────────────────────────────
+function setFilter(f){
+  S.filterActive=f;
+  document.querySelectorAll('.fb').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-f')===f);});
+}
+
+// ─── GEOLOCATION / GPS TRAIL ─────────────────────────────────
+function latLngToXY(oLat,oLng,lat,lng){
+  var dy=-(lat-oLat)*111000;                          // metres, north=negative screen y
+  var dx=(lng-oLng)*111000*Math.cos(oLat*Math.PI/180);
+  return{dx:dx,dy:dy};
+}
+function autoScaleRadar(){
+  if(!GEO.trail.length||!GEO.current) return;
+  var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
+  var maxD=20;
+  GEO.trail.forEach(function(p){
+    var d=Math.sqrt((p.dx-cur.dx)*(p.dx-cur.dx)+(p.dy-cur.dy)*(p.dy-cur.dy));
+    if(d>maxD) maxD=d;
+  });
+  GEO.scale=maxD*1.25;
+}
+function onGeoSuccess(pos){
+  var lat=pos.coords.latitude, lng=pos.coords.longitude, acc=pos.coords.accuracy;
+  if(!GEO.origin) GEO.origin={lat:lat,lng:lng};
+  GEO.current={lat:lat,lng:lng,acc:acc,ts:Date.now()};
+  var off=latLngToXY(GEO.origin.lat,GEO.origin.lng,lat,lng);
+  // Rolling stability score for this GPS fix (last 4 points)
+  var stab=1.0;
+  if(GEO.trail.length>=4){
+    var rc=GEO.trail.slice(-4);
+    var ra=rc.reduce(function(a,p){return a+p.sig;},0)/4;
+    var rv=rc.reduce(function(a,p){return a+(p.sig-ra)*(p.sig-ra);},0)/4;
+    stab=1/(1+rv/300);
+  }
+  GEO.trail.push({dx:off.dx,dy:off.dy,sig:S.dSig,rtt:S.dPing,ts:Date.now(),stab:stab});
+  if(GEO.trail.length>GEO.maxTrail) GEO.trail.shift();
+  autoScaleRadar();
+  cloudUpload();
+}
+function onDeviceOrientation(e){
+  if(e.webkitCompassHeading!=null) GEO.heading=e.webkitCompassHeading;
+  else if(e.alpha!=null) GEO.heading=(360-e.alpha)%360;
+}
+function initGeolocation(){
+  if(!navigator.geolocation||GEO.watching) return;
+  GEO.watching=true; GEO.trail=[]; GEO.origin=null; GEO.current=null; GEO.scale=50;
+  GEO.watchId=navigator.geolocation.watchPosition(onGeoSuccess,function(){},{
+    enableHighAccuracy:true,maximumAge:2000,timeout:15000
+  });
+  if(window.DeviceOrientationEvent){
+    if(typeof DeviceOrientationEvent.requestPermission==='function'){
+      DeviceOrientationEvent.requestPermission().then(function(s){
+        if(s==='granted') window.addEventListener('deviceorientation',onDeviceOrientation);
+      }).catch(function(){});
+    } else {
+      window.addEventListener('deviceorientation',onDeviceOrientation);
+    }
+  }
+}
+function stopGeolocation(){
+  if(!GEO.watching) return;
+  GEO.watching=false;
+  if(GEO.watchId!==null){navigator.geolocation.clearWatch(GEO.watchId);GEO.watchId=null;}
+  window.removeEventListener('deviceorientation',onDeviceOrientation);
+}
+
+function computeSoftnessField(){
+  if(!GEO.current||GEO.trail.length<4) return null;
+  var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
+  var N=8, secs=[];
+  for(var i=0;i<N;i++) secs.push({sum:0,sum2:0,cnt:0,avg:0,stability:0,softness:0});
+  GEO.trail.forEach(function(p){
+    var dx=p.dx-cur.dx, dy=p.dy-cur.dy;
+    if(Math.sqrt(dx*dx+dy*dy)<4) return;
+    var ang=(Math.atan2(dy,dx)+Math.PI/2+Math.PI*2)%(Math.PI*2);
+    var si=Math.floor(ang/(Math.PI*2/N))%N;
+    secs[si].sum+=p.sig; secs[si].sum2+=p.sig*p.sig; secs[si].cnt++;
+  });
+  secs.forEach(function(s){
+    if(s.cnt<2){return;}
+    s.avg=s.sum/s.cnt;
+    var variance=(s.sum2/s.cnt)-(s.avg*s.avg);
+    s.stability=1/(1+variance/300); // 1=perfekt stabil, 0=sehr schwankend
+    s.softness=s.avg*s.stability;   // 0-100 kombinierter Score
+  });
+  return secs;
+}
+function currentSoftness(){
+  if(GEO.trail.length<4) return null;
+  var pts=GEO.trail.slice(-8), n=pts.length;
+  var avg=pts.reduce(function(a,p){return a+p.sig;},0)/n;
+  var v=pts.reduce(function(a,p){return a+(p.sig-avg)*(p.sig-avg);},0)/n;
+  var stab=1/(1+v/300);
+  return {avg:avg,stability:stab,score:avg*stab};
+}
+function softnessCol(score,alpha){
+  // Violett (rau/schwach) → Blau → Gold (sanft/stark)
+  var t=Math.min(1,score/75), r,g,b;
+  if(t<0.45){var u=t/0.45; r=Math.round(70*(1-u)); g=Math.round(10+60*u); b=Math.round(110+90*u);}
+  else{var u=(t-0.45)/0.55; r=Math.round(212*u); g=Math.round(70+105*u); b=Math.round(200*(1-u)+55*u);}
+  return 'rgba('+r+','+g+','+b+','+(alpha||0.42)+')';}
+function signalTrend(){
+  if(GEO.trail.length<6) return 0;
+  var n=Math.min(10,GEO.trail.length), pts=GEO.trail.slice(-n), h=Math.floor(n/2);
+  var a1=pts.slice(0,h).reduce(function(s,p){return s+p.sig;},0)/h;
+  var a2=pts.slice(h).reduce(function(s,p){return s+p.sig;},0)/(n-h);
+  return a2-a1;
+}
+window.grantGps=function(){
+  localStorage.setItem('wps_gps_perm','yes');
+  var e=$('gps-permit'); if(e) e.classList.remove('open');
+  initGeolocation();
+};
+window.skipGps=function(){
+  localStorage.setItem('wps_gps_perm','no');
+  var e=$('gps-permit'); if(e) e.classList.remove('open');
+};
+
+// ─── RADAR DOTS ──────────────────────────────────────────────
+function spawnDot(){
+  S.dots.length>=S.maxDots&&S.dots.shift();
+  var a=Math.random()*Math.PI*2, r2=28+Math.random()*Math.min(W,H)*0.4;
+  // Strong signals stay longer in radar memory
+  var lifeM=S.dSig>75?3.2:S.dSig>50?1.9:1.0;
+  S.dots.push({
+    x:W*0.5+Math.cos(a)*r2, y:H*0.5+Math.sin(a)*r2,
+    sig:S.dSig, age:0, life:(3200+4000*Math.random())*lifeM,
+    r:2.5+5.5*Math.random(), vx:0.28*(Math.random()-0.5), vy:0.28*(Math.random()-0.5)
+  });
+}
+function drawRadar(){
+  if(!$('tog-rad').checked) return;
+  var sb2=sbPx();
+  var btnR, rx, ry;
+  if(S.radarExpanded){
+    btnR=Math.round(Math.min(W,H)*0.38);
+    rx=W*0.5; ry=H*0.5;
+    ctx.fillStyle='rgba(0,0,10,.80)'; ctx.fillRect(0,0,W,H);
+    var hfs=Math.max(8,Math.round(0.022*Math.min(W,H)));
+    ctx.font='600 '+hfs+'px "Space Mono",monospace';
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.fillStyle='rgba(255,255,255,.20)';
+    ctx.fillText('· TIPPEN ZUM SCHLIEẞEN ·',W*0.5,Math.max(16,sb2+10));
+  } else {
+    btnR=Math.min(Math.max(36,Math.round(0.115*Math.min(W,H))),52);
+    rx=16+btnR; ry=H-sb2-16-btnR;
+  }
+  ctx.save();
+
+  // Clip so drawing stays inside the circle
+  ctx.beginPath(); ctx.arc(rx,ry,btnR+3,0,2*Math.PI); ctx.clip();
+
+  // Background fill
+  ctx.beginPath(); ctx.arc(rx,ry,btnR+3,0,2*Math.PI);
+  ctx.fillStyle='rgba(0,0,8,.94)'; ctx.fill();
+
+  // ── SANFTHEITSGRADIENT-FELD ─────────────────────────────────
+  var secs=computeSoftnessField();
+  var bestSecIdx=-1, bestSoftness=0;
+  if(secs){
+    var SN=8;
+    // Blurred pass → weicher Gradient zwischen Sektoren
+    ctx.save();
+    ctx.filter='blur('+Math.round(btnR*0.30)+'px)';
+    secs.forEach(function(s,i){
+      if(!s.cnt) return;
+      if(s.softness>bestSoftness){bestSoftness=s.softness;bestSecIdx=i;}
+      var a0=-Math.PI/2+(i/SN)*Math.PI*2;
+      var a1=-Math.PI/2+((i+1)/SN)*Math.PI*2;
+      ctx.beginPath(); ctx.moveTo(rx,ry);
+      ctx.arc(rx,ry,btnR,a0,a1); ctx.closePath();
+      ctx.fillStyle=softnessCol(s.softness,0.52); ctx.fill();
+    });
+    ctx.restore();
+    // Leuchtbogen am Rand für die weichste Zone
+    if(bestSecIdx>=0&&bestSoftness>20){
+      var ga0=-Math.PI/2+(bestSecIdx/SN)*Math.PI*2;
+      var ga1=-Math.PI/2+((bestSecIdx+1)/SN)*Math.PI*2;
+      ctx.beginPath(); ctx.arc(rx,ry,btnR,ga0,ga1);
+      ctx.strokeStyle=softnessCol(bestSoftness,0.90);
+      ctx.lineWidth=2.5; ctx.stroke();
+    }
+  }
+
+  // ── CLOUD-SIGNAL-FELD (Crowd-Messungen) ─────────────────────
+  if(CLOUD.enabled&&CLOUD.field.length&&GEO.current&&GEO.origin){
+    var ccur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
+    var cscl=btnR/GEO.scale, now3=Date.now();
+    CLOUD.field.forEach(function(m){
+      if(!m.la||!m.lo) return;
+      var mOff=latLngToXY(GEO.origin.lat,GEO.origin.lng,m.la,m.lo);
+      var mx=rx+(mOff.dx-ccur.dx)*cscl, my=ry+(mOff.dy-ccur.dy)*cscl;
+      if(Math.sqrt((mx-rx)*(mx-rx)+(my-ry)*(my-ry))>btnR) return;
+      var age=(now3-m.t)/3600000, alpha=Math.max(0.06,0.55-age*0.5);
+      var bg=ctx.createRadialGradient(mx,my,0,mx,my,btnR*0.16);
+      bg.addColorStop(0,sigCol(m.s,alpha*1.3));
+      bg.addColorStop(1,sigCol(m.s,0));
+      ctx.beginPath(); ctx.arc(mx,my,btnR*0.16,0,Math.PI*2);
+      ctx.fillStyle=bg; ctx.fill();
+      ctx.beginPath(); ctx.arc(mx,my,2,0,Math.PI*2);
+      ctx.fillStyle=sigCol(m.s,alpha+0.25); ctx.fill();
+    });
+  }
+
+  // Rings
+  ctx.beginPath(); ctx.arc(rx,ry,btnR,0,2*Math.PI);
+  ctx.strokeStyle='rgba(212,175,55,.30)'; ctx.lineWidth=1; ctx.stroke();
+  [0.34,0.67].forEach(function(s){
+    ctx.beginPath(); ctx.arc(rx,ry,btnR*s,0,2*Math.PI);
+    ctx.strokeStyle='rgba(0,255,136,.08)'; ctx.lineWidth=0.5; ctx.stroke();
+  });
+
+  // Cross-hair
+  ctx.strokeStyle='rgba(0,255,136,.09)'; ctx.lineWidth=0.5;
+  ctx.beginPath();
+  ctx.moveTo(rx-btnR,ry); ctx.lineTo(rx+btnR,ry);
+  ctx.moveTo(rx,ry-btnR); ctx.lineTo(rx,ry+btnR);
+  ctx.stroke();
+
+  // Sweep trail
+  for(var i2=0;i2<28;i2++){
+    var sa1=S.sweep-i2/28*(0.6*Math.PI), sa2=S.sweep-(i2+1)/28*(0.6*Math.PI);
+    ctx.beginPath(); ctx.moveTo(rx,ry); ctx.arc(rx,ry,btnR,sa1,sa2,true); ctx.closePath();
+    ctx.fillStyle='rgba(0,255,136,'+(0.15*(0.95-i2/28))+')'; ctx.fill();
+  }
+  ctx.beginPath(); ctx.moveTo(rx,ry);
+  ctx.lineTo(rx+Math.cos(S.sweep)*btnR,ry+Math.sin(S.sweep)*btnR);
+  ctx.strokeStyle='rgba(0,255,136,.70)'; ctx.lineWidth=1.5; ctx.stroke();
+
+  // Radar blips from bubble positions
+  S.dots.forEach(function(d){
+    var dx2=(d.x-W*0.5)/(W*0.5)*btnR*0.88, dy2=(d.y-H*0.5)/(H*0.5)*btnR*0.88;
+    ctx.beginPath(); ctx.arc(rx+dx2,ry+dy2,1.5,0,2*Math.PI);
+    ctx.fillStyle=sigCol(d.sig,0.72*(1-d.age/d.life)); ctx.fill();
+  });
+
+  // ── GPS TRAIL ──────────────────────────────────────────────
+  if(GEO.current&&GEO.trail.length>0){
+    var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
+    var scl=btnR/GEO.scale;
+    // Trail line
+    if(GEO.trail.length>1){
+      ctx.beginPath();
+      GEO.trail.forEach(function(p,i){
+        var px=rx+(p.dx-cur.dx)*scl, py=ry+(p.dy-cur.dy)*scl;
+        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+      });
+      ctx.strokeStyle='rgba(0,200,255,.22)'; ctx.lineWidth=1; ctx.stroke();
+    }
+    // Trail dots: Farbe = Signalstärke, Größe = Stabilität (sanfte Zonen = größere Punkte)
+    var now2=Date.now();
+    GEO.trail.forEach(function(p){
+      var px=rx+(p.dx-cur.dx)*scl, py=ry+(p.dy-cur.dy)*scl;
+      var age=(now2-p.ts)/1000;
+      var dotR=1.2+2.8*(p.stab!==undefined?p.stab:0.5);
+      ctx.beginPath(); ctx.arc(px,py,dotR,0,2*Math.PI);
+      ctx.fillStyle=sigCol(p.sig,Math.max(0.18,0.82-age*0.004)); ctx.fill();
+      // Goldener Halo bei hoher Stabilität
+      if(p.stab>0.80){
+        ctx.beginPath(); ctx.arc(px,py,dotR+2,0,2*Math.PI);
+        ctx.strokeStyle='rgba(212,175,55,'+(0.35*p.stab)+')'; ctx.lineWidth=0.8; ctx.stroke();
+      }
+    });
+    // Thin compass heading needle
+    if(GEO.heading!==null){
+      var hRad2=GEO.heading*Math.PI/180;
+      ctx.beginPath();
+      ctx.moveTo(rx,ry);
+      ctx.lineTo(rx+Math.sin(hRad2)*btnR*0.48, ry-Math.cos(hRad2)*btnR*0.48);
+      ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.lineWidth=1; ctx.stroke();
+    }
+    // User position — pulsing gold dot at center
+    var pulse=0.72+0.28*Math.sin(Date.now()*0.004);
+    ctx.beginPath(); ctx.arc(rx,ry,5*pulse,0,2*Math.PI);
+    ctx.fillStyle='rgba(212,175,55,.95)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(rx,ry,5*pulse,0,2*Math.PI);
+    ctx.strokeStyle='rgba(255,255,255,.60)'; ctx.lineWidth=1.2; ctx.stroke();
+    // Scale label
+    var slbl=GEO.scale<1000?Math.round(GEO.scale)+'m':(GEO.scale/1000).toFixed(1)+'km';
+    ctx.font='500 '+Math.max(6,Math.round(0.10*btnR))+'px "Space Mono",monospace';
+    ctx.textAlign='right'; ctx.textBaseline='bottom';
+    ctx.fillStyle='rgba(0,200,255,.45)';
+    ctx.fillText(slbl,rx+btnR-4,ry+btnR-4);
+  } else {
+    // No GPS fix — standard green center dot
+    ctx.beginPath(); ctx.arc(rx,ry,3,0,2*Math.PI);
+    ctx.fillStyle='rgba(0,255,136,.90)'; ctx.fill();
+    // Blinking "GPS warte..." while watchPosition is active
+    if(S.scanning&&GEO.watching){
+      var blink=0.28+0.22*Math.sin(Date.now()*0.003);
+      ctx.font='600 '+Math.max(6,Math.round(0.14*btnR))+'px "Space Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle='rgba(0,200,255,'+blink+')';
+      ctx.fillText('GPS',rx,ry-btnR*0.30);
+      ctx.font='500 '+Math.max(5,Math.round(0.10*btnR))+'px "Space Mono",monospace';
+      ctx.fillStyle='rgba(255,255,255,.18)';
+      ctx.fillText('warte...',rx,ry+btnR*0.12);
+    }
+  }
+
+  // ── SANFTHEITS-PFEIL ────────────────────────────────────────
+  if(bestSecIdx>=0&&bestSoftness>20){
+    var bAng=-Math.PI/2+(bestSecIdx+0.5)/8*Math.PI*2;
+    var bx=Math.cos(bAng), by=Math.sin(bAng);
+    var arLen=btnR*0.65;
+    var aCol=softnessCol(bestSoftness,1.0);
+    // Schaft: transparent → Sanftheitfarbe
+    var grd=ctx.createLinearGradient(rx+bx*10,ry+by*10,rx+bx*arLen,ry+by*arLen);
+    grd.addColorStop(0,'rgba(212,175,55,0)');
+    grd.addColorStop(0.55,softnessCol(bestSoftness,0.55));
+    grd.addColorStop(1,aCol);
+    ctx.beginPath();
+    ctx.moveTo(rx+bx*10,ry+by*10);
+    ctx.lineTo(rx+bx*arLen,ry+by*arLen);
+    ctx.strokeStyle=grd; ctx.lineWidth=3.2; ctx.stroke();
+    // Pfeilspitze
+    var la=bAng-2.55, ra=bAng+2.55;
+    ctx.beginPath();
+    ctx.moveTo(rx+bx*arLen,ry+by*arLen);
+    ctx.lineTo(rx+bx*arLen+Math.cos(la)*9,ry+by*arLen+Math.sin(la)*9);
+    ctx.lineTo(rx+bx*arLen+Math.cos(ra)*9,ry+by*arLen+Math.sin(ra)*9);
+    ctx.closePath(); ctx.fillStyle=aCol; ctx.fill();
+    // Trend ↑ / ↓ am Schaft
+    var trend=signalTrend();
+    if(Math.abs(trend)>3){
+      ctx.font='700 '+Math.max(7,Math.round(0.16*btnR))+'px "Space Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle=trend>0?'rgba(0,255,136,.90)':'rgba(255,72,50,.85)';
+      ctx.fillText(trend>0?'↑':'↓', rx+bx*arLen*0.40, ry+by*arLen*0.40);
+    }
+    // Sanftheitswert in % (nur im expanded Modus)
+    if(S.radarExpanded){
+      var cs=currentSoftness();
+      if(cs){
+        var pct=Math.round(Math.min(100,cs.score));
+        ctx.font='700 '+Math.max(10,Math.round(0.13*btnR))+'px "Space Mono",monospace';
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillStyle=softnessCol(cs.score,0.95);
+        ctx.fillText(pct+'%', rx, ry-btnR*0.24);
+        ctx.font='500 '+Math.max(7,Math.round(0.08*btnR))+'px "Space Mono",monospace';
+        ctx.fillStyle='rgba(255,255,255,0.28)';
+        ctx.fillText('SANFT', rx, ry-btnR*0.37);
+      }
+    }
+  }
+
+  // N/S/W/O labels — drawn after restore (outside clip)
+  ctx.restore();
+  ctx.save();
+  var fs3=Math.max(7,Math.round(0.17*btnR));
+  ctx.font='500 '+fs3+'px "Space Mono",monospace';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(212,175,55,.42)';
+  [{t:'N',ax:0,ay:-1},{t:'S',ax:0,ay:1},{t:'W',ax:-1,ay:0},{t:'O',ax:1,ay:0}].forEach(function(c){
+    ctx.fillText(c.t,rx+c.ax*(btnR+10),ry+c.ay*(btnR+10));
+  });
+  ctx.restore();
+}
+
+// ─── AR / CAMERA ─────────────────────────────────────────────
+function startCamera(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showToast('Kamera nicht verfügbar');return;}
+  var constraints={video:{facingMode:'environment'},audio:false};
+  navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
+    CAM.stream=stream;CAM.active=true;
+    var v=$('cam-video');v.srcObject=stream;v.style.display='block';
+    var ap=$('app');if(ap)ap.style.background='transparent';
+    S.arMode=true;
+  }).catch(function(){showToast('Kamera-Zugriff verweigert');$('tog-ar').checked=false;});
+}
+function stopCamera(){
+  if(CAM.stream){CAM.stream.getTracks().forEach(function(t){t.stop();});CAM.stream=null;}
+  CAM.active=false;
+  var v=$('cam-video');if(v){v.srcObject=null;v.style.display='none';}
+  var ap=$('app');if(ap)ap.style.background='var(--deep)';
+  S.arMode=false;
+}
+function toggleAR(){
+  if(S.arMode){stopCamera();}else{startCamera();}
+}
+
+// ─── HEATMAP CLOUD ───────────────────────────────────────────
+function drawHeatmap(){
+  if(!GEO.current||GEO.trail.length<2)return;
+  var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
+  var scl=24,now=Date.now(); // larger scale = bigger clouds on screen
+  ctx.save();
+  // Stronger, larger cloud blobs per trail point
+  GEO.trail.forEach(function(p){
+    var px=W*0.5+(p.dx-cur.dx)*scl,py=H*0.5+(p.dy-cur.dy)*scl;
+    var age=(now-p.ts)/60000;
+    var alpha=Math.max(0.18,0.72-age*0.35); // stronger base alpha, faster fade
+    var radius=65+110*(p.sig/100); // much larger radius
+    var grd=ctx.createRadialGradient(px,py,0,px,py,radius);
+    var col=sigColRGB(p.sig);
+    grd.addColorStop(0,'rgba('+col+','+(alpha*0.55)+')');
+    grd.addColorStop(0.35,'rgba('+col+','+(alpha*0.28)+')');
+    grd.addColorStop(1,'rgba('+col+',0)');
+    ctx.fillStyle=grd;
+    ctx.beginPath();ctx.arc(px,py,radius,0,Math.PI*2);ctx.fill();
+    // Bright core for strong signals
+    if(p.sig>60){
+      var coreR=radius*0.28;
+      var cgrd=ctx.createRadialGradient(px,py,0,px,py,coreR);
+      cgrd.addColorStop(0,'rgba('+col+','+(alpha*0.38)+')');
+      cgrd.addColorStop(1,'rgba('+col+',0)');
+      ctx.fillStyle=cgrd;
+      ctx.beginPath();ctx.arc(px,py,coreR,0,Math.PI*2);ctx.fill();
+    }
+  });
+  // Dense interpolation for seamless cloud look
+  for(var i=0;i<GEO.trail.length-1;i++){
+    var p1=GEO.trail[i],p2=GEO.trail[i+1];
+    var ddx=p2.dx-p1.dx,ddy=p2.dy-p1.dy,dist=Math.sqrt(ddx*ddx+ddy*ddy);
+    if(dist>8)continue;
+    var steps=Math.floor(dist*scl/14)+2;
+    for(var s=1;s<steps;s++){
+      var t=s/steps,ix=p1.dx+ddx*t,iy=p1.dy+ddy*t,isig=p1.sig+(p2.sig-p1.sig)*t;
+      var ipx=W*0.5+(ix-cur.dx)*scl,ipy=H*0.5+(iy-cur.dy)*scl;
+      var ir=48+85*(isig/100);
+      var iAlpha=Math.max(0.10,0.35-Math.abs(t-0.5)*0.3);
+      var igrd=ctx.createRadialGradient(ipx,ipy,0,ipx,ipy,ir);
+      var ic=sigColRGB(isig);
+      igrd.addColorStop(0,'rgba('+ic+','+iAlpha+')');
+      igrd.addColorStop(1,'rgba('+ic+',0)');
+      ctx.fillStyle=igrd;
+      ctx.beginPath();ctx.arc(ipx,ipy,ir,0,Math.PI*2);ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
+function drawARDirection(){
+  var secs=computeSoftnessField();
+  if(!secs)return;
+  var bestIdx=-1,bestScore=0;
+  secs.forEach(function(s,i){if(s.softness>bestScore){bestScore=s.softness;bestIdx=i;}});
+  if(bestIdx<0||bestScore<15)return;
+  var ang=-Math.PI/2+(bestIdx+0.5)/8*Math.PI*2;
+  var cx=W*0.5,cy=H*0.55; // lower center so it doesn't block the view too much
+  var len=Math.min(W,H)*0.30; // much longer arrow
+  var pulse=0.82+0.18*Math.sin(Date.now()*0.003);
+  var aLen=len*pulse;
+  ctx.save();
+  // Rotating glow ring at base
+  var ringR=18+6*Math.sin(Date.now()*0.005);
+  ctx.beginPath();ctx.arc(cx,cy,ringR,0,Math.PI*2);
+  ctx.strokeStyle='rgba(212,175,55,0.35)';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,ringR-6,0,Math.PI*2);
+  ctx.strokeStyle='rgba(212,175,55,0.15)';ctx.lineWidth=1;ctx.stroke();
+  // Thick glow shaft
+  var grd=ctx.createLinearGradient(cx,cy,cx+Math.cos(ang)*aLen,cy+Math.sin(ang)*aLen);
+  grd.addColorStop(0,'rgba(212,175,55,0)');
+  grd.addColorStop(0.4,'rgba(212,175,55,0.65)');
+  grd.addColorStop(1,'rgba(245,224,112,0.95)');
+  ctx.strokeStyle=grd;ctx.lineWidth=8;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(ang)*aLen,cy+Math.sin(ang)*aLen);ctx.stroke();
+  // Inner bright core line
+  ctx.strokeStyle='rgba(255,255,255,0.55)';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(ang)*aLen,cy+Math.sin(ang)*aLen);ctx.stroke();
+  // Large arrow head
+  var ax=cx+Math.cos(ang)*aLen,ay=cy+Math.sin(ang)*aLen;
+  var head=22;
+  ctx.fillStyle='rgba(245,224,112,0.98)';
+  ctx.shadowColor='rgba(212,175,55,0.55)';ctx.shadowBlur=16;
+  ctx.beginPath();
+  ctx.moveTo(ax,ay);
+  ctx.lineTo(ax+Math.cos(ang-2.6)*head,ay+Math.sin(ang-2.6)*head);
+  ctx.lineTo(ax+Math.cos(ang+2.6)*head,ay+Math.sin(ang+2.6)*head);
+  ctx.closePath();ctx.fill();
+  ctx.shadowBlur=0;
+  // Direction label
+  ctx.font='700 15px "Space Grotesk",sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(255,255,255,0.95)';
+  ctx.shadowColor='rgba(0,0,0,0.7)';ctx.shadowBlur=10;
+  var dirTxt=['N','NO','O','SO','S','SW','W','NW'][bestIdx];
+  ctx.fillText(dirTxt,cx+Math.cos(ang)*(aLen+38),cy+Math.sin(ang)*(aLen+38));
+  ctx.shadowBlur=0;
+  // Large trend indicator below arrow
+  var tr=signalTrend();
+  if(Math.abs(tr)>3){
+    ctx.font='700 16px "Space Mono",monospace';
+    ctx.textAlign='center';ctx.textBaseline='top';
+    var tCol=tr>0?'rgba(0,255,136,0.92)':'rgba(255,72,50,0.88)';
+    ctx.fillStyle=tCol;
+    ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=6;
+    ctx.fillText(tr>0?'▲ '+Math.round(Math.abs(tr))+'%':'▼ '+Math.round(Math.abs(tr))+'%',cx,cy+aLen*0.35+20);
+    ctx.shadowBlur=0;
+  }
+  ctx.restore();
+}
+
+// ─── AR AUDIO ──────────────────────────────────────────────
+var _lastProxTone=0,_lastProxTrend=0;
+function playProximityTone(){
+  if(!S.arMode||!S.scanning)return;
+  var now=Date.now();
+  if(now-_lastProxTone<2200)return; // every 2.2 seconds max
+  var tr=signalTrend();
+  if(Math.abs(tr)<2.5)return; // only when meaningful movement detected
+  _lastProxTone=now;
+  // Lazy-init audio context
+  if(!window._arCtx)window._arCtx=new(window.AudioContext||window.webkitAudioContext)();
+  var actx=window._arCtx;
+  if(actx.state==='suspended')actx.resume();
+  var osc=actx.createOscillator();
+  var gain=actx.createGain();
+  osc.connect(gain);gain.connect(actx.destination);
+  // Higher pitch + shorter duration = better signal / correct direction
+  var freq=tr>0?920:340; // high beep when improving, low when worsening
+  var dur=tr>0?0.18:0.35; // shorter = better
+  var vol=0.06;
+  osc.type='sine';
+  osc.frequency.setValueAtTime(freq,actx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(freq*0.6,actx.currentTime+dur);
+  gain.gain.setValueAtTime(vol,actx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+dur);
+  osc.start();osc.stop(actx.currentTime+dur);
+}
+
+// ─── MAIN ANIMATION LOOP ─────────────────────────────────────
+function frame(ts){
+  if(!S.scanning) return;
+  var dt=clamp(ts-(S.lastT||ts),1,100); S.lastT=ts;
+  if(NET.supported) applyRealData();
+  S.sweep+=S.sweepSpd*(0.06*dt);
+  if(S.sweep>2*Math.PI) S.sweep-=2*Math.PI;
+  if(Math.random()<0.055) spawnDot();
+  S.dots=S.dots.filter(function(d){d.age+=dt;d.x+=d.vx;d.y+=d.vy;return d.age<d.life;});
+  updateBubblePhysics(dt);
+
+  ctx.clearRect(0,0,W,H);
+
+  if(S.arMode){
+    // ── AR OVERLAY MODE ──
+    // No fake bubbles — only real signal data visualized
+    drawHeatmap();
+    drawARDirection();
+    drawRadar();
+    playProximityTone();
+  } else {
+    // ── STANDARD MODE ──
+    // OLED grid (very subtle — only when scanning)
+    var gA=0.016+0.00018*S.dSig;
+    ctx.strokeStyle='rgba(212,175,55,'+gA+')'; ctx.lineWidth=0.5;
+    for(var x2=0;x2<W;x2+=40){ctx.beginPath();ctx.moveTo(x2,0);ctx.lineTo(x2,H);ctx.stroke();}
+    for(var y2=0;y2<H;y2+=40){ctx.beginPath();ctx.moveTo(0,y2);ctx.lineTo(W,y2);ctx.stroke();}
+
+    // Optimal-Zone-Puls: sanftes goldenes Glühen wenn Sanftheit ≥ 68
+    var _cs=currentSoftness();
+    if(_cs&&_cs.score>=68){
+      var _t=((_cs.score-68)/32); // 0→1 je besser
+      var _p=0.5+0.5*Math.sin(Date.now()*0.0012); // sehr langsamer Puls
+      ctx.fillStyle='rgba(212,175,55,'+(_t*0.045*_p)+')';
+      ctx.fillRect(0,0,W,H);
+    }
+
+    // Network bubbles
+    drawBubbles();
+
+    // Center orb glow (behind scan button)
+    var t3=0.001*Date.now();
+    var orbR=0.08*Math.min(W,H)*(1+0.1*Math.sin(1.9*t3));
+    var orbG=ctx.createRadialGradient(W*0.5,H*0.5,orbR*0.4,W*0.5,H*0.5,orbR*2.6);
+    orbG.addColorStop(0,sigCol(S.dSig,0.07)); orbG.addColorStop(1,sigCol(S.dSig,0));
+    ctx.beginPath(); ctx.arc(W*0.5,H*0.5,orbR*2.6,0,2*Math.PI); ctx.fillStyle=orbG; ctx.fill();
+    ctx.beginPath(); ctx.arc(W*0.5,H*0.5,orbR,0,2*Math.PI);
+    ctx.strokeStyle=sigCol(S.dSig,0.20); ctx.lineWidth=1.5; ctx.stroke();
+
+    drawRadar();
+  }
+
+  updateUI(dt);
+  S.raf=requestAnimationFrame(frame);
+}
+
+// ─── UI UPDATE ───────────────────────────────────────────────
+function updateUI(dt){
+  var n=Math.round(S.dSig), dl=S.dDL>0?S.dDL.toFixed(1):'–', rtt=S.dPing>0?Math.round(S.dPing):'–';
+  var rc=n>=72?'g':n>=50?'o':n>=28?'a':'r';
+  setText('mv-sig',n||'–'); setText('mv-dl',dl); setText('mv-rtt',rtt);
+  setText('orb-val',n||'–'); setText('orb-dbm',sigToDBm(n)+' dBm');
+  ['g','o','a','r'].forEach(function(c){
+    var ms=$('mv-sig'); if(ms) ms.classList.toggle(c,c===rc);
+    var md=$('mv-dl');  if(md) md.classList.toggle(c,c===rc);
+  });
+  var mr=$('mv-rtt');
+  if(mr){
+    var rc2=typeof rtt==='number'?rtt<50?'g':rtt<120?'o':rtt<280?'a':'r':'a';
+    ['g','o','a','r'].forEach(function(c){mr.classList.toggle(c,c===rc2);});
+  }
+  ['mc-sig','mc-dl','mc-rtt'].forEach(function(id){var e=$(id);if(e) e.classList.add('live');});
+  var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  if(conn) setText('tb-conn',(conn.effectiveType||'').toUpperCase());
+  S.msgTimer+=dt;
+  if(S.msgTimer>4800){S.msgTimer=0; S.msgIdx=(S.msgIdx+1)%T.msgs.length;}
+  var msg='';
+  for(var i=0;i<T.msgs.length;i++){if(n>=T.msgs[i].min){msg=T.msgs[i].msg;break;}}
+  setText('smsg',msg);
+  // Update selected bubble sparkline live
+  if(SELECTED_BUBBLE&&$('bdetail').classList.contains('open')){
+    if(SELECTED_BUBBLE.isMain) drawSparkline(SELECTED_BUBBLE);
+  }
+}
+
+// ─── HAPTIC ──────────────────────────────────────────────────
+var _lastSoftScore=0;
+function hapticBeat(){
+  if(!S.scanning||!navigator.vibrate) return;
+  var s=S.dSig;
+  // Sanftheits-Feedback: sanftes Doppel-Puls wenn Sanftheit steigt
+  var cs=currentSoftness();
+  if(cs&&cs.score>_lastSoftScore+5&&cs.score>=60){
+    navigator.vibrate([12,50,12]); // sanftes "besser"
+    _lastSoftScore=cs.score;
+    return;
+  }
+  if(cs) _lastSoftScore=cs.score;
+  // Optimale Zone: sehr sanftes, langsames Pulsieren
+  if(cs&&cs.score>=68){
+    navigator.vibrate(8); // minimale Berührung
+  } else {
+    var iv=Math.round(HAPTIC_BASE-s/100*(HAPTIC_BASE-80));
+    s>=80?navigator.vibrate([8,38,8]):s>=55?navigator.vibrate(10):s>=28?navigator.vibrate(8):navigator.vibrate(6);
+    clearInterval(S.hapticIv); S.hapticIv=setInterval(hapticBeat,iv);
+    return;
+  }
+  clearInterval(S.hapticIv); S.hapticIv=setInterval(hapticBeat,HAPTIC_BASE);
+}
+
+// ─── TOGGLE SCAN ─────────────────────────────────────────────
+function toggleScan(){
+  var bi=$('badge-inner'), sb=$('scan-btn');
+  if(S.scanning){
+    S.scanning=false; S.paused=true;
+    cancelAnimationFrame(S.raf); clearInterval(S.hapticIv);
+    stopGeolocation(); cloudStop(); S.radarExpanded=false;
+    if(S.arMode){stopCamera();var ta=$('tog-ar');if(ta)ta.checked=false;}
+    if(bi){bi.textContent=T.h_pause; bi.className='off';}
+    if(sb) sb.classList.remove('on');
+    setText('btn-lbl',T.btn_start);
+    ctx.clearRect(0,0,W,H);
+    closeBubbleDetail();
+  } else {
+    S.scanning=true; S.paused=false;
+    var gpsPerm=localStorage.getItem('wps_gps_perm');
+    if(!gpsPerm){var gp=$('gps-permit');if(gp) gp.classList.add('open');}
+    else if(gpsPerm==='yes'){initGeolocation(); cloudInit(); cloudSubscribe();}
+    NET.supported?applyRealData():(S.dSig=65,S.dPing=32,S.dDL=8.4);
+    S.dots=[]; S.sweep=0; S.msgTimer=0;
+    initBubbles();
+    if(bi){bi.textContent=T.h_scan; bi.className='on';}
+    if(sb) sb.classList.add('on');
+    setText('btn-lbl',T.btn_stop);
+    if($('tog-hap').checked&&navigator.vibrate){clearInterval(S.hapticIv); S.hapticIv=setInterval(hapticBeat,HAPTIC_BASE);}
+    S.lastT=performance.now();
+    S.raf=requestAnimationFrame(frame);
+  }
+}
+
+// ─── SETTINGS / OVERLAYS ─────────────────────────────────────
+function openSettings(){var e=$('settings');if(e) e.classList.add('open');}
+function closeSettings(){var e=$('settings');if(e) e.classList.remove('open');}
+function openPrivacy(){var e=$('privacy-overlay'),b=$('privacy-body');if(b) b.textContent=PRIVACY_TEXT;if(e) e.style.display='flex';closeSettings();}
+function closePrivacy(){var e=$('privacy-overlay');if(e) e.style.display='none';}
+function openImpressum(){var e=$('impressum-overlay');if(e) e.style.display='flex';closeSettings();}
+function closeImpressum(){var e=$('impressum-overlay');if(e) e.style.display='none';}
+function showToast(msg){var t=$('toast');if(!t) return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
+function resetConsent(){localStorage.removeItem('wps_consent');localStorage.removeItem('wps_lang');showToast('Reset. Neustart…');setTimeout(function(){location.reload();},1600);}
+
+// ─── INFO OVERLAY ────────────────────────────────────────────
+var INFO_CONTENT={
+  de:[
+    {title:'SCAN & NETZWERK',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Echtzeit-Messung von RTT, Downlink, Verbindungstyp und Signalqualität via Browser-API. 500ms Aktualisierungsrate.'},
+      {icon:'🔵',t:'Interaktive Bubbles',d:'Jede Blase repräsentiert ein Funknetz. Tippe auf eine Blase für Details: Signal, Band, Typ, Stabilität und Verlaufsgraph.'},
+      {icon:'🎯',t:'Filter-Leiste',d:'Zeige nur WiFi, LTE, starke Signale (≥−70 dBm) oder 5-GHz-Netze. Schwache Netze werden ausgegraut.'}
+    ]},
+    {title:'VISUALISIERUNG',items:[
+      {icon:'🌐',t:'Trail Radar',d:'Mini-Radar unten links zeigt Signal-Blips mit Kompassrichtung. Starke Signale (>75%) bleiben bis 3× länger sichtbar.'},
+      {icon:'💎',t:'Glasblase + Bloom',d:'Bubbles haben Tiefe durch semi-transparenten Körper, Glanzpunkt und Leuchteffekt (Bloom). Farbe = Signalstärke.'},
+      {icon:'⚡',t:'Signalfarben',d:'Grün ≥72% (stark) · Gold ≥50% (gut) · Orange ≥28% (mittel) · Rot <28% (schwach). Integriert in Blase und Legende.'}
+    ]},
+    {title:'RADAR & GPS-NAVIGATION',items:[
+      {icon:'🟡',t:'Gold-Punkt (du)',d:'Der pulsierende gold­farbene Punkt in der Mitte zeigt deine aktuelle GPS-Position. Du bist immer im Zentrum — der Pfad zieht sich hinter dir.'},
+      {icon:'🎨',t:'Farbige Sektoren',d:'Das Radar ist in 8 Himmelsrichtungen aufgeteilt. Jeder Sektor leuchtet in der Farbe des dort gemessenen Signals — grün = stark, rot = schwach.'},
+      {icon:'➡️',t:'Goldener Pfeil',d:'Der Pfeil zeigt in die Richtung mit dem stärksten bisher gemessenen Signal. Folge dem Pfeil für besseren Empfang.'},
+      {icon:'↑↓',t:'Trend-Anzeige',d:'↑ grün = Signal wird auf dem Weg besser. ↓ rot = Signal wird schlechter. Erscheint neben dem Richtungspfeil.'},
+      {icon:'🔵',t:'Trail-Punkte',d:'Farbige Punkte zeigen deine vergangenen GPS-Positionen. Die Farbe entspricht der Signalstärke zum Zeitpunkt der Messung.'},
+      {icon:'📍',t:'GPS warte…',d:'Blinkender Hinweis solange der erste GPS-Fix noch aussteht. Radar-Tap vergrößert die Ansicht für mehr Detail.'}
+    ]},
+    {title:'PERFORMANCE',items:[
+      {icon:'🔋',t:'CPU-Schonung',d:'Physik-Simulation mit Dämpfung. Kein Overscanning. Canvas nur bei aktivem Scan gerendert.'},
+      {icon:'📴',t:'Offline-Modus',d:'Service Worker cached alle Assets. App läuft vollständig ohne Internet-Verbindung.'},
+      {icon:'🔒',t:'Datenschutz',d:'Keine Daten verlassen dein Gerät. Kein Tracking, keine Server, kein Analytics.'}
+    ]}
+  ],
+  en:[
+    {title:'SCAN & NETWORK',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Real-time measurement of RTT, downlink, connection type and signal quality via browser API. 500ms refresh rate.'},
+      {icon:'🔵',t:'Interactive Bubbles',d:'Each bubble represents a wireless network. Tap a bubble for details: signal, band, type, stability and history graph.'},
+      {icon:'🎯',t:'Filter Bar',d:'Show only WiFi, LTE, strong signals (≥−70 dBm) or 5 GHz networks. Weak networks are dimmed.'}
+    ]},
+    {title:'VISUALIZATION',items:[
+      {icon:'🌐',t:'Trail Radar',d:'Mini radar shows signal blips with compass direction. Strong signals (>75%) remain visible up to 3× longer.'},
+      {icon:'💎',t:'Glass Bubble + Bloom',d:'Bubbles have depth via semi-transparent body, specular gleam and bloom glow. Color = signal strength.'},
+      {icon:'⚡',t:'Signal Colors',d:'Green ≥72% (strong) · Gold ≥50% (good) · Orange ≥28% (medium) · Red <28% (weak).'}
+    ]},
+    {title:'RADAR & GPS NAVIGATION',items:[
+      {icon:'🟡',t:'Gold Dot (You)',d:'The pulsing gold dot at the centre is your current GPS position. You are always centred — the trail extends behind you.'},
+      {icon:'🎨',t:'Coloured Sectors',d:'Radar is divided into 8 compass sectors. Each sector glows in the colour of the signal measured there — green = strong, red = weak.'},
+      {icon:'➡️',t:'Gold Arrow',d:'Arrow points toward the direction with the strongest measured signal so far. Follow it for better reception.'},
+      {icon:'↑↓',t:'Trend Indicator',d:'↑ green = signal improving in that direction. ↓ red = signal declining. Appears next to the direction arrow.'},
+      {icon:'🔵',t:'Trail Dots',d:'Coloured dots mark your past GPS positions. Colour matches signal strength at time of measurement.'},
+      {icon:'📍',t:'GPS waiting…',d:'Blinking indicator while the first GPS fix is pending. Tap the radar to expand it for a larger, more detailed view.'}
+    ]},
+    {title:'PERFORMANCE',items:[
+      {icon:'🔋',t:'Battery-friendly',d:'Physics simulation with damping. No overscanning. Canvas only rendered during active scan.'},
+      {icon:'📴',t:'Offline Mode',d:'Service Worker caches all assets. App runs fully without internet connection.'},
+      {icon:'🔒',t:'Privacy',d:'No data leaves your device. No tracking, no servers, no analytics.'}
+    ]}
+  ],
+  zh:[
+    {title:'扫描与网络',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'通过浏览器API实时测量RTT、下行速率、连接类型和信号质量。500ms刷新率。'},
+      {icon:'🔵',t:'交互式气泡',d:'每个气泡代表一个无线网络。点击气泡查看详情：信号、频段、类型、稳定性和历史曲线。'},
+      {icon:'🎯',t:'过滤栏',d:'仅显示WiFi、LTE、强信号（≥−70 dBm）或5GHz网络。弱网络将变暗显示。'}
+    ]},
+    {title:'可视化',items:[
+      {icon:'🌐',t:'轨迹雷达',d:'左下角迷你雷达显示信号点和罗盘方向。强信号（>75%）可见时间延长至3倍。'},
+      {icon:'💎',t:'玻璃气泡+光晕',d:'气泡具有半透明体、高光点和辉光效果，颜色代表信号强度。'},
+      {icon:'⚡',t:'信号颜色',d:'绿色≥72%（强）· 金色≥50%（良）· 橙色≥28%（中）· 红色<28%（弱）。'}
+    ]},
+    {title:'雷达与GPS导航',items:[
+      {icon:'🟡',t:'金点（你的位置）',d:'中心闪烁的金色圆点是你当前的GPS位置。你始终位于中心，轨迹延伸在身后。'},
+      {icon:'🎨',t:'彩色扇区',d:'雷达分为8个罗盘方向扇区。每个扇区以该方向测量的信号颜色发光——绿色=强，红色=弱。'},
+      {icon:'➡️',t:'金色箭头',d:'箭头指向迄今测量信号最强的方向。跟随箭头以获得更好的接收信号。'},
+      {icon:'↑↓',t:'趋势指示',d:'↑绿色=该方向信号增强。↓红色=信号减弱。显示在方向箭头旁边。'},
+      {icon:'🔵',t:'轨迹点',d:'彩色圆点标记你过去的GPS位置，颜色对应测量时的信号强度。'},
+      {icon:'📍',t:'GPS等待中…',d:'等待首次GPS定位时的闪烁提示。点击雷达可放大查看更多细节。'}
+    ]},
+    {title:'性能',items:[
+      {icon:'🔋',t:'节电',d:'带阻尼的物理仿真。仅在主动扫描时渲染Canvas。'},
+      {icon:'📴',t:'离线模式',d:'Service Worker缓存所有资产。无需网络即可运行。'},
+      {icon:'🔒',t:'隐私',d:'数据不离开您的设备。无追踪，无服务器，无分析。'}
+    ]}
+  ],
+  es:[
+    {title:'ESCANEO Y RED',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Medición en tiempo real de RTT, velocidad de descarga, tipo de conexión y calidad de señal.'},
+      {icon:'🔵',t:'Burbujas interactivas',d:'Cada burbuja representa una red inalámbrica. Toca para ver detalles: señal, banda, tipo, estabilidad e historial.'},
+      {icon:'🎯',t:'Barra de filtros',d:'Muestra solo WiFi, LTE, señales fuertes (≥−70 dBm) o redes de 5 GHz.'}
+    ]},
+    {title:'RADAR Y NAVEGACIÓN GPS',items:[
+      {icon:'🟡',t:'Punto dorado (tú)',d:'El punto dorado pulsante en el centro es tu posición GPS actual. Siempre estás en el centro.'},
+      {icon:'🎨',t:'Sectores de señal',d:'El radar se divide en 8 sectores. Cada uno brilla según la señal medida — verde=fuerte, rojo=débil.'},
+      {icon:'➡️',t:'Flecha de dirección',d:'Apunta hacia la dirección con mejor señal medida. Síguelo para mejor recepción.'},
+      {icon:'↑↓',t:'Tendencia de señal',d:'↑ verde = señal mejora. ↓ rojo = señal empeora. Aparece junto a la flecha.'}
+    ]},
+    {title:'RENDIMIENTO',items:[
+      {icon:'🔋',t:'Ahorro de batería',d:'Simulación física con amortiguación. Canvas solo se renderiza durante el escaneo.'},
+      {icon:'📴',t:'Modo offline',d:'Service Worker almacena todos los recursos. La app funciona sin conexión.'},
+      {icon:'🔒',t:'Privacidad',d:'Ningún dato sale de tu dispositivo. Sin rastreo, sin servidores, sin análisis.'}
+    ]}
+  ],
+  hi:[
+    {title:'स्कैन और नेटवर्क',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'RTT, डाउनलोड, कनेक्शन प्रकार और सिग्नल गुणवत्ता की रियलटाइम माप।'},
+      {icon:'🔵',t:'इंटरैक्टिव बबल',d:'प्रत्येक बबल एक वायरलेस नेटवर्क को दर्शाता है। विवरण के लिए टैप करें।'},
+      {icon:'🎯',t:'फ़िल्टर बार',d:'केवल WiFi, LTE, मजबूत सिग्नल या 5 GHz नेटवर्क दिखाएं।'}
+    ]},
+    {title:'रडार और GPS नेविगेशन',items:[
+      {icon:'🟡',t:'गोल्ड डॉट (आप)',d:'केंद्र में स्पंदित सोने का बिंदु आपकी वर्तमान GPS स्थिति है।'},
+      {icon:'🎨',t:'रंगीन सेक्टर',d:'रडार 8 दिशाओं में विभाजित है। प्रत्येक सेक्टर मापे गए सिग्नल के अनुसार रंगीन है।'},
+      {icon:'➡️',t:'दिशा तीर',d:'सबसे मजबूत सिग्नल की दिशा में इशारा करता है।'},
+      {icon:'↑↓',t:'सिग्नल ट्रेंड',d:'↑ हरा = बेहतर हो रहा है। ↓ लाल = कमजोर हो रहा है।'}
+    ]},
+    {title:'प्रदर्शन',items:[
+      {icon:'🔋',t:'बैटरी-अनुकूल',d:'भौतिकी सिमुलेशन। सक्रिय स्कैन के दौरान ही Canvas रेंडर होता है।'},
+      {icon:'📴',t:'ऑफलाइन मोड',d:'Service Worker सभी संपत्तियों को कैश करता है।'},
+      {icon:'🔒',t:'गोपनीयता',d:'कोई डेटा आपके डिवाइस से बाहर नहीं जाता।'}
+    ]}
+  ],
+  ar:[
+    {title:'الفحص والشبكة',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'قياس RTT وسرعة التنزيل ونوع الاتصال وجودة الإشارة في الوقت الفعلي.'},
+      {icon:'🔵',t:'فقاعات تفاعلية',d:'كل فقاعة تمثل شبكة لاسلكية. انقر للاطلاع على التفاصيل: الإشارة والنطاق والنوع والاستقرار.'},
+      {icon:'🎯',t:'شريط التصفية',d:'عرض WiFi أو LTE أو الإشارات القوية (≥−70 dBm) أو شبكات 5 GHz فقط.'}
+    ]},
+    {title:'الرادار وتصفح GPS',items:[
+      {icon:'🟡',t:'النقطة الذهبية (أنت)',d:'النقطة الذهبية المتوهجة في المركز هي موضعك الحالي على GPS.'},
+      {icon:'🎨',t:'القطاعات الملونة',d:'ينقسم الرادار إلى 8 اتجاهات. يضيء كل قطاع بلون الإشارة المقاسة — أخضر=قوي، أحمر=ضعيف.'},
+      {icon:'➡️',t:'سهم الاتجاه',d:'يشير نحو الاتجاه ذي أقوى إشارة مقاسة. اتبعه للحصول على استقبال أفضل.'},
+      {icon:'↑↓',t:'مؤشر الاتجاه',d:'↑ أخضر = الإشارة تتحسن. ↓ أحمر = الإشارة تضعف.'}
+    ]},
+    {title:'الأداء',items:[
+      {icon:'🔋',t:'موفر للطاقة',d:'محاكاة فيزيائية مع تخميد. الرسم فقط أثناء الفحص النشط.'},
+      {icon:'📴',t:'وضع عدم الاتصال',d:'يخزن Service Worker جميع الموارد. التطبيق يعمل بدون إنترنت.'},
+      {icon:'🔒',t:'الخصوصية',d:'لا تغادر البيانات جهازك. لا تتبع، لا خوادم، لا تحليلات.'}
+    ]}
+  ],
+  pt:[
+    {title:'SCAN E REDE',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Medição em tempo real de RTT, velocidade de download, tipo de conexão e qualidade do sinal.'},
+      {icon:'🔵',t:'Bolhas interativas',d:'Cada bolha representa uma rede sem fio. Toque para ver detalhes: sinal, banda, tipo, estabilidade e histórico.'},
+      {icon:'🎯',t:'Barra de filtros',d:'Mostre apenas WiFi, LTE, sinais fortes (≥−70 dBm) ou redes 5 GHz.'}
+    ]},
+    {title:'RADAR E NAVEGAÇÃO GPS',items:[
+      {icon:'🟡',t:'Ponto dourado (você)',d:'O ponto dourado pulsante no centro é sua posição GPS atual.'},
+      {icon:'🎨',t:'Setores de sinal',d:'O radar divide-se em 8 setores. Cada um brilha na cor do sinal medido — verde=forte, vermelho=fraco.'},
+      {icon:'➡️',t:'Seta de direção',d:'Aponta para a direção com o sinal mais forte medido. Siga-a para melhor recepção.'},
+      {icon:'↑↓',t:'Tendência do sinal',d:'↑ verde = sinal melhorando. ↓ vermelho = sinal piorando.'}
+    ]},
+    {title:'DESEMPENHO',items:[
+      {icon:'🔋',t:'Economia de bateria',d:'Simulação física com amortecimento. Canvas renderizado apenas durante o scan ativo.'},
+      {icon:'📴',t:'Modo offline',d:'Service Worker armazena todos os recursos. O app funciona sem conexão.'},
+      {icon:'🔒',t:'Privacidade',d:'Nenhum dado sai do seu dispositivo. Sem rastreamento, sem servidores.'}
+    ]}
+  ],
+  fr:[
+    {title:'SCAN ET RÉSEAU',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Mesure en temps réel du RTT, vitesse de téléchargement, type de connexion et qualité du signal.'},
+      {icon:'🔵',t:'Bulles interactives',d:'Chaque bulle représente un réseau sans fil. Appuyez pour voir les détails : signal, bande, type, stabilité et historique.'},
+      {icon:'🎯',t:'Barre de filtres',d:'Affiche uniquement WiFi, LTE, signaux forts (≥−70 dBm) ou réseaux 5 GHz.'}
+    ]},
+    {title:'RADAR ET NAVIGATION GPS',items:[
+      {icon:'🟡',t:'Point doré (vous)',d:'Le point doré clignotant au centre indique votre position GPS actuelle.'},
+      {icon:'🎨',t:'Secteurs de signal',d:'Le radar est divisé en 8 secteurs. Chacun brille selon la couleur du signal mesuré.'},
+      {icon:'➡️',t:'Flèche de direction',d:'Pointe vers la direction avec le signal le plus fort mesuré. Suivez-la pour une meilleure réception.'},
+      {icon:'↑↓',t:'Tendance du signal',d:'↑ vert = signal en amélioration. ↓ rouge = signal en baisse.'}
+    ]},
+    {title:'PERFORMANCE',items:[
+      {icon:'🔋',t:'Économie de batterie',d:'Simulation physique avec amortissement. Canvas rendu uniquement pendant le scan actif.'},
+      {icon:'📴',t:'Mode hors ligne',d:'Service Worker met en cache toutes les ressources. L\'app fonctionne sans connexion.'},
+      {icon:'🔒',t:'Confidentialité',d:'Aucune donnée ne quitte votre appareil. Pas de suivi, pas de serveurs.'}
+    ]}
+  ],
+  ru:[
+    {title:'СКАНИРОВАНИЕ И СЕТЬ',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Измерение RTT, скорости загрузки, типа подключения и качества сигнала в реальном времени.'},
+      {icon:'🔵',t:'Интерактивные пузыри',d:'Каждый пузырь — беспроводная сеть. Нажмите для просмотра деталей: сигнал, диапазон, тип, стабильность.'},
+      {icon:'🎯',t:'Панель фильтров',d:'Показывает только WiFi, LTE, сильные сигналы (≥−70 dBm) или сети 5 ГГц.'}
+    ]},
+    {title:'РАДАР И GPS НАВИГАЦИЯ',items:[
+      {icon:'🟡',t:'Золотая точка (вы)',d:'Пульсирующая золотая точка в центре — ваше текущее GPS-положение.'},
+      {icon:'🎨',t:'Цветные секторы',d:'Радар делится на 8 направлений. Каждый сектор окрашен по измеренному сигналу.'},
+      {icon:'➡️',t:'Стрелка направления',d:'Указывает на направление с наиболее сильным сигналом. Следуйте ей для лучшего приёма.'},
+      {icon:'↑↓',t:'Тренд сигнала',d:'↑ зелёный = сигнал улучшается. ↓ красный = сигнал ухудшается.'}
+    ]},
+    {title:'ПРОИЗВОДИТЕЛЬНОСТЬ',items:[
+      {icon:'🔋',t:'Экономия батареи',d:'Физическая симуляция с затуханием. Canvas рендерится только при активном сканировании.'},
+      {icon:'📴',t:'Офлайн-режим',d:'Service Worker кэширует все ресурсы. Приложение работает без интернета.'},
+      {icon:'🔒',t:'Конфиденциальность',d:'Никакие данные не покидают ваше устройство. Без трекинга, без серверов.'}
+    ]}
+  ],
+  ja:[
+    {title:'スキャンとネットワーク',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'RTT、ダウンロード速度、接続タイプ、信号品質のリアルタイム測定。'},
+      {icon:'🔵',t:'インタラクティブバブル',d:'各バブルは無線ネットワークを表します。タップして詳細を確認：信号、バンド、タイプ、安定性。'},
+      {icon:'🎯',t:'フィルターバー',d:'WiFi、LTE、強い信号（≥−70 dBm）または5GHzネットワークのみ表示。'}
+    ]},
+    {title:'レーダーとGPSナビゲーション',items:[
+      {icon:'🟡',t:'金色の点（あなた）',d:'中央の脈動する金色の点が現在のGPS位置です。あなたは常に中央にいます。'},
+      {icon:'🎨',t:'カラーセクター',d:'レーダーは8方向に分割。各セクターは測定信号の色で光ります。'},
+      {icon:'➡️',t:'方向矢印',d:'最も強い信号が測定された方向を指します。より良い受信のためにそちらへ歩きましょう。'},
+      {icon:'↑↓',t:'信号トレンド',d:'↑緑 = 信号が改善中。↓赤 = 信号が低下中。'}
+    ]},
+    {title:'パフォーマンス',items:[
+      {icon:'🔋',t:'省電力',d:'減衰付き物理シミュレーション。アクティブスキャン中のみCanvasをレンダリング。'},
+      {icon:'📴',t:'オフラインモード',d:'Service Workerがすべてのリソースをキャッシュ。インターネットなしで動作。'},
+      {icon:'🔒',t:'プライバシー',d:'データはデバイスから外に出ません。追跡なし、サーバーなし。'}
+    ]}
+  ],
+  hr:[
+    {title:'SKENIRANJE I MREŽA',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Mjerenje RTT-a, downlinka, vrste veze i kvalitete signala u stvarnom vremenu. Osvježavanje svakih 500ms.'},
+      {icon:'🔵',t:'Interaktivni mjehurići',d:'Svaki mjehurić predstavlja bežičnu mrežu. Dodirnite za detalje: signal, band, tip, stabilnost i graf.'},
+      {icon:'🎯',t:'Traka filtera',d:'Prikažite samo WiFi, LTE, jake signale (≥−70 dBm) ili 5-GHz mreže.'}
+    ]},
+    {title:'RADAR & GPS-NAVIGACIJA',items:[
+      {icon:'🟡',t:'Zlatna točka (ti)',d:'Pulsirajuća zlatna točka u sredini pokazuje tvoju GPS poziciju. Uvijek si u centru.'},
+      {icon:'🎨',t:'Obojeni sektori',d:'8 sektora kompasa — boja pokazuje izmjereni signal. Zelena = jak, crvena = slab.'},
+      {icon:'➡️',t:'Zlatna strelica (mekoća)',d:'Strelica pokazuje smjer najmekanijeg signala — jak I stabilan. Slijedi strelicu za bolji prijem.'},
+      {icon:'↑↓',t:'Trend signala',d:'↑ zelena = signal se poboljšava. ↓ crvena = signal se pogoršava.'}
+    ]},
+    {title:'PERFORMANSE',items:[
+      {icon:'🔋',t:'Štednja CPU-a',d:'Fizikalna simulacija s prigušenjem. Canvas se renderira samo za aktivnog skeniranja.'},
+      {icon:'📴',t:'Offline način',d:'Service Worker sprema sve resurse. App radi potpuno bez interneta.'},
+      {icon:'🔒',t:'Privatnost',d:'Nikakvi podaci ne napuštaju tvoj uređaj. Bez praćenja, bez servera.'}
+    ]}
+  ],
+  sr:[
+    {title:'СКЕНИРАЊЕ И МРЕЖА',items:[
+      {icon:'📡',t:'NetworkInformation API',d:'Мерење RTT-а, downlink-а, типа везе и квалитета сигнала у реалном времену. Освежавање свих 500ms.'},
+      {icon:'🔵',t:'Интерактивни мехурићи',d:'Сваки мехурић представља бежичну мрежу. Додирните за детаље: сигнал, band, тип, стабилност и граф.'},
+      {icon:'🎯',t:'Трака филтера',d:'Прикажите само WiFi, LTE, јаке сигнале (≥−70 dBm) или 5-GHz мреже.'}
+    ]},
+    {title:'РАДАР & GPS-НАВИГАЦИЈА',items:[
+      {icon:'🟡',t:'Златна тачка (ти)',d:'Пулсирајућа златна тачка у средини показује твоју GPS позицију. Увек си у центру.'},
+      {icon:'🎨',t:'Обојени сектори',d:'8 сектора компаса — боја показује измерени сигнал. Зелена = јак, црвена = слаб.'},
+      {icon:'➡️',t:'Златна стрелица (мекоћа)',d:'Стрелица показује смер најмекшег сигнала — јак и стабилан. Прати стрелицу за бољи пријем.'},
+      {icon:'↑↓',t:'Тренд сигнала',d:'↑ зелена = сигнал се побољшава. ↓ црвена = сигнал се погоршава.'}
+    ]},
+    {title:'ПЕРФОРМАНСЕ',items:[
+      {icon:'🔋',t:'Штедња CPU-а',d:'Физичка симулација са пригушењем. Canvas се рендерује само током активног скенирања.'},
+      {icon:'📴',t:'Offline режим',d:'Service Worker чува све ресурсе. Апп ради потпуно без интернета.'},
+      {icon:'🔒',t:'Приватност',d:'Никакви подаци не напуштају твој уређај. Без праћења, без сервера.'}
+    ]}
+  ]
+};
+function openInfo(){
+  var ov=$('info-overlay'), ct=$('io-content'), it=$('io-title');
+  if(!ov||!ct) return;
+  var data=INFO_CONTENT[lang]||INFO_CONTENT.de;
+  if(it) it.textContent=T.s_feat||'FEATURES';
+  ct.innerHTML=data.map(function(sec){
+    return '<div class="io-sec"><div class="io-sec-title">'+sec.title+'</div>'+
+      sec.items.map(function(item){
+        return '<div class="io-item"><div class="io-icon">'+item.icon+'</div><div class="io-body"><div class="io-item-title">'+item.t+'</div><div class="io-item-desc">'+item.d+'</div></div></div>';
+      }).join('')+'</div>';
+  }).join('');
+  ov.classList.add('open');
+}
+function closeInfo(){var ov=$('info-overlay');if(ov) ov.classList.remove('open');}
+
+// ─── AUDIO ───────────────────────────────────────────────────
+var _fadeRaf=null;
+function audioFadeTo(el,target,dur,cb){
+  if(!el) return;
+  if(_fadeRaf) cancelAnimationFrame(_fadeRaf);
+  var sv=el.volume, t0=performance.now();
+  _fadeRaf=requestAnimationFrame(function step(now){
+    var p=Math.min((now-t0)/dur,1);
+    el.volume=Math.max(0,Math.min(1,sv+(target-sv)*p));
+    p<1?(_fadeRaf=requestAnimationFrame(step)):(cb&&cb());
+  });
+}
+function startIntroAudio(){
+  var e=$('aud-intro');
+  if(!e||!e.paused) return; // already playing — guard
+  e.volume=0.82;
+  var p=e.play(); if(p&&p.catch) p.catch(function(){});
+}
+function startBgMusic(){
+  var bg=$('aud-bg'); if(!bg) return;
+  bg.volume=0; bg.currentTime=0;
+  var p=bg.play(); if(p&&p.catch) p.catch(function(){});
+  audioFadeTo(bg,0.6,2200,null);
+  bg.addEventListener('timeupdate',function onTU(){
+    if(!bg.duration||isNaN(bg.duration)) return;
+    var rem=bg.duration-bg.currentTime;
+    if(rem<=5&&rem>0&&bg.volume>0.01){
+      bg.removeEventListener('timeupdate',onTU);
+      audioFadeTo(bg,0,4800,function(){bg.pause();bg.currentTime=0;});
+    }
+  });
+}
+function toggleBgMusic(){
+  var bg=$('aud-bg'); if(!bg) return;
+  $('tog-mus').checked?startBgMusic():audioFadeTo(bg,0,1400,function(){bg.pause();});
+}
+
+// ─── INTRO ───────────────────────────────────────────────────
+var INTRO_DUR=3750;
+var INTRO_TL=[
+  [0,    function(){startIntroAudio();}],
+  [380,  function(){var e=$('il-pre'); if(e) e.classList.add('vis');}],
+  [820,  function(){var e=$('intro-bar-wrap'); if(e) e.style.opacity='1';}],
+  [1400, function(){var e=$('il-sub'); if(e) e.classList.add('vis');}],
+  [2100, function(){var e=$('il-desc'); if(e) e.classList.add('vis');}],
+  [3380, function(){
+    var f=$('intro-flash'); if(f){f.classList.remove('burst');void f.offsetWidth;f.classList.add('burst');}
+    var b=$('il-brand');    if(b){b.classList.remove('shoot');void b.offsetWidth;b.classList.add('shoot');}
+    if(navigator.vibrate) navigator.vibrate([6,20,30,20,8]);
+  }],
+  [3600, function(){var f=$('intro-foot'); if(f) f.style.opacity='1';}]
+];
+var _introShown=false;
+function _doShowApp(){
+  if(_introShown) return; _introShown=true;
+  var intro=$('intro');
+  if(intro){intro.style.transition='opacity .8s ease';intro.style.opacity='0';}
+  setTimeout(function(){
+    if(intro) intro.style.display='none';
+    showApp();
+  },850);
+}
+function runIntro(){
+  if(_introShown) return;
+  var icv=$('icv'), sc=icv.getContext('2d'), iw=0, ih=0, pts=[], t0=Date.now();
+  function resize(){iw=icv.width=window.innerWidth; ih=icv.height=window.innerHeight;}
+  resize(); window.addEventListener('resize',resize);
+  for(var i=0;i<100;i++) pts.push({
+    x:Math.random()*iw,y:Math.random()*ih,
+    vx:0.35*(Math.random()-0.5),vy:0.35*(Math.random()-0.5),
+    r:Math.random()*1.6+0.3,a:Math.random()*0.38+0.06,
+    col:Math.random()>0.55?'212,175,55':'245,224,112'
+  });
+  // Timeline events via plain setTimeout — works even when rAF is throttled
+  var tlDone=[];
+  INTRO_TL.forEach(function(ev,idx){
+    setTimeout(function(){if(!tlDone[idx]){tlDone[idx]=true;try{ev[1]();}catch(e){}}}, ev[0]);
+  });
+  // Guaranteed app launch via setTimeout — not dependent on rAF
+  setTimeout(_doShowApp, INTRO_DUR+900);
+  // Visual animation via rAF (cosmetic only — app will show regardless)
+  requestAnimationFrame(function tick(){
+    if(_introShown) return;
+    var elapsed=Date.now()-t0;
+    var pct=Math.min(elapsed/INTRO_DUR,1);
+    var ib=$('intro-bar'); if(ib) ib.style.width=(pct*100)+'%';
+    sc.clearRect(0,0,iw,ih);
+    pts.forEach(function(p){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0) p.x=iw; if(p.x>iw) p.x=0;
+      if(p.y<0) p.y=ih; if(p.y>ih) p.y=0;
+      sc.beginPath(); sc.arc(p.x,p.y,p.r,0,2*Math.PI);
+      sc.fillStyle='rgba('+p.col+','+p.a+')'; sc.fill();
+    });
+    [0,0.33,0.66].forEach(function(off){
+      var ph=(5.5e-5*elapsed+off)%1, r2=ph*Math.min(iw,ih)*0.42, a2=0.09*(1-ph);
+      sc.beginPath(); sc.arc(iw*0.5,ih*0.5,r2,0,2*Math.PI);
+      sc.strokeStyle='rgba(212,175,55,'+a2+')'; sc.lineWidth=1.5; sc.stroke();
+    });
+    var gp=Math.max(0,1-Math.abs(elapsed-3380)/400);
+    if(gp>0.02){
+      var gg=sc.createRadialGradient(iw*0.5,ih*0.5,0,iw*0.5,ih*0.5,Math.min(iw,ih)*0.3);
+      gg.addColorStop(0,'rgba(212,175,55,'+(0.12*gp)+')'); gg.addColorStop(1,'rgba(212,175,55,0)');
+      sc.beginPath(); sc.arc(iw*0.5,ih*0.5,Math.min(iw,ih)*0.3,0,2*Math.PI);
+      sc.fillStyle=gg; sc.fill();
+    }
+    if(pct<1) requestAnimationFrame(tick);
+  });
+  // Tap-to-skip for impatient users
+  var introEl=$('intro');
+  if(introEl) introEl.addEventListener('click',_doShowApp,{once:true});
+}
+function showApp(){
+  var app=$('app'); if(app){
+    app.style.display='flex'; app.style.opacity='0'; app.style.transition='opacity .9s ease';
+    setTimeout(function(){app.style.opacity='1';},40);
+  }
+  resizeCv(); initNetworkAPI(); applyLang(); initPwaButton();
+  // Canvas click/touch for bubble detail
+  cv.addEventListener('click',handleCanvasTouch);
+  cv.addEventListener('touchend',function(e){e.preventDefault();handleCanvasTouch(e);},{passive:false});
+}
+
+// ─── CONSENT ─────────────────────────────────────────────────
+window.acceptConsent=function(){
+  // CRITICAL: start audio immediately in gesture handler (before setTimeout)
+  startIntroAudio();
+  localStorage.setItem('wps_consent','1');
+  var cc=$('consent');
+  if(cc){
+    cc.style.transition='opacity .65s'; cc.style.opacity='0';
+    setTimeout(function(){
+      cc.style.display='none';
+      var intro=$('intro'); if(intro) intro.style.display='flex';
+      runIntro();
+    },650);
+  }
+};
+
+// ─── INIT ────────────────────────────────────────────────────
+(function(){
+  T=LANGS[lang]; applyLang();
+  var _fm={zh:"'Noto Sans SC'",ar:"'Noto Sans Arabic'",ja:"'Noto Sans JP'",hi:"'Noto Sans Devanagari'"};
+  if(_fm[lang]) document.body.style.fontFamily=_fm[lang]+",sans-serif";
+  if(lang==='ar') document.body.dir='rtl';
+  var cc=$('consent'), intro=$('intro'), ts=$('tap-start');
+  if(localStorage.getItem('wps_consent')){
+    if(cc) cc.style.display='none';
+    if(intro) intro.style.display='none';
+    // Show tap-start so user gesture unlocks audio
+    if(ts){
+      var lbl=$('tap-start-label');
+      if(lbl) lbl.textContent=T.tap_lbl||'· Tap to Start ·';
+      ts.style.display='flex';
+      ts.addEventListener('click', function(){
+        ts.style.display='none';
+        // Gesture context: start audio NOW
+        startIntroAudio();
+        if(intro) intro.style.display='flex';
+        runIntro();
+      }, {once:true});
+    }
+  } else {
+    if(cc) cc.style.display='flex';
+    if(intro) intro.style.display='none';
+    if(ts) ts.style.display='none';
+  }
+})();
+
+// ─── PWA ─────────────────────────────────────────────────────
+var _pwaPrompt=null;
+function triggerPwaInstall(){
+  if(_pwaPrompt){
+    _pwaPrompt.prompt();
+    _pwaPrompt.userChoice.then(function(r){
+      if(r.outcome==='accepted'){var e=$('pwa-install');if(e) e.classList.remove('visible');}
+      _pwaPrompt=null;
+    });
+  } else {
+    showToast(/iphone|ipad|ipod/i.test(navigator.userAgent)?'Tippe ↑ Teilen → „Zum Home-Bildschirm"':'Browser-Menü → „App installieren"');
+  }
+}
+function initPwaButton(){
+  var lbl={de:{lbl:'App installieren',sub:'Zum Homescreen'},en:{lbl:'Install App',sub:'Add to Home Screen'},zh:{lbl:'安装应用',sub:'添加到主屏幕'}};
+  var l=lbl[lang]||lbl.de; setText('pwa-lbl',l.lbl); setText('pwa-sub',l.sub);
+  var isIos=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  var standalone=window.navigator.standalone||window.matchMedia('(display-mode: fullscreen)').matches||window.matchMedia('(display-mode: standalone)').matches;
+  if(isIos&&!standalone){var e=$('pwa-install');if(e) e.classList.add('visible');}
+}
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault(); _pwaPrompt=e;
+  var btn=$('pwa-install'); if(btn) btn.classList.add('visible');
+});
+window.addEventListener('appinstalled',function(){
+  _pwaPrompt=null; var btn=$('pwa-install'); if(btn) btn.classList.remove('visible');
+  showToast('✓ App installiert!');
+});
+window.addEventListener('resize',resizeCv);
+
+// ─── SERVICE WORKER (disabled for dev) ─────────────────────
+// if('serviceWorker' in navigator){
+//   window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js?v=2').catch(function(){});});
+// }
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(function(regs){regs.forEach(function(r){r.unregister();});});
+}
+
+// ─── PRIVACY TEXT ────────────────────────────────────────────
+var PRIVACY_TEXT="DATENSCHUTZERKLÄRUNG / PRIVACY POLICY\n© Cobra Dynamics 2026 — Version 5.2.0\n\n1. VERANTWORTLICHER\nCobra Dynamics, Dennis Stein & Christoph Frick\nNördliche Ringstraße 75, 63225 Langen\nE-Mail: dennis.stein@cobradynamics.de\n\n2. DATENERHEBUNG\nDiese App erhebt KEINE personenbezogenen Daten. Es werden keine Namen, E-Mail-Adressen, Standortdaten oder Gerätekennungen gespeichert oder übermittelt. Alle Messungen erfolgen ausschließlich lokal auf Ihrem Gerät.\n\n3. VERWENDETE WEB-APIs\n• NetworkInformation API (Verbindungsqualität, RTT, Downlink)\n• DeviceMotion API (optionale Bewegungssteuerung)\n• Web Audio API (Intro-Jingle, lokal)\n• Vibration API (haptisches Feedback)\n\n4. LOKALE SPEICHERUNG\nNur localStorage: Spracheinstellung (DE/EN/ZH) und Datenschutz-Zustimmung. Jederzeit löschbar über Einstellungen → Consent zurücksetzen (Art. 17 DSGVO).\n\n5. KEINE DRITTANBIETER\nKein Analytics, kein Tracking, keine Werbenetzwerke, keine externen Server.\n\n6. SCHRIFTARTEN\nGoogle Fonts (fonts.googleapis.com): Ihre IP-Adresse wird dabei übertragen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.\n\n7. RECHTE (DSGVO Art. 15–22)\nAuskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit, Widerspruch.\nAnfragen: dennis.stein@cobradynamics.de\n\n8. PREIS & LIZENZ\nEinmalzahlung: 1,99 EUR. Altersfreigabe: 4+. Kein Abo. Keine In-App-Käufe.\n\nENGLISH SUMMARY\nNo personal data collected. Local processing only. One-time purchase EUR 1.99. Age 4+.\n\n中文摘要\n不收集任何个人数据。纯本地处理。一次性购买1.99欧元。年龄评级4+。";
+</script>
+
+<!-- Firebase SDK — wird von cloudInit() genutzt wenn CLOUD.enabled=true -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+</body>
+</html>

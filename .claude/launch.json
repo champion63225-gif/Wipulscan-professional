@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "WIPULSCAN PRO — Python Static Server",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8080", "--directory", "."],
+      "port": 8080
+    },
+    {
+      "name": "WIPULSCAN PRO — Python3 Static Server",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8080", "--directory", "."],
+      "port": 8080
+    },
+    {
+      "name": "WIPULSCAN PRO — npx serve",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "8080", "."],
+      "port": 8080
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "name": "WIPULSCAN PRO",
+  "short_name": "WIPULSCAN",
+  "description": "Spatial WiFi Signal Scanner & AR Visualizer by Cobra Dynamics",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "portrait-primary",
+  "theme_color": "#00001a",
+  "background_color": "#00001a",
+  "lang": "de",
+  "dir": "ltr",
+  "categories": ["utilities", "productivity", "tools"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/screen-android-1080x1920.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "WIPULSCAN PRO — Signal Scanner"
+    },
+    {
+      "src": "screenshots/screen-iphone65-1242x2688.png",
+      "sizes": "1242x2688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "WIPULSCAN PRO — AR Bubbles"
+    },
+    {
+      "src": "screenshots/screen-iphone67-1290x2796.png",
+      "sizes": "1290x2796",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "WIPULSCAN PRO — GPS Trail"
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "iarc_rating_id": ""
+}

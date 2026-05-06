@@ -41,7 +41,7 @@
 
 <!-- AUDIO -->
 <audio id="aud-intro" src="jingle-intro.wav" preload="auto"></audio>
-<audio id="aud-bg"    src="jingle.wav"       preload="auto"></audio>
+<audio id="aud-bg"    src="jingle-intro.wav"       preload="auto"></audio>
 
 <!-- ══════════════════ INTRO ══════════════════════ -->
 <div id="intro">
@@ -1270,6 +1270,7 @@ function toggleAR(){
 
 // ─── HEATMAP CLOUD ───────────────────────────────────────────
 function drawHeatmap(){
+  if(!navigator.connection||typeof navigator.connection.downlink==='undefined'){return;}
   if(!GEO.current||GEO.trail.length<2)return;
   var cur=latLngToXY(GEO.origin.lat,GEO.origin.lng,GEO.current.lat,GEO.current.lng);
   var scl=24,now=Date.now(); // larger scale = bigger clouds on screen

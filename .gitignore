@@ -1,0 +1,26 @@
+# Large background music (nicht ins Repo — zu groß für GitHub Pages)
+jingle.wav
+
+# Temporäre Dateien
+*.html.html
+*.html.txt
+netpulse.html.txt
+wipulscan_pro.html
+index.html.html
+
+# IDE / System
+.vscode/
+oracleJdk-26/
+Thumbs.db
+.DS_Store
+
+# Android build artifacts & secrets
+android.keystore
+android-twa/
+node_modules/
+take-screenshots.js
+build-android.js
+build-ios.js
+package.json
+package-lock.json
+screenshots/
