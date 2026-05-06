@@ -1368,30 +1368,31 @@ function drawARDirection(){
   // Inner bright core line
   ctx.strokeStyle='rgba(255,255,255,0.70)';ctx.lineWidth=3;
   ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(ang)*aLen,cy+Math.sin(ang)*aLen);ctx.stroke();
-  // Large arrow head with strong glow
+  // Elegant arrow head — sharp, properly proportioned
   var ax=cx+Math.cos(ang)*aLen,ay=cy+Math.sin(ang)*aLen;
-  var head=28;
+  var headW=18, headL=32; // width and length of arrowhead
   ctx.fillStyle='rgba(255,235,140,0.98)';
-  ctx.shadowColor='rgba(212,175,55,0.85)';ctx.shadowBlur=24;
+  ctx.shadowColor='rgba(212,175,55,0.85)';ctx.shadowBlur=20;
   ctx.beginPath();
-  ctx.moveTo(ax,ay);
-  ctx.lineTo(ax+Math.cos(ang-2.6)*head,ay+Math.sin(ang-2.6)*head);
-  ctx.lineTo(ax+Math.cos(ang+2.6)*head,ay+Math.sin(ang+2.6)*head);
+  ctx.moveTo(ax,ay); // tip
+  ctx.lineTo(ax+Math.cos(ang+2.2)*headW,ay+Math.sin(ang+2.2)*headW); // left base
+  ctx.lineTo(ax+Math.cos(ang+Math.PI)*headL,ay+Math.sin(ang+Math.PI)*headL); // back center
+  ctx.lineTo(ax+Math.cos(ang-2.2)*headW,ay+Math.sin(ang-2.2)*headW); // right base
   ctx.closePath();ctx.fill();
   ctx.shadowBlur=0;
-  // Direction label (bigger)
-  ctx.font='700 18px "Space Grotesk",sans-serif';
+  // Signal percentage — BIG, centered, dominant
+  var pctTxt=Math.round(bestScore)+'%';
+  ctx.font='700 42px "Space Grotesk",sans-serif';
   ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillStyle='rgba(255,255,255,0.98)';
-  ctx.shadowColor='rgba(0,0,0,0.8)';ctx.shadowBlur=12;
-  var dirTxt=['N','NO','O','SO','S','SW','W','NW'][bestIdx];
-  ctx.fillText(dirTxt,cx+Math.cos(ang)*(aLen+46),cy+Math.sin(ang)*(aLen+46));
+  ctx.fillStyle='rgba(255,255,255,0.95)';
+  ctx.shadowColor='rgba(0,0,0,0.7)';ctx.shadowBlur=16;
+  ctx.fillText(pctTxt,cx,cy);
   ctx.shadowBlur=0;
-  // Signal quality label below center
-  ctx.font='700 14px "Space Mono",monospace';
+  // Subtle label below
+  ctx.font='500 13px "Space Mono",monospace';
   ctx.textAlign='center';ctx.textBaseline='top';
-  ctx.fillStyle='rgba(212,175,55,0.90)';
-  ctx.fillText('▼ Signal verfolgen',cx,cy+50);
+  ctx.fillStyle='rgba(212,175,55,0.70)';
+  ctx.fillText('SIGNALSTÄRKE',cx,cy+32);
   // Large trend indicator
   var tr=signalTrend();
   if(Math.abs(tr)>2){
