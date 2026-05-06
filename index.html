@@ -137,10 +137,25 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
 /* Responsive */
 @media(max-height:700px){#heatmap-wrap{width:min(65vw,260px);height:min(65vw,260px)}#signal-value{font-size:2rem}#top-bar{padding:8px 12px}.score-pill{font-size:.75rem;padding:4px 10px}}
 @media(max-height:600px){#wave-wrap{height:60px}#ctrl{margin-bottom:.5rem}#social-proof{top:44px;font-size:.7rem;padding:4px 12px}}
+
+/* Loading screen */
+#loader{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#03060c;transition:opacity .6s,visibility .6s}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
+#loader-logo{font-size:2.5rem;font-weight:700;color:#e8ecf1;margin-bottom:1.5rem;letter-spacing:2px}
+#loader-bar{width:min(60vw,240px);height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+#loader-fill{height:100%;width:0%;background:linear-gradient(90deg,#00d4aa,#7bc5ff);border-radius:4px;transition:width .3s ease-out}
+#loader-text{font-size:.8rem;color:#5a6a7d;margin-top:.75rem}
 </style>
 <script src="capacitor.js"></script>
 </head>
 <body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div id="loader-logo">WiFi Hunter</div>
+  <div id="loader-bar"><div id="loader-fill"></div></div>
+  <div id="loader-text">Initialisiere Scanner…</div>
+</div>
 
 <!-- INTRO -->
 <div id="intro">
@@ -303,17 +318,24 @@ function initAudio(){
   audioCtx=new(window.AudioContext||window.webkitAudioContext)()
 }
 
+var _lastToneTime=0
 function playSignalTone(strength){
   if(!audioCtx||audioCtx.state!=='running')return
-  var now=audioCtx.currentTime
+  var now=Date.now()
+  if(now-_lastToneTime<350)return // throttle: max ~3 tones/sec
+  _lastToneTime=now
+  var t=audioCtx.currentTime
   var osc=audioCtx.createOscillator()
   var gain=audioCtx.createGain()
   osc.type='sine'
-  var freq=220+strength*700
+  // Smoother frequency curve, less jumpy
+  var freq=180+strength*strength*600
   osc.frequency.value=freq
-  gain.gain.value=0.12*strength
+  // Softer, longer tone (0.35s instead of 0.25s)
+  gain.gain.setValueAtTime(0.08*strength,t)
+  gain.gain.exponentialRampToValueAtTime(0.001,t+0.35)
   osc.connect(gain);gain.connect(audioCtx.destination)
-  osc.start();osc.stop(now+0.25)
+  osc.start(t);osc.stop(t+0.35)
 }
 
 function playStepTone(){
@@ -444,26 +466,28 @@ function updateSignal(){
     // Use device heading for direction, hotspot follows heading
     targetAngle=heading||0
   }else{
-    // Simulate signal based on device tilt (beta/gamma) or random walk
+    // Web mode: compass follows gyroscope (heading), signal from device tilt
     var tiltX=0,tiltY=0
     if(hasOrientation && window._lastOrientation){
       var o=window._lastOrientation
-      tiltX=(o.beta||0)/90
-      tiltY=(o.gamma||0)/90
+      tiltX=clamp((o.beta||0)/90,-1,1)
+      tiltY=clamp((o.gamma||0)/90,-1,1)
     }
-    // Create a "hotspot" at a virtual location that rotates over time
-    var hotspotAngle=(Date.now()*0.0003)%360
-    var deviceAngle=heading||0
-    var angleDiff=Math.abs(deviceAngle-hotspotAngle)
+    // Fixed virtual hotspot at 0° (North). Signal stronger when you rotate phone toward it.
+    var deviceHeading=heading||0
+    var angleDiff=Math.abs(deviceHeading)
     while(angleDiff>180)angleDiff=360-angleDiff
-    // Signal strength: strongest when aligned with hotspot, weakest at 180°
-    var baseStrength=(1-angleDiff/180)
-    // Add noise
-    baseStrength+=Math.sin(Date.now()*0.002)*0.1
-    baseStrength+=Math.random()*0.06-0.03
+    // Signal from heading alignment + tilt (tilt phone to "reach" the signal)
+    var headingStrength=(1-angleDiff/180)
+    var tiltStrength=1-(Math.abs(tiltX)*0.3+Math.abs(tiltY)*0.3)
+    var baseStrength=headingStrength*0.6+tiltStrength*0.4
+    // Gentle breathing noise (slow, not chaotic)
+    baseStrength+=Math.sin(Date.now()*0.0008)*0.08
+    baseStrength+=Math.sin(Date.now()*0.0013)*0.04
     // Clamp
     signalStrength=clamp(baseStrength,0.02,0.98)
-    targetAngle=hotspotAngle
+    // Needle follows actual device heading (gyroscope)
+    targetAngle=deviceHeading
   }
   var pct=Math.round(signalStrength*100)
   if(!window._lastMaxSig||pct>window._lastMaxSig)window._lastMaxSig=pct
@@ -698,8 +722,24 @@ trackEvent('hunt_stop',{duration:Date.now()})
 }
 
 // ─── INIT ──────────────────────────────────────────────────────
-// Initial draw
-setTimeout(function(){drawHeatmap(0.35);drawWave(0.35)},300)
+// Loading screen progress
+(function(){
+  var fill=$('loader-fill'),txt=$('loader-text'),loader=$('loader')
+  var steps=[{w:25,t:'Scanner wird kalibriert…'},{w:55,t:'Audio-Engine startet…'},{w:80,t:'Kompass initialisiert…'},{w:100,t:'Bereit.'}]
+  var i=0
+  function next(){
+    if(i>=steps.length){
+      setTimeout(function(){loader.classList.add('done')},400)
+      setTimeout(function(){drawHeatmap(0.35);drawWave(0.35)},600)
+      return
+    }
+    fill.style.width=steps[i].w+'%'
+    txt.textContent=steps[i].t
+    i++
+    setTimeout(next,280)
+  }
+  setTimeout(next,120)
+})()
 // Wire monetization after app shows
 var _origAccept=acceptConsent
 acceptConsent=function(){
