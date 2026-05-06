@@ -226,6 +226,27 @@
     <span id="btn-lbl"></span>
   </button>
 
+  <!-- SIGNAL DETAIL PANEL — professional metrics, converts users to Pro -->
+  <div id="sig-panel" style="position:fixed;bottom:138px;left:50%;transform:translateX(-50%);z-index:35;display:none;flex-direction:column;align-items:center;gap:4px;max-width:340px;width:90%">
+    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+      <div class="sig-chip" id="chip-dbm"><span class="chip-lbl">dBm</span><span class="chip-val" id="val-dbm">–</span></div>
+      <div class="sig-chip" id="chip-rtt"><span class="chip-lbl">Ping</span><span class="chip-val" id="val-rtt">–</span></div>
+      <div class="sig-chip" id="chip-dl"><span class="chip-lbl">DL</span><span class="chip-val" id="val-dl">–</span></div>
+      <div class="sig-chip pro-lock" id="chip-chn" onclick="openMonModal('pro')"><span class="chip-lbl">Kanal</span><span class="chip-val">🔒 Pro</span></div>
+      <div class="sig-chip pro-lock" id="chip-freq" onclick="openMonModal('pro')"><span class="chip-lbl">Freq</span><span class="chip-val">🔒 Pro</span></div>
+    </div>
+    <div id="scan-limit-msg" style="display:none;font-size:.7rem;color:#ff6b6b;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2);border-radius:8px;padding:4px 10px;margin-top:4px;text-align:center">⚠ Gratis-Limit: 3/3 Scans heute — <span style="color:#ffd700;cursor:pointer;text-decoration:underline" onclick="openMonModal('pro')">Upgrade auf Pro</span></div>
+  </div>
+
+  <style>
+  .sig-chip{background:rgba(12,16,28,.72);backdrop-filter:blur(8px);border:1px solid rgba(212,175,55,.12);border-radius:10px;padding:5px 10px;display:flex;flex-direction:column;align-items:center;min-width:52px}
+  .chip-lbl{font-size:.55rem;color:#7b8a9a;letter-spacing:.06em;text-transform:uppercase;font-family:'Space Mono',monospace}
+  .chip-val{font-size:.85rem;color:#e8d5a3;font-weight:700;font-family:'Space Grotesk',sans-serif;margin-top:1px}
+  .sig-chip.pro-lock{border-color:rgba(255,107,107,.15);background:rgba(255,107,107,.06);cursor:pointer;transition:all .2s}
+  .sig-chip.pro-lock:hover{border-color:rgba(255,107,107,.3);transform:scale(1.05)}
+  .sig-chip.pro-lock .chip-val{color:#ff6b6b;font-size:.72rem}
+  </style>
+
   <!-- FILTER BAR -->
   <div id="filterbar">
     <button class="fb on" data-f="all"      onclick="setFilter('all')">ALLE</button>
@@ -617,8 +638,25 @@ function initNetworkAPI(){
 }
 function applyRealData(){
   S.dSig=NET.sigPct; S.dPing=NET.rtt; S.dDL=NET.downlink; S.dDBm=sigToDBm(NET.sigPct);
+  updateSigPanel();
 }
 function sigToDBm(pct){return Math.round(pct/100*75-95);}
+function updateSigPanel(){
+  var dbmEl=$('val-dbm'),rttEl=$('val-rtt'),dlEl=$('val-dl');
+  if(dbmEl) dbmEl.textContent=S.dDBm?S.dDBm+' dBm':'–';
+  if(rttEl) rttEl.textContent=S.dPing?S.dPing+' ms':'–';
+  if(dlEl) dlEl.textContent=S.dDL?S.dDL+' Mbps':'–';
+}
+function updateScanLimitMsg(){
+  var isPro=localStorage.getItem('wfh_pro')==='1';
+  var el=$('scan-limit-msg'); if(!el) return;
+  if(isPro){el.style.display='none'; return;}
+  var todayScanKey='wfh_scans_'+new Date().toISOString().slice(0,10);
+  var scans=parseInt(localStorage.getItem(todayScanKey)||'0',10);
+  if(scans>=3){el.style.display='block'; el.innerHTML='⚠ Gratis-Limit erreicht — <span style="color:#ffd700;cursor:pointer;text-decoration:underline" onclick="openMonModal(\'pro\')">Upgrade auf Pro</span>';}
+  else if(scans>=2){el.style.display='block'; el.textContent='⚠ Noch 1 gratis Scan heute';}
+  else{el.style.display='none';}
+}
 
 // ─── COLOUR HELPERS ──────────────────────────────────────────
 function sigCol(s,a){
@@ -1667,7 +1705,20 @@ function toggleScan(){
     setText('btn-lbl',T.btn_start);
     ctx.clearRect(0,0,W,H);
     closeBubbleDetail();
+    var sp=$('sig-panel'); if(sp) sp.style.display='none';
   } else {
+    // ── PRO SCAN LIMIT ──
+    var isPro=localStorage.getItem('wfh_pro')==='1';
+    var todayScanKey='wfh_scans_'+new Date().toISOString().slice(0,10);
+    var scansToday=parseInt(localStorage.getItem(todayScanKey)||'0',10);
+    if(!isPro&&scansToday>=3){
+      openMonModal('pro');
+      showToast('Gratis-Limit erreicht. Upgrade auf Pro für unbegrenzte Scans.');
+      return;
+    }
+    localStorage.setItem(todayScanKey,(scansToday+1)+'');
+    updateScanLimitMsg();
+
     S.scanning=true; S.paused=false;
     var gpsPerm=localStorage.getItem('wps_gps_perm');
     if(!gpsPerm){var gp=$('gps-permit');if(gp) gp.classList.add('open');}
@@ -1682,6 +1733,8 @@ function toggleScan(){
     if($('tog-hap').checked&&navigator.vibrate){clearInterval(S.hapticIv); S.hapticIv=setInterval(hapticBeat,HAPTIC_BASE);}
     S.lastT=performance.now();
     S.raf=requestAnimationFrame(frame);
+    // Show signal detail panel
+    var sp=$('sig-panel'); if(sp) sp.style.display='flex';
   }
 }
 
@@ -2293,6 +2346,49 @@ function monCheckAch(){MON_DEFS.forEach(function(a){if(MON.ach.indexOf(a.id)>=0)
 function buyMonPro(){alert('💎 Pro-Checkout wird vorbereitet...');}
 function buyMonProSub(){alert('💎 Pro-Abo wird vorbereitet...');}
 function initMonetization(){var el=document.getElementById('monetization-bar');if(el)el.classList.add('active');var p=document.getElementById('mon-pts');if(p)p.textContent=MON.pts;var s=document.getElementById('mon-strk');if(s)s.textContent=MON.strk;}
+</script>
+
+<!-- ─── CAPACITOR NATIVE BRIDGE ─────────────────────────────── -->
+<script type="module">
+(async function(){
+  if(typeof window==='undefined'||!window.Capacitor)return;
+  try{
+    const{WifiScan}=await import('/plugins/wifi-scan/dist/plugin.mjs').catch(()=>null)||{};
+    if(!WifiScan){console.log('Native WiFi scan not available');return;}
+    
+    // Request permissions
+    const perm=await WifiScan.requestPermissions().catch(()=>({granted:false}));
+    if(!perm.granted){console.warn('WiFi permissions denied');return;}
+    
+    // Native signal polling loop
+    window._nativeSignal={ssid:'',signal:-100,available:false};
+    setInterval(async()=>{
+      try{
+        const cur=await WifiScan.getCurrentSignal();
+        if(cur&&cur.signal!==undefined){
+          window._nativeSignal={ssid:cur.ssid||'',signal:cur.signal,available:true};
+          // Convert dBm (-100..-30) to percentage (0..100)
+          const pct=Math.max(0,Math.min(100,Math.round((cur.signal+100)*1.43)));
+          window._nativeSignalPct=pct;
+          // Dispatch custom event for main app
+          window.dispatchEvent(new CustomEvent('nativeSignal',{detail:{ssid:cur.ssid,signal:cur.signal,pct:pct}}));
+        }
+      }catch(e){/* silent fail */}
+    },800);
+    
+    // Also periodic scan for network list
+    setInterval(async()=>{
+      try{
+        const res=await WifiScan.scan();
+        if(res&&res.networks&&res.networks.length>0){
+          window._nativeNetworks=res.networks;
+        }
+      }catch(e){/* silent fail */}
+    },3000);
+    
+    console.log('✅ Native WiFi bridge active');
+  }catch(e){console.log('Capacitor bridge init error',e);}
+})();
 </script>
 </body>
 </html>
