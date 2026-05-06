@@ -40,8 +40,8 @@
 <body>
 
 <!-- AUDIO -->
-<audio id="aud-intro" src="jingle-intro.wav" preload="auto" playsinline muted autoplay></audio>
-<audio id="aud-bg"    src="jingle-intro.wav"       preload="auto" playsinline muted autoplay></audio>
+<audio id="aud-intro" src="jingle-intro.wav" preload="auto" playsinline></audio>
+<audio id="aud-bg"    src="jingle-intro.wav"       preload="auto" playsinline></audio>
 
 <!-- ══════════════════ INTRO ══════════════════════ -->
 <div id="intro">
@@ -1896,9 +1896,9 @@ function audioFadeTo(el,target,dur,cb){
 }
 function startIntroAudio(){
   var e=$('aud-intro');
-  if(!e||!e.paused) return; // already playing — guard
-  e.volume=0.82;
-  var p=e.play(); if(p&&p.catch) p.catch(function(){});
+  if(!e) return;
+  e.muted=false; e.volume=0.82;
+  var p=e.play(); if(p&&p.catch) p.catch(function(err){console.log('Audio play blocked:',err&&err.message);});
 }
 function startBgMusic(){
   var bg=$('aud-bg'); if(!bg) return;
