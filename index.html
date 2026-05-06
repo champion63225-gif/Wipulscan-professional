@@ -166,6 +166,30 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
   <div id="loader-bar"><div id="loader-fill"></div></div>
   <div id="loader-text">Initialisiere Scanner…</div>
 </div>
+<script>
+// Loader animation — runs immediately, no dependencies
+(function(){
+  var fill=document.getElementById('loader-fill');
+  var txt=document.getElementById('loader-text');
+  var loader=document.getElementById('loader');
+  if(!fill||!loader)return;
+  var w=0;
+  function step(){
+    w+=3;
+    if(w>100)w=100;
+    fill.style.width=w+'%';
+    if(w<30)txt.textContent='Scanner kalibriert…';
+    else if(w<60)txt.textContent='Audio-Engine startet…';
+    else if(w<90)txt.textContent='Kompass initialisiert…';
+    else txt.textContent='Bereit.';
+    if(w<100)setTimeout(step,40);
+    else setTimeout(function(){loader.classList.add('done');},400);
+  }
+  step();
+  // Hard safety: hide loader after 2.5s no matter what
+  setTimeout(function(){if(loader)loader.classList.add('done');},2500);
+})();
+</script>
 
 <!-- INTRO -->
 <div id="intro">
@@ -735,27 +759,10 @@ setTimeout(function(){openModal('daily-modal')},4500)
 })()
 
 // ─── INIT ──────────────────────────────────────────────────────
-// Loading screen progress
-(function(){
-  var fill=$('loader-fill'),txt=$('loader-text'),loader=$('loader')
-  if(!fill||!loader){return} // safety: loader elements must exist
-  var steps=[{w:25,t:'Scanner wird kalibriert…'},{w:55,t:'Audio-Engine startet…'},{w:80,t:'Kompass initialisiert…'},{w:100,t:'Bereit.'}]
-  var i=0
-  function next(){
-    if(i>=steps.length){
-      setTimeout(function(){try{loader.classList.add('done')}catch(e){}},400)
-      setTimeout(function(){try{drawHeatmap(0.35);drawWave(0.35)}catch(e){}},600)
-      return
-    }
-    try{fill.style.width=steps[i].w+'%'}catch(e){}
-    try{txt.textContent=steps[i].t}catch(e){}
-    i++
-    setTimeout(next,280)
-  }
-  setTimeout(next,120)
-  // Hard fallback: hide loader after 3 seconds no matter what
-  setTimeout(function(){try{loader.classList.add('done')}catch(e){}},3000)
-})()
+// Hide loader if still visible after main script loads
+setTimeout(function(){var l=document.getElementById('loader');if(l)l.classList.add('done');},500)
+// Draw initial visualizations
+setTimeout(function(){try{drawHeatmap(0.35);drawWave(0.35)}catch(e){}},700)
 // Wire monetization after app shows
 (function(){
   var _origAccept=acceptConsent
