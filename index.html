@@ -784,22 +784,22 @@ function drawHeatmap(strength){
     ctx.stroke()
   }
   
-  // Premium radial gradient - matching new reference image with colorful heatmap (gelb/orange/rosa/blau)
+  // Colorful heatmap background - matching reference image (gelb/orange/rosa/blau)
   var grd=ctx.createRadialGradient(cx,cy,0,cx,cy,radius)
   if(strength>0.7){
-    grd.addColorStop(0,'rgba(255,200,100,'+(0.8+strength*0.2)+')')
-    grd.addColorStop(0.3,'rgba(255,150,50,'+(0.7+strength*0.2)+')')
-    grd.addColorStop(0.6,'rgba(255,100,150,'+(0.6+strength*0.2)+')')
-    grd.addColorStop(0.85,'rgba(100,150,255,'+(0.4+strength*0.15)+')')
+    grd.addColorStop(0,'rgba(255,200,100,'+(0.9+strength*0.1)+')')
+    grd.addColorStop(0.25,'rgba(255,150,50,'+(0.85+strength*0.1)+')')
+    grd.addColorStop(0.5,'rgba(255,100,150,'+(0.8+strength*0.15)+')')
+    grd.addColorStop(0.75,'rgba(100,150,255,'+(0.6+strength*0.2)+')')
     grd.addColorStop(1,'rgba(50,100,200,0)')
   }else if(strength>0.3){
-    grd.addColorStop(0,'rgba(220,240,255,'+(0.7+strength*0.25)+')')
-    grd.addColorStop(0.4,'rgba(100,200,255,'+(0.5+strength*0.2)+')')
-    grd.addColorStop(0.7,'rgba(50,150,200,'+(0.3+strength*0.15)+')')
+    grd.addColorStop(0,'rgba(220,240,255,'+(0.8+strength*0.2)+')')
+    grd.addColorStop(0.4,'rgba(100,200,255,'+(0.6+strength*0.2)+')')
+    grd.addColorStop(0.7,'rgba(50,150,200,'+(0.4+strength*0.15)+')')
     grd.addColorStop(1,'rgba(10,15,30,0)')
   }else{
-    grd.addColorStop(0,'rgba(100,150,255,'+(0.6+strength*0.3)+')')
-    grd.addColorStop(0.5,'rgba(50,100,150,'+(0.4+strength*0.25)+')')
+    grd.addColorStop(0,'rgba(100,150,255,'+(0.7+strength*0.25)+')')
+    grd.addColorStop(0.5,'rgba(50,100,150,'+(0.5+strength*0.2)+')')
     grd.addColorStop(1,'rgba(10,15,30,0)')
   }
   ctx.fillStyle=grd
@@ -1413,23 +1413,15 @@ function showAnalyticsConsent() {
 }
 
 function acceptAnalyticsConsent() {
-  try {
-    setAnalyticsConsent(true);
-    document.getElementById('analytics-consent').style.display = 'none';
-    showToast('Analytics aktiviert.');
-  } catch (error) {
-    console.error('Analytics consent failed:', error);
-  }
+  setAnalyticsConsent(true);
+  document.getElementById('analytics-consent').style.display = 'none';
+  showToast('Analytics aktiviert.');
 }
 
 function declineAnalyticsConsent() {
-  try {
-    setAnalyticsConsent(false);
-    document.getElementById('analytics-consent').style.display = 'none';
-    showToast('Analytics deaktiviert.');
-  } catch (error) {
-    console.error('Analytics consent failed:', error);
-  }
+  setAnalyticsConsent(false);
+  document.getElementById('analytics-consent').style.display = 'none';
+  showToast('Analytics deaktiviert.');
 }
 
 // Initialize analytics consent on app load - delay to prevent freezing
