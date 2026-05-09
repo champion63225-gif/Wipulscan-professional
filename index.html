@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#0a0f1e"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="WiFi Hunter"/>
+<meta name="apple-mobile-web-app-title" content="Wipulscan"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="-1"/>
-<meta name="description" content="WiFi Hunter Premium – Spatial Signal Scanner & AR Visualizer"/>
+<meta name="description" content="Wipulscan Premium – Spatial Signal Scanner & AR Visualizer"/>
 <meta name="price" content="EUR 1.99"/>
 <link rel="manifest" href="manifest.json?v=1"/>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=1"/>
@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=1"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-<title>WiFi Hunter · Premium</title>
+<title>Wipulscan · Premium</title>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#e8ecf1;font-family:'Space Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:0;min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
@@ -279,7 +279,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:linear-gradient(135d
 
 <!-- LOADER -->
 <div id="loader">
-  <div id="loader-logo">WiFi Hunter</div>
+  <div id="loader-logo">Wipulscan</div>
   <div id="loader-bar"><div id="loader-fill"></div></div>
   <div id="loader-text">Initialisiere Scanner…</div>
 </div>
@@ -310,7 +310,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:linear-gradient(135d
 
 <!-- INTRO -->
 <div id="intro">
-  <h1>WiFi Hunter</h1>
+  <h1>Wipulscan</h1>
   <p>PREMIUM SIGNAL SCANNER</p>
   <div id="intro-bar"><div id="intro-fill"></div></div>
 </div>
@@ -320,7 +320,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:linear-gradient(135d
   <div class="onboarding-card">
     <div class="onboarding-step" data-step="1">
       <div class="onboarding-icon">🎯</div>
-      <h2>Willkommen bei WiFi Hunter</h2>
+      <h2>Willkommen bei Wipulscan</h2>
       <p>Der professionelle WLAN-Signal-Scanner für dein Gerät. Finde die stärksten Hotspots mit präziser Heatmap-Visualisierung.</p>
       <button class="onboarding-btn" onclick="nextOnboardingStep()">Weiter</button>
     </div>
@@ -431,7 +431,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:linear-gradient(135d
 <div id="consent">
   <div class="cc-card">
     <h2>🔒 Berechtigungen</h2>
-    <p>WiFi Hunter nutzt deine Geräte-Sensoren für die Signal-Simulation:</p>
+    <p>Wipulscan nutzt deine Geräte-Sensoren für die Signal-Simulation:</p>
     <ul>
       <li>🧭 <strong>Bewegungssensor</strong> – für die Kompass-Richtung</li>
       <li>📳 <strong>Vibration</strong> – Feedback bei starkem Signal (optional)</li>
@@ -493,7 +493,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:linear-gradient(135d
   <div style="position:relative">
     <button class="modal-close" onclick="closeModal('pro-modal')">×</button>
     <div class="modal-card">
-      <h3>💎 WiFi Hunter Pro</h3>
+      <h3>💎 Wipulscan Pro</h3>
       <div class="pro-card">
         <h4>Upgrade jetzt</h4>
         <p>Echtzeit-WLAN-Scan · Unbegrenzte Heatmaps · Cloud-Sync · Keine Werbung</p>
@@ -518,8 +518,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:linear-gradient(135d
       <h3>ℹ️ Hilfe & Anleitung</h3>
       <div style="max-height:400px;overflow-y:auto;padding-right:8px">
         <div class="help-section">
-          <h4>🎯 Wie funktioniert WiFi Hunter?</h4>
-          <p>WiFi Hunter ist ein präziser WLAN-Signal-Scanner. Der Kompass-Zeiger zeigt zur stärksten Signalquelle. Je höher der Ton, desto näher bist du am Hotspot.</p>
+          <h4>🎯 Wie funktioniert Wipulscan?</h4>
+          <p>Wipulscan ist ein präziser WLAN-Signal-Scanner. Der Kompass-Zeiger zeigt zur stärksten Signalquelle. Je höher der Ton, desto näher bist du am Hotspot.</p>
         </div>
         <div class="help-section">
           <h4>🧭 Der Kompass</h4>
@@ -1212,9 +1212,9 @@ try{
 var url=c.toDataURL('image/png')
 var link='https://champion63225-gif.github.io/Wipulscan-professional/?ref='+Math.random().toString(36).slice(2,8)
 if(navigator.share){
-navigator.share({title:'WiFi Hunter – Mein Signal-Sweep!',text:'Schau meinen WLAN-Hotspot-Fund an! '+link,url:link}).then(function(){window._hasShared=true;addPoints(25);checkAchievements()})
+navigator.share({title:'Wipulscan – Mein Signal-Sweep!',text:'Schau meinen WLAN-Hotspot-Fund an! '+link,url:link}).then(function(){window._hasShared=true;addPoints(25);checkAchievements()})
 }else{
-var a=document.createElement('a');a.href=url;a.download='wifihunter-heatmap.png';a.click()
+var a=document.createElement('a');a.href=url;a.download='wipulscan-heatmap.png';a.click()
 showToast('Bild gespeichert! Teile es manuell.')
 window._hasShared=true;addPoints(25);checkAchievements()
 }
