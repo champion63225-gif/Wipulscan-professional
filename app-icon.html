@@ -34,6 +34,15 @@
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, 512, 512);
       
+      // Colorful heatmap cloud (center)
+      const cloudGradient = ctx.createRadialGradient(256, 280, 0, 256, 280, 150);
+      cloudGradient.addColorStop(0, 'rgba(255, 100, 150, 0.6)');
+      cloudGradient.addColorStop(0.3, 'rgba(255, 150, 100, 0.5)');
+      cloudGradient.addColorStop(0.6, 'rgba(100, 200, 255, 0.4)');
+      cloudGradient.addColorStop(1, 'rgba(100, 150, 255, 0)');
+      ctx.fillStyle = cloudGradient;
+      ctx.fillRect(0, 0, 512, 512);
+      
       // Radar ring (outer)
       ctx.strokeStyle = 'rgba(100, 150, 255, 0.3)';
       ctx.lineWidth = 3;

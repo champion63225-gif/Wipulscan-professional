@@ -784,21 +784,22 @@ function drawHeatmap(strength){
     ctx.stroke()
   }
   
-  // Premium radial gradient - matching icon design
+  // Premium radial gradient - matching icon design with colorful heatmap
   var grd=ctx.createRadialGradient(cx,cy,0,cx,cy,radius)
   if(strength>0.7){
-    grd.addColorStop(0,'rgba(255,255,255,'+(0.6+strength*0.3)+')')
-    grd.addColorStop(0.35,'rgba(200,220,255,'+(0.4+strength*0.2)+')')
-    grd.addColorStop(0.65,'rgba(100,150,255,'+(0.2+strength*0.15)+')')
+    grd.addColorStop(0,'rgba(255,200,150,'+(0.6+strength*0.3)+')')
+    grd.addColorStop(0.25,'rgba(255,150,100,'+(0.5+strength*0.2)+')')
+    grd.addColorStop(0.5,'rgba(100,200,255,'+(0.4+strength*0.2)+')')
+    grd.addColorStop(0.75,'rgba(100,150,255,'+(0.2+strength*0.15)+')')
     grd.addColorStop(1,'rgba(26,26,46,0)')
   }else if(strength>0.3){
     grd.addColorStop(0,'rgba(200,220,255,'+(0.5+strength*0.3)+')')
-    grd.addColorStop(0.4,'rgba(100,150,255,'+(0.3+strength*0.2)+')')
-    grd.addColorStop(0.7,'rgba(50,80,150,'+(0.15+strength*0.15)+')')
+    grd.addColorStop(0.4,'rgba(100,200,255,'+(0.3+strength*0.2)+')')
+    grd.addColorStop(0.7,'rgba(50,150,200,'+(0.15+strength*0.15)+')')
     grd.addColorStop(1,'rgba(26,26,46,0)')
   }else{
     grd.addColorStop(0,'rgba(100,150,255,'+(0.4+strength*0.3)+')')
-    grd.addColorStop(0.5,'rgba(50,80,150,'+(0.2+strength*0.2)+')')
+    grd.addColorStop(0.5,'rgba(50,100,150,'+(0.2+strength*0.2)+')')
     grd.addColorStop(1,'rgba(26,26,46,0)')
   }
   ctx.fillStyle=grd
@@ -1406,9 +1407,17 @@ function showAnalyticsConsent() {
 function acceptAnalyticsConsent() {
   setAnalyticsConsent(true);
   document.getElementById('analytics-consent').style.display = 'none';
-  autonomousTrackingSetup();
-  startAutoFlush();
   showToast('Analytics aktiviert.');
+  
+  // Use setTimeout to prevent freezing
+  setTimeout(() => {
+    try {
+      autonomousTrackingSetup();
+      startAutoFlush();
+    } catch (error) {
+      console.error('Analytics initialization failed:', error);
+    }
+  }, 100);
 }
 
 function declineAnalyticsConsent() {
