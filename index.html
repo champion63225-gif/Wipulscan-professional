@@ -158,27 +158,28 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
 
 /* Dashboard */
 #dashboard{padding:80px 16px 24px;max-width:600px;margin:0 auto}
-.dash-header{margin-bottom:24px}
-.dash-header h2{font-size:1.5rem;font-weight:700;margin-bottom:16px;color:#e8ecf1}
-.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.stat-card{background:rgba(20,30,45,.6);border:1px solid rgba(123,197,255,.15);border-radius:20px;padding:16px;text-align:center}
-.stat-icon{font-size:1.5rem;margin-bottom:8px}
-.stat-value{font-size:1.5rem;font-weight:700;color:#7bc5ff;margin-bottom:4px}
-.stat-label{font-size:.75rem;color:#5a6a7d}
-.dash-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:24px}
-.dash-card{background:rgba(20,30,45,.6);border:1px solid rgba(123,197,255,.15);border-radius:24px;padding:20px}
-.dash-card h3{font-size:1.1rem;font-weight:600;margin-bottom:16px;color:#e8ecf1}
-.heatmap-preview{display:flex;justify-content:center;margin-bottom:12px}
-.heatmap-preview canvas{border-radius:16px;background:rgba(10,15,25,.5)}
-.dash-hint{font-size:.8rem;color:#5a6a7d;text-align:center;margin:0}
-.scan-list{max-height:200px;overflow-y:auto}
-.scan-empty{text-align:center;color:#5a6a7d;font-size:.85rem;padding:20px 0}
-.scan-item{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid rgba(123,197,255,.08)}
+.dash-header{margin-bottom:32px}
+.dash-header h2{font-size:1.8rem;font-weight:700;margin-bottom:8px;color:#ffffff;letter-spacing:-0.5px}
+.dash-header p{font-size:.95rem;color:#7b8a9a}
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stat-card{background:linear-gradient(135deg,rgba(30,40,60,.8),rgba(20,30,50,.9));border:1px solid rgba(100,150,255,.2);border-radius:24px;padding:20px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.stat-icon{font-size:2rem;margin-bottom:12px}
+.stat-value{font-size:2rem;font-weight:800;color:#ffffff;margin-bottom:4px;text-shadow:0 0 20px rgba(100,150,255,.3)}
+.stat-label{font-size:.8rem;color:#7b8a9a;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.dash-grid{display:grid;grid-template-columns:1fr;gap:20px;margin-bottom:32px}
+.dash-card{background:linear-gradient(135deg,rgba(25,35,55,.9),rgba(15,25,45,.95));border:1px solid rgba(100,150,255,.15);border-radius:28px;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.dash-card h3{font-size:1.25rem;font-weight:700;margin-bottom:20px;color:#ffffff;letter-spacing:-0.3px}
+.heatmap-preview{display:flex;justify-content:center;margin-bottom:16px}
+.heatmap-preview canvas{border-radius:20px;background:rgba(10,15,30,.8);box-shadow:inset 0 2px 20px rgba(0,0,0,.5)}
+.dash-hint{font-size:.85rem;color:#5a6a7d;text-align:center;margin:0}
+.scan-list{max-height:220px;overflow-y:auto}
+.scan-empty{text-align:center;color:#5a6a7d;font-size:.9rem;padding:28px 0}
+.scan-item{display:flex;align-items:center;gap:16px;padding:16px;border-bottom:1px solid rgba(100,150,255,.1)}
 .scan-item:last-child{border-bottom:none}
-.scan-time{font-size:.75rem;color:#5a6a7d;min-width:60px}
-.scan-signal{font-size:.9rem;font-weight:600;color:#7bc5ff}
-.dash-action-btn{width:100%;padding:16px;border:none;border-radius:20px;background:linear-gradient(135deg,#7bc5ff,#00d4aa);color:#03060c;font-weight:700;font-size:1.1rem;cursor:pointer;transition:transform .2s,box-shadow .2s}
-.dash-action-btn:hover{transform:scale(1.02);box-shadow:0 8px 24px rgba(123,197,255,.3)}
+.scan-time{font-size:.8rem;color:#5a6a7d;min-width:70px;font-weight:500}
+.scan-signal{font-size:1rem;font-weight:700;color:#ffffff}
+.dash-action-btn{width:100%;padding:18px;border:none;border-radius:24px;background:linear-gradient(135deg,#6485ff,#3d5afe);color:#ffffff;font-weight:700;font-size:1.15rem;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 32px rgba(61,90,254,.4);letter-spacing:0.3px}
+.dash-action-btn:hover{transform:scale(1.02);box-shadow:0 12px 48px rgba(61,90,254,.6)}
 
 /* Pro Features */
 .pro-badge{display:inline-block;background:linear-gradient(135deg,#ff6b6b,#c92a2a);color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:8px;margin-left:8px;vertical-align:middle}
@@ -189,6 +190,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
 
 /* Hunt View */
 #hunt-view{padding:80px 16px 24px;max-width:400px;margin:0 auto}
+#heatmap-wrap{background:linear-gradient(135deg,rgba(25,35,55,.9),rgba(15,25,45,.95));border:1px solid rgba(100,150,255,.15);box-shadow:0 12px 40px rgba(0,0,0,.4)}
 
 /* Onboarding */
 #onboarding{z-index:250}
@@ -542,6 +544,7 @@ var huntRunning=false,walkPhase=0,wavePhase=0,animId=null,walkIv=null;
 var hasConsent=false,hasOrientation=false;
 var scanHistory=[];
 var currentView='dashboard';
+var currentLang='de';
 
 // ─── DOM HELPERS ─────────────────────────────────────────────
 function $(id){return document.getElementById(id)}
@@ -645,36 +648,46 @@ function drawHeatmap(strength){
   ctx.clearRect(0,0,w,h)
   var cx=w/2,cy=h/2
   var radius=50+strength*110
-  var grd=ctx.createRadialGradient(cx,cy,8,cx,cy,radius)
-  // Professional blue/cyan/teal gradient scheme
+  
+  // Premium radar-style concentric rings
+  ctx.strokeStyle='rgba(100,150,255,0.2)'
+  ctx.lineWidth=2
+  for(var r=30;r<radius;r+=30){
+    ctx.beginPath()
+    ctx.arc(cx,cy,r,0,Math.PI*2)
+    ctx.stroke()
+  }
+  
+  // Premium radial gradient - elegant purple/blue theme
+  var grd=ctx.createRadialGradient(cx,cy,0,cx,cy,radius)
   if(strength>0.7){
-    grd.addColorStop(0,'rgba(0,212,170,'+(0.5+strength*0.3)+')')
-    grd.addColorStop(0.4,'rgba(123,197,255,'+(0.3+strength*0.2)+')')
-    grd.addColorStop(0.7,'rgba(62,106,142,'+(0.15+strength*0.15)+')')
-    grd.addColorStop(1,'rgba(10,15,25,0)')
+    grd.addColorStop(0,'rgba(180,100,255,'+(0.6+strength*0.3)+')')
+    grd.addColorStop(0.35,'rgba(120,60,200,'+(0.4+strength*0.2)+')')
+    grd.addColorStop(0.65,'rgba(60,30,120,'+(0.2+strength*0.15)+')')
+    grd.addColorStop(1,'rgba(15,10,30,0)')
   }else if(strength>0.3){
-    grd.addColorStop(0,'rgba(123,197,255,'+(0.4+strength*0.3)+')')
-    grd.addColorStop(0.5,'rgba(62,106,142,'+(0.2+strength*0.2)+')')
-    grd.addColorStop(0.8,'rgba(20,30,45,'+(0.1+strength*0.1)+')')
-    grd.addColorStop(1,'rgba(10,15,25,0)')
+    grd.addColorStop(0,'rgba(100,150,255,'+(0.5+strength*0.3)+')')
+    grd.addColorStop(0.4,'rgba(60,100,200,'+(0.3+strength*0.2)+')')
+    grd.addColorStop(0.7,'rgba(30,50,120,'+(0.15+strength*0.15)+')')
+    grd.addColorStop(1,'rgba(10,10,30,0)')
   }else{
-    grd.addColorStop(0,'rgba(62,106,142,'+(0.3+strength*0.3)+')')
-    grd.addColorStop(0.6,'rgba(20,30,45,'+(0.15+strength*0.15)+')')
-    grd.addColorStop(1,'rgba(10,15,25,0)')
+    grd.addColorStop(0,'rgba(80,80,140,'+(0.4+strength*0.3)+')')
+    grd.addColorStop(0.5,'rgba(40,40,90,'+(0.2+strength*0.2)+')')
+    grd.addColorStop(1,'rgba(10,10,30,0)')
   }
   ctx.fillStyle=grd
   ctx.fillRect(0,0,w,h)
-  // Add soft cloud blobs
-  for(var i=0;i<3;i++){
-    var bx=cx+(Math.random()-.5)*radius*.6
-    var by=cy+(Math.random()-.5)*radius*.6
-    var br=20+Math.random()*30*strength
-    var bgrd=ctx.createRadialGradient(bx,by,2,bx,by,br)
-    if(strength>0.6){bgrd.addColorStop(0,'rgba(0,212,170,.25)');bgrd.addColorStop(1,'rgba(0,0,0,0)')}
-    else if(strength>0.3){bgrd.addColorStop(0,'rgba(123,197,255,.2)');bgrd.addColorStop(1,'rgba(0,0,0,0)')}
-    else{bgrd.addColorStop(0,'rgba(62,106,142,.15)');bgrd.addColorStop(1,'rgba(0,0,0,0)')}
-    ctx.fillStyle=bgrd
-    ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.fill()
+  
+  // Elegant signal pulses
+  for(var i=0;i<4;i++){
+    var pulseRadius=20+i*25+Math.sin(Date.now()*0.002+i)*10
+    var pulseGrad=ctx.createRadialGradient(cx,cy,0,cx,cy,pulseRadius)
+    pulseGrad.addColorStop(0,'rgba(150,100,255,'+(0.3*strength*(1-i/4))+')')
+    pulseGrad.addColorStop(1,'rgba(150,100,255,0)')
+    ctx.fillStyle=pulseGrad
+    ctx.beginPath()
+    ctx.arc(cx,cy,pulseRadius,0,Math.PI*2)
+    ctx.fill()
   }
 }
 
@@ -1192,5 +1205,6 @@ setTimeout(function(){try{drawHeatmap(0.35);drawWave(0.35)}catch(e){}},700)
   }
 })();
 </script>
+<script src="i18n.js"></script>
 </body>
 </html>

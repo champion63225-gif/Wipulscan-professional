@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WiFi Hunter App Icon Generator</title>
+  <style>
+    body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #0a0f19; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    canvas { border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .controls { margin-top: 20px; display: flex; gap: 12px; }
+    button { padding: 12px 24px; background: linear-gradient(135deg,#7bc5ff,#00d4aa); border: none; border-radius: 12px; color: #0a0f19; font-weight: 700; cursor: pointer; font-size: 14px; }
+    button:hover { transform: scale(1.02); box-shadow: 0 8px 24px rgba(123,197,255,0.3); }
+    h1 { color: #e8ecf1; margin-bottom: 10px; font-size: 1.5rem; }
+    p { color: #9aacbf; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>WiFi Hunter App Icon</h1>
+  <p>Professionelles App-Icon für Store-Approval</p>
+  <canvas id="icon" width="512" height="512"></canvas>
+  <div class="controls">
+    <button onclick="downloadIcon()">Download PNG (512x512)</button>
+  </div>
+  <script>
+    const canvas = document.getElementById('icon');
+    const ctx = canvas.getContext('2d');
+    
+    function drawIcon() {
+      // Premium dark gradient background
+      const gradient = ctx.createLinearGradient(0, 0, 512, 512);
+      gradient.addColorStop(0, '#0a0f1e');
+      gradient.addColorStop(0.5, '#141829');
+      gradient.addColorStop(1, '#0a0f1e');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 512, 512);
+      
+      // Subtle inner glow
+      const glow = ctx.createRadialGradient(256, 256, 0, 256, 256, 280);
+      glow.addColorStop(0, 'rgba(100, 150, 255, 0.15)');
+      glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, 512, 512);
+      
+      // Concentric radar rings (subtle)
+      ctx.strokeStyle = 'rgba(100, 150, 255, 0.15)';
+      ctx.lineWidth = 2;
+      for (let r = 40; r <= 200; r += 40) {
+        ctx.beginPath();
+        ctx.arc(256, 256, r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      
+      // WiFi signal arcs (center)
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 12;
+      ctx.lineCap = 'round';
+      ctx.shadowColor = 'rgba(100, 150, 255, 0.8)';
+      ctx.shadowBlur = 25;
+      
+      // Outer arc
+      ctx.beginPath();
+      ctx.arc(256, 280, 70, Math.PI - 0.6, 0.6);
+      ctx.stroke();
+      
+      // Middle arc
+      ctx.beginPath();
+      ctx.arc(256, 280, 45, Math.PI - 0.5, 0.5);
+      ctx.stroke();
+      
+      // Inner arc
+      ctx.beginPath();
+      ctx.arc(256, 280, 20, Math.PI - 0.4, 0.4);
+      ctx.stroke();
+      
+      // Center dot
+      ctx.beginPath();
+      ctx.arc(256, 280, 10, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      
+      // "WiFi Hunter" text (bottom)
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '600 36px -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('WiFi Hunter', 256, 400);
+      
+      // Subtitle (small)
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.font = '500 18px -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.fillText('Signal Scanner', 256, 435);
+      
+      // Premium border (subtle)
+      ctx.strokeStyle = 'rgba(100, 150, 255, 0.2)';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(12, 12, 488, 488);
+    }
+    
+    function downloadIcon() {
+      const link = document.createElement('a');
+      link.download = 'wifi-hunter-icon.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+    
+    drawIcon();
+  </script>
+</body>
+</html>
