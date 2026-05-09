@@ -26,69 +26,70 @@
     const ctx = canvas.getContext('2d');
     
     function drawIcon() {
-      // Dark gradient background (matching reference image)
+      // Dark gradient background (matching new reference image)
       const gradient = ctx.createLinearGradient(0, 0, 512, 512);
-      gradient.addColorStop(0, '#0a0f1e');
+      gradient.addColorStop(0, '#0a0a0a');
       gradient.addColorStop(0.5, '#1a1a2e');
       gradient.addColorStop(1, '#0f3460');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, 512, 512);
       
-      // Colorful heatmap cloud (center) - matching reference image
-      const cloudGradient = ctx.createRadialGradient(256, 280, 0, 256, 280, 140);
-      cloudGradient.addColorStop(0, 'rgba(255, 120, 180, 0.7)');
-      cloudGradient.addColorStop(0.35, 'rgba(255, 100, 80, 0.6)');
-      cloudGradient.addColorStop(0.65, 'rgba(100, 200, 255, 0.5)');
+      // Colorful heatmap cloud (center) - matching new reference image
+      const cloudGradient = ctx.createRadialGradient(256, 280, 0, 256, 280, 150);
+      cloudGradient.addColorStop(0, 'rgba(255, 200, 100, 0.8)');
+      cloudGradient.addColorStop(0.3, 'rgba(255, 150, 50, 0.7)');
+      cloudGradient.addColorStop(0.6, 'rgba(255, 100, 150, 0.6)');
+      cloudGradient.addColorStop(0.85, 'rgba(100, 150, 255, 0.4)');
       cloudGradient.addColorStop(1, 'rgba(50, 100, 200, 0)');
       ctx.fillStyle = cloudGradient;
       ctx.fillRect(0, 0, 512, 512);
       
       // Radar ring (outer)
-      ctx.strokeStyle = 'rgba(100, 150, 255, 0.25)';
+      ctx.strokeStyle = 'rgba(100, 150, 255, 0.3)';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(256, 256, 170, 0, Math.PI * 2);
+      ctx.arc(256, 256, 175, 0, Math.PI * 2);
       ctx.stroke();
       
-      // WiFi symbol (three arcs + dot) - matching reference image
+      // WiFi symbol (three arcs + dot) - matching new reference image
       ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 16;
+      ctx.lineWidth = 18;
       ctx.lineCap = 'round';
-      ctx.shadowColor = 'rgba(100, 150, 255, 0.8)';
-      ctx.shadowBlur = 25;
+      ctx.shadowColor = 'rgba(255, 200, 100, 0.6)';
+      ctx.shadowBlur = 30;
       
       // Outer arc
       ctx.beginPath();
-      ctx.arc(256, 310, 95, Math.PI - 0.6, 0.6);
+      ctx.arc(256, 310, 100, Math.PI - 0.55, 0.55);
       ctx.stroke();
       
       // Middle arc
       ctx.beginPath();
-      ctx.arc(256, 310, 65, Math.PI - 0.5, 0.5);
+      ctx.arc(256, 310, 68, Math.PI - 0.45, 0.45);
       ctx.stroke();
       
       // Inner arc
       ctx.beginPath();
-      ctx.arc(256, 310, 35, Math.PI - 0.4, 0.4);
+      ctx.arc(256, 310, 36, Math.PI - 0.35, 0.35);
       ctx.stroke();
       
       // Center dot
       ctx.shadowBlur = 0;
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.arc(256, 310, 14, 0, Math.PI * 2);
+      ctx.arc(256, 310, 15, 0, Math.PI * 2);
       ctx.fill();
       
       // Inner radar ring
-      ctx.strokeStyle = 'rgba(100, 150, 255, 0.15)';
+      ctx.strokeStyle = 'rgba(255, 200, 100, 0.2)';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.arc(256, 310, 130, 0, Math.PI * 2);
+      ctx.arc(256, 310, 135, 0, Math.PI * 2);
       ctx.stroke();
       
       // Subtle glow effect
-      const glow = ctx.createRadialGradient(256, 310, 0, 256, 310, 160);
-      glow.addColorStop(0, 'rgba(100, 150, 255, 0.2)');
+      const glow = ctx.createRadialGradient(256, 310, 0, 256, 310, 170);
+      glow.addColorStop(0, 'rgba(255, 200, 100, 0.25)');
       glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, 512, 512);
