@@ -235,8 +235,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:linear-gradient(135d
 
 /* Analytics Consent */
 #analytics-consent{position:fixed;inset:0;z-index:280;display:flex;align-items:center;justify-content:center;padding:20px}
-.consent-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
-.consent-card{position:relative;width:100%;max-width:380px;background:linear-gradient(135deg,rgba(26,26,46,.95),rgba(22,33,62,.95));border:1px solid rgba(100,150,255,.2);border-radius:28px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:fadeInUp .4s ease-out}
+.consent-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);pointer-events:none}
+.consent-card{position:relative;width:100%;max-width:380px;background:linear-gradient(135deg,rgba(26,26,46,.95),rgba(22,33,62,.95));border:1px solid rgba(100,150,255,.2);border-radius:28px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:fadeInUp .4s ease-out;z-index:281}
 .consent-icon{font-size:3rem;margin-bottom:16px;text-align:center}
 .consent-card h2{font-size:1.5rem;font-weight:700;margin-bottom:12px;color:#ffffff;text-align:center}
 .consent-card p{font-size:.95rem;color:#9aacbf;line-height:1.6;margin-bottom:20px;text-align:center}
@@ -1397,7 +1397,15 @@ function updateProUI() {
   }
 }
 
-// Profit-Architect: Analytics Consent Functions
+// Profit-Architect: Analytics Consent Functions (inline to avoid loading issues)
+function hasAnalyticsConsent() {
+  return localStorage.getItem('wfh_analytics_consent') === 'true';
+}
+
+function setAnalyticsConsent(consent) {
+  localStorage.setItem('wfh_analytics_consent', consent.toString());
+}
+
 function showAnalyticsConsent() {
   if (!hasAnalyticsConsent()) {
     document.getElementById('analytics-consent').style.display = 'flex';
@@ -1405,25 +1413,23 @@ function showAnalyticsConsent() {
 }
 
 function acceptAnalyticsConsent() {
-  setAnalyticsConsent(true);
-  document.getElementById('analytics-consent').style.display = 'none';
-  showToast('Analytics aktiviert.');
-  
-  // Use requestAnimationFrame to prevent freezing
-  requestAnimationFrame(() => {
-    try {
-      autonomousTrackingSetup();
-      setTimeout(() => startAutoFlush(), 100);
-    } catch (error) {
-      console.error('Analytics initialization failed:', error);
-    }
-  });
+  try {
+    setAnalyticsConsent(true);
+    document.getElementById('analytics-consent').style.display = 'none';
+    showToast('Analytics aktiviert.');
+  } catch (error) {
+    console.error('Analytics consent failed:', error);
+  }
 }
 
 function declineAnalyticsConsent() {
-  setAnalyticsConsent(false);
-  document.getElementById('analytics-consent').style.display = 'none';
-  showToast('Analytics deaktiviert.');
+  try {
+    setAnalyticsConsent(false);
+    document.getElementById('analytics-consent').style.display = 'none';
+    showToast('Analytics deaktiviert.');
+  } catch (error) {
+    console.error('Analytics consent failed:', error);
+  }
 }
 
 // Initialize analytics consent on app load - delay to prevent freezing
