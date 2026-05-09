@@ -1222,8 +1222,8 @@ trackEvent('share',{})
 }catch(e){showToast('Teilen nicht möglich')}
 }
 
-function buyPro(){showToast('💎 Pro-Checkout bald verfügbar!');trackEvent('pro_click',{type:'onetime'})}
-function buyProSub(){showToast('💎 Pro-Abo bald verfügbar!');trackEvent('pro_click',{type:'subscription'})}
+function buyPro(){showPaywall('pro_onetime');trackEvent('pro_click',{type:'onetime'})}
+function buyProSub(){showPaywall('pro_subscription');trackEvent('pro_click',{type:'subscription'})}
 
 function updateSocialProof(){
 // Show user's own hotspot count from scan history
