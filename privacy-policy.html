@@ -5,161 +5,195 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Datenschutzerklärung – WiFi Hunter</title>
 <style>
-body{font-family:system-ui,-apple-system,sans-serif;max-width:720px;margin:0 auto;padding:2rem 1rem;line-height:1.7;color:#333;background:#f8f9fa}
-h1{color:#1a1a2e;border-bottom:2px solid #d4af37;padding-bottom:.5rem}
-h2{color:#2d4a6e;margin-top:2rem}
-strong{color:#1a1a2e}
-.contact{background:#fff;border-radius:12px;padding:1.5rem;margin:2rem 0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.lang-switch{text-align:right;margin-bottom:1rem}
-.lang-switch a{color:#2d4a6e;text-decoration:none;margin-left:12px;font-size:.9rem}
-.lang-switch a:hover{text-decoration:underline}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:800px;margin:0 auto;padding:3rem 1.5rem;line-height:1.8;color:#1a1a2e;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);min-height:100vh}
+.container{background:rgba(30,41,59,.8);border-radius:24px;padding:2.5rem;box-shadow:0 25px 80px rgba(0,0,0,.5);border:1px solid rgba(100,150,255,.15)}
+h1{color:#ffffff;font-size:2rem;font-weight:800;margin-bottom:.5rem;text-align:center;background:linear-gradient(135deg,#6485ff,#3d5afe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2{color:#e8ecf1;font-size:1.4rem;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(100,150,255,.2)}
+h3{color:#e8ecf1;font-size:1.2rem;font-weight:600;margin-top:2rem;margin-bottom:.75rem}
+p{color:#9aacbf;margin-bottom:1rem}
+strong{color:#ffffff;font-weight:600}
+a{color:#6485ff;text-decoration:none;font-weight:600}a:hover{text-decoration:underline}
+table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.9rem;background:rgba(15,23,42,.5);border-radius:12px;overflow:hidden}
+tr{border-bottom:1px solid rgba(100,150,255,.1)}tr:last-child{border-bottom:none}
+th{background:rgba(100,150,255,.15);color:#ffffff;padding:12px;text-align:left;font-weight:600}
+td{padding:12px;color:#9aacbf;border-bottom:1px solid rgba(100,150,255,.05)}
+ul{color:#9aacbf;padding-left:1.5rem;margin-bottom:1rem}
+li{margin-bottom:.5rem}
+.contact{background:linear-gradient(135deg,rgba(100,150,255,.1),rgba(61,90,254,.1));border:1px solid rgba(100,150,255,.2);border-radius:20px;padding:2rem;margin:2.5rem 0}
+.lang-switch{text-align:center;margin-bottom:2rem}
+.lang-switch a{color:#6485ff;text-decoration:none;margin:0 12px;font-weight:600;padding:8px 16px;border-radius:20px;background:rgba(100,150,255,.1);transition:all .2s}
+.lang-switch a:hover{background:rgba(100,150,255,.2)}
+.badge{display:inline-block;background:linear-gradient(135deg,#6485ff,#3d5afe);color:#fff;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;margin-left:8px}
+hr{border:none;height:1px;background:rgba(100,150,255,.2);margin:3rem 0}
+@media(max-width:600px){.container{padding:1.5rem}h1{font-size:1.6rem}table{font-size:.8rem}th,td{padding:8px}}
 </style>
 </head>
 <body>
+<div class="container">
 <div class="lang-switch">
-<a href="#de">DE</a> · <a href="#en">EN</a>
+<a href="#de">🇩🇪 DE</a>
+<a href="#en">🇬🇧 EN</a>
 </div>
 
-<h1 id="de">Datenschutzerklärung / Privacy Policy</h1>
-<p><strong>WiFi Hunter</strong> · Cobra Dynamics · Version 5.2.0 · Stand: Mai 2026</p>
+<h1 id="de">Datenschutz · WiFi Hunter <span class="badge">v6.0</span></h1>
+<p style="text-align:center;color:#7b8a9a;font-size:.95rem">Cobra Dynamics · Stand: Mai 2026 · DSGVO-konform</p>
 
 <h2>1. Verantwortlicher</h2>
-<p>Cobra Dynamics<br>
+<p><strong>Cobra Dynamics</strong><br>
+Dennis Stein & Christoph Frick<br>
+Nördliche Ringstraße 75<br>
+63225 Langen, Deutschland<br>
+E-Mail: <a href="mailto:dennis.stein@cobradynamics.de">dennis.stein@cobradynamics.de</a></p>
+
+<h2>2. Datenverarbeitung</h2>
+<p><strong>WLAN-Signaldaten (lokal, verschlüsselt).</strong> Die App misst die Signalstärke (dBm) und SSID des aktuellen WLAN-Netzwerks. Auf Android werden auch benachbarte Netzwerke erkannt (SSID, BSSID, Signalstärke, Frequenz) — ausschließlich zur Anzeige in der App.</p>
+<p><strong>Keine Datenübertragung</strong> an externe Server, es sei denn, Sie aktivieren explizit die Cloud-Sync-Funktion in der Pro-Version.</p>
+
+<h2>3. Lokale Speicherung</h2>
+<p>Auf Ihrem Gerät werden verschlüsselt gespeichert:</p>
+<ul>
+<li><strong>Spracheinstellung</strong> — 12 Sprachen verfügbar</li>
+<li><strong>Datenschutz-Zustimmung</strong> und Consent-Status</li>
+<li><strong>Spielstände</strong>: Punkte, Erfolge, Streak, tägliche Belohnungen</li>
+<li><strong>Scan-Verlauf</strong>: Letzte Signal-Messungen (nur lokal, löschbar)</li>
+<li><strong>Einstellungen</strong>: Audio, Vibration, AR-Modus</li>
+</ul>
+<p>Alle Daten verbleiben auf Ihrem Gerät (Art. 17 DSGVO — Recht auf Löschung).</p>
+
+<h2>4. Berechtigungen</h2>
+<table>
+<tr><th>Berechtigung</th><th>Zweck</th><th>Pflicht?</th></tr>
+<tr><td>Standort (ACCESS_FINE_LOCATION)</td><td>Android-Systemvoraussetzung für WLAN-Scanning</td><td>Ja (Android)</td></tr>
+<tr><td>WLAN-Status (ACCESS_WIFI_STATE)</td><td>Lesen der Verbindungsdaten (SSID, dBm)</td><td>Ja</td></tr>
+<tr><td>WLAN ändern (CHANGE_WIFI_STATE)</td><td>Aktivieren von WLAN-Scans</td><td>Ja</td></tr>
+<tr><td>Bewegungssensor</td><td>Kompass-Nadelrichtung, Geräteneigung</td><td>Nein (optional)</td></tr>
+<tr><td>Vibration</td><td>Haptisches Feedback bei maximalem Signal</td><td>Nein (optional)</td></tr>
+<tr><td>Audio (Web Audio API)</td><td>Signal-Ton, Walking-Ton</td><td>Nein (optional)</td></tr>
+</table>
+
+<h2>5. Kein Tracking</h2>
+<p>Die App funktioniert <strong>vollständig offline</strong>:</p>
+<ul>
+<li>Keine Analytics-Tracker (Google, Firebase, etc.)</li>
+<li>Keine Werbenetzwerke (AdMob, etc.)</li>
+<li>Keine automatische Datenübertragung</li>
+<li><strong>Pro Cloud-Sync</strong>: Nur bei expliziter Aktivierung</li>
+</ul>
+
+<h2>6. In-App-Käufe</h2>
+<p>Optionale Käufe über App-Store:</p>
+<ul>
+<li><strong>WiFi Hunter Pro</strong> (9,99 € Einmalig): Unbegrenzte Scans, keine Werbung, Cloud-Sync</li>
+<li><strong>WiFi Hunter Pro Abo</strong> (4,99 €/Monat): Alle Pro-Features + monatliche Updates</li>
+</ul>
+<p>Transaktionen durch Google/Apple — keine Zahlungsdaten bei Cobra Dynamics.</p>
+
+<h2>7. Kinder & Jugendschutz</h2>
+<p>Freigegeben ab <strong>4 Jahren</strong> (PEGI/ESRB: Everyone). Keine personenbezogenen Daten von Kindern unter 16. Keine Account-Erstellung, keine E-Mail/Telefonnummer.</p>
+
+<h2>8. Ihre Rechte (DSGVO)</h2>
+<ul>
+<li><strong>Auskunft</strong> (Art. 15)</li>
+<li><strong>Berichtigung</strong> (Art. 16)</li>
+<li><strong>Löschung</strong> (Art. 17) — App-Daten löschen</li>
+<li><strong>Einschränkung</strong> (Art. 18)</li>
+<li><strong>Datenübertragbarkeit</strong> (Art. 20)</li>
+<li><strong>Widerspruch</strong> (Art. 21)</li>
+</ul>
+<p>Anfragen: <a href="mailto:dennis.stein@cobradynamics.de">dennis.stein@cobradynamics.de</a> — Bearbeitungsfrist: 30 Tage</p>
+
+<h2>9. Technische Details</h2>
+<ul>
+<li><strong>Capacitor</strong> — Native App-Wrapper</li>
+<li><strong>Android WifiManager</strong> — System-API für WLAN-Scanning</li>
+<li><strong>HTML5 Canvas / Web Audio API</strong> — Visualisierung und Sound</li>
+<li><strong>LocalStorage / IndexedDB</strong> — Lokale Datenspeicherung</li>
+</ul>
+<p>Quellcode: <a href="https://github.com/champion63225-gif/Wipulscan-professional">GitHub Repository</a></p>
+
+<hr>
+
+<h2 id="en">Privacy Policy · WiFi Hunter <span class="badge">v6.0</span></h2>
+<p style="text-align:center;color:#7b8a9a;font-size:.95rem">Cobra Dynamics · Effective: May 2026 · GDPR Compliant</p>
+
+<h3>1. Data Controller</h3>
+<p><strong>Cobra Dynamics</strong><br>
 Dennis Stein & Christoph Frick<br>
 Nördliche Ringstraße 75<br>
 63225 Langen, Germany<br>
-E-Mail: <a href="mailto:dennis.stein@cobradynamics.de">dennis.stein@cobradynamics.de</a></p>
+Email: <a href="mailto:dennis.stein@cobradynamics.de">dennis.stein@cobradynamics.de</a></p>
 
-<h2>2. Welche Daten werden erfasst?</h2>
-<p><strong>WLAN-Signaldaten (lokal).</strong> Die App misst die Signalstärke (dBm) und SSID des WLAN-Netzwerks, mit dem Ihr Gerät verbunden ist. Auf Android-Geräten werden auch <strong>benachbarte WLAN-Netzwerke</strong> im Scan-Umfeld erkannt (SSID, BSSID, Signalstärke, Frequenz) — ausschließlich zur Anzeige in der App.</p>
-<p>Es werden <strong>keine Netzwerkdaten an Server übertragen</strong>, es sei denn, Sie aktivieren explizit die Cloud-Sync-Funktion in der Pro-Version.</p>
+<h3>2. Data Processing</h3>
+<p><strong>WiFi signal data (local, encrypted).</strong> The app measures signal strength (dBm) and SSID of your current WiFi network. On Android, nearby networks are also detected — strictly for display within the app.</p>
+<p><strong>No data transmission</strong> to external servers unless you explicitly enable Cloud Sync in Pro.</p>
 
-<h2>3. Lokale Speicherung (App-Daten)</h2>
-<p>Auf Ihrem Gerät werden lokal gespeichert:</p>
-<ul>
-<li><strong>Spracheinstellung</strong> (z. B. "de", "en", "uk") — 12 Sprachen verfügbar</li>
-<li><strong>Datenschutz-Zustimmung</strong> und Consent-Status</li>
-<li><strong>Spielstände</strong>: Punkte, Erfolge (Achievements), Login-Streak, tägliche Belohnungen</li>
-<li><strong>Scan-Verlauf</strong>: Letzte Signal-Messungen (nur lokal, optional löschbar)</li>
-<li><strong>Einstellungen</strong>: Audio-Lautstärke, Vibration ein/aus, AR-Modus</li>
-</ul>
-<p>Alle App-Daten verbleiben auf Ihrem Gerät und können jederzeit in den Systemeinstellungen gelöscht werden (Art. 17 DSGVO — Recht auf Vergessenwerden).</p>
-
-<h2>4. Berechtigungen im Detail</h2>
-<table style="width:100%;border-collapse:collapse;margin:1rem 0;font-size:.95rem">
-<tr style="background:#eee"><th style="text-align:left;padding:8px;border:1px solid #ddd">Berechtigung</th><th style="text-align:left;padding:8px;border:1px solid #ddd">Zweck</th><th style="text-align:left;padding:8px;border:1px solid #ddd">Pflicht?</th></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Standort (ACCESS_FINE_LOCATION)</td><td style="padding:8px;border:1px solid #ddd">Android-Systemvoraussetzung für WLAN-Scanning (ab Android 6.0)</td><td style="padding:8px;border:1px solid #ddd">Ja (Android)</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">WLAN-Status (ACCESS_WIFI_STATE)</td><td style="padding:8px;border:1px solid #ddd">Lesen der aktuellen Verbindungsdaten (SSID, dBm)</td><td style="padding:8px;border:1px solid #ddd">Ja</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">WLAN ändern (CHANGE_WIFI_STATE)</td><td style="padding:8px;border:1px solid #ddd">Aktivieren von WLAN-Scans</td><td style="padding:8px;border:1px solid #ddd">Ja</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Bewegungssensor</td><td style="padding:8px;border:1px solid #ddd">Kompass-Nadelrichtung, Geräteneigung für Signal-Simulation</td><td style="padding:8px;border:1px solid #ddd">Nein (optional)</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Vibration</td><td style="padding:8px;border:1px solid #ddd">Haptisches Feedback bei maximalem Signal</td><td style="padding:8px;border:1px solid #ddd">Nein (optional)</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Audio (über Web Audio API)</td><td style="padding:8px;border:1px solid #ddd">Signal-Ton, Walking-Ton — erst nach Nutzer-Tap</td><td style="padding:8px;border:1px solid #ddd">Nein (optional)</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Kamera</td><td style="padding:8px;border:1px solid #ddd">AR-Hintergrund (optional, zukünftige Pro-Version)</td><td style="padding:8px;border:1px solid #ddd">Nein (optional)</td></tr>
-</table>
-
-<h2>5. Kein Tracking, keine Werbenetzwerke</h2>
-<p>Die Basis-App funktioniert <strong>vollständig offline</strong>:</p>
-<ul>
-<li>Keine Google Analytics, Firebase Analytics oder ähnliche Tracker in der Gratis-Version</li>
-<li>Keine werblichen Drittanbieter (AdMob etc.) — keine Cookie-Tracking-Pixel</li>
-<li>Keine automatische Datenübertragung an Cobra Dynamics-Server</li>
-<li><strong>Pro-Version Cloud-Sync</strong>: Nur bei expliziter Aktivierung werden anonymisierte Hotspot-Daten (Signalstärke, kein Standort) optional synchronisiert</li>
-</ul>
-
-<h2>6. In-App-Käufe & Abonnements</h2>
-<p>Die App bietet optionale Käufe über den jeweiligen App-Store (Google Play / Apple App Store):</p>
-<ul>
-<li><strong>WiFi Hunter Pro</strong> (Einmalkauf 9,99 €): Unbegrenzte Scans, keine Werbung, Cloud-Sync, Prioritäts-Support</li>
-<li><strong>WiFi Hunter Pro Abo</strong> (4,99 €/Monat): Alle Pro-Features plus monatliche Theme-Updates</li>
-</ul>
-<p>Alle Transaktionen werden ausschließlich durch Google / Apple abgewickelt. Cobra Dynamics erhält <strong>keine Zahlungsdaten</strong> (Kreditkarten, PayPal etc.).</p>
-
-<h2>7. Kinder & Jugendschutz (COPPA / GDPR-K)</h2>
-<p>Die App ist für Nutzer ab <strong>4 Jahren</strong> freigegeben (PEGI / ESRB: Everyone). Es werden keine personenbezogenen Daten von Kindern unter 16 Jahren aktiv erhoben. Die App verlangt keine Account-Erstellung, keine E-Mail-Adresse, kein Telefonnummer.</p>
-
-<h2>8. Ihre Rechte (DSGVO Art. 15–22)</h2>
-<p>Sie haben jederzeit das Recht auf:</p>
-<ul>
-<li><strong>Auskunft</strong> (Art. 15): Welche Daten speichert die App?</li>
-<li><strong>Berichtigung</strong> (Art. 16): Falsche Daten korrigieren</li>
-<li><strong>Löschung</strong> (Art. 17): „Recht auf Vergessenwerden“ — App-Daten in Systemeinstellungen löschen</li>
-<li><strong>Einschränkung</strong> (Art. 18): Verarbeitung pausieren</li>
-<li><strong>Datenübertragbarkeit</strong> (Art. 20): Export als JSON (in App-Einstellungen)</li>
-<li><strong>Widerspruch</strong> (Art. 21): Keine Profile-Bildung</li>
-</ul>
-<p>Anfragen an: <a href="mailto:dennis.stein@cobradynamics.de">dennis.stein@cobradynamics.de</a> — Bearbeitungsfrist: 30 Tage</p>
-
-<h2>9. Technische Details & Open Source</h2>
-<p>WiFi Hunter basiert auf:</p>
-<ul>
-<li><strong>Capacitor</strong> (Ionic) — Native App-Wrapper für Web-Technologien</li>
-<li><strong>Android WifiManager</strong> — System-API für WLAN-Scanning (ab Android 8.0)</li>
-<li><strong>HTML5 Canvas / Web Audio API</strong> — Visualisierung und Sound im Browser-Layer</li>
-<li><strong>LocalStorage / IndexedDB</strong> — Lokale Datenspeicherung</li>
-</ul>
-<p>Der Quellcode ist öffentlich einsehbar: <a href="https://github.com/champion63225-gif/Wipulscan-professional">GitHub Repository</a></p>
-
-<hr style="margin:3rem 0;border:none;border-top:1px solid #ddd">
-
-<h2 id="en">English Privacy Policy</h2>
-<p><strong>WiFi Hunter</strong> by Cobra Dynamics · Version 5.2.0 · Effective: May 2026</p>
-
-<h3>1. Data We Collect</h3>
-<p><strong>WiFi signal data (local only).</strong> The app measures signal strength (dBm) and SSID of your currently connected WiFi network. On Android devices, <strong>nearby WiFi networks</strong> within scan range are also detected (SSID, BSSID, signal strength, frequency) — strictly for display within the app.</p>
-<p><strong>No network data is transmitted to servers</strong> unless you explicitly enable Cloud Sync in the Pro version.</p>
-
-<h3>2. Local Storage</h3>
+<h3>3. Local Storage</h3>
 <ul>
 <li>Language preference (12 languages available)</li>
 <li>Privacy consent status</li>
-<li>Game progress: points, achievements, daily streak rewards</li>
+<li>Game progress: points, achievements, streak, daily rewards</li>
 <li>Scan history: last signal measurements (local only, deletable)</li>
-<li>Settings: audio volume, vibration on/off, AR mode</li>
+<li>Settings: audio, vibration, AR mode</li>
 </ul>
 
-<h3>3. Permissions</h3>
-<table style="width:100%;border-collapse:collapse;margin:1rem 0;font-size:.95rem">
-<tr style="background:#eee"><th style="text-align:left;padding:8px;border:1px solid #ddd">Permission</th><th style="text-align:left;padding:8px;border:1px solid #ddd">Purpose</th><th style="text-align:left;padding:8px;border:1px solid #ddd">Required?</th></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Location (ACCESS_FINE_LOCATION)</td><td style="padding:8px;border:1px solid #ddd">Android system requirement for WiFi scanning (Android 6.0+)</td><td style="padding:8px;border:1px solid #ddd">Yes (Android)</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">WiFi State (ACCESS_WIFI_STATE)</td><td style="padding:8px;border:1px solid #ddd">Read current connection data (SSID, dBm)</td><td style="padding:8px;border:1px solid #ddd">Yes</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Change WiFi (CHANGE_WIFI_STATE)</td><td style="padding:8px;border:1px solid #ddd">Trigger WiFi scans</td><td style="padding:8px;border:1px solid #ddd">Yes</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Motion Sensors</td><td style="padding:8px;border:1px solid #ddd">Compass needle direction, device tilt for signal simulation</td><td style="padding:8px;border:1px solid #ddd">No (optional)</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Vibration</td><td style="padding:8px;border:1px solid #ddd">Haptic feedback at maximum signal</td><td style="padding:8px;border:1px solid #ddd">No (optional)</td></tr>
-<tr><td style="padding:8px;border:1px solid #ddd">Audio (Web Audio API)</td><td style="padding:8px;border:1px solid #ddd">Signal tone, walking tone — only after user tap</td><td style="padding:8px;border:1px solid #ddd">No (optional)</td></tr>
+<h3>4. Permissions</h3>
+<table>
+<tr><th>Permission</th><th>Purpose</th><th>Required?</th></tr>
+<tr><td>Location (ACCESS_FINE_LOCATION)</td><td>Android system requirement for WiFi scanning</td><td>Yes (Android)</td></tr>
+<tr><td>WiFi State (ACCESS_WIFI_STATE)</td><td>Read connection data (SSID, dBm)</td><td>Yes</td></tr>
+<tr><td>Change WiFi (CHANGE_WIFI_STATE)</td><td>Trigger WiFi scans</td><td>Yes</td></tr>
+<tr><td>Motion Sensors</td><td>Compass direction, device tilt</td><td>No (optional)</td></tr>
+<tr><td>Vibration</td><td>Haptic feedback at max signal</td><td>No (optional)</td></tr>
+<tr><td>Audio (Web Audio API)</td><td>Signal tone, walking tone</td><td>No (optional)</td></tr>
 </table>
 
-<h3>4. No Tracking, No Ad Networks</h3>
+<h3>5. No Tracking</h3>
 <ul>
-<li>No Google Analytics, Firebase Analytics, or similar trackers in the free version</li>
-<li>No third-party advertising networks (AdMob, etc.) — no cookie tracking pixels</li>
-<li>No automatic data transmission to Cobra Dynamics servers</li>
-<li><strong>Pro Version Cloud Sync</strong>: Only with explicit activation are anonymized hotspot data (signal strength only, no location) optionally synchronized</li>
+<li>No analytics trackers (Google, Firebase, etc.)</li>
+<li>No ad networks (AdMob, etc.)</li>
+<li>No automatic data transmission</li>
+<li><strong>Pro Cloud Sync</strong>: Only with explicit activation</li>
 </ul>
 
-<h3>5. In-App Purchases</h3>
+<h3>6. In-App Purchases</h3>
 <ul>
-<li><strong>WiFi Hunter Pro</strong> (€9.99 one-time): Unlimited scans, no ads, cloud sync, priority support</li>
-<li><strong>WiFi Hunter Pro Subscription</strong> (€4.99/month): All Pro features plus monthly theme updates</li>
+<li><strong>WiFi Hunter Pro</strong> (€9.99 one-time): Unlimited scans, no ads, cloud sync</li>
+<li><strong>WiFi Hunter Pro Subscription</strong> (€4.99/month): All Pro features + monthly updates</li>
 </ul>
-<p>All transactions are processed exclusively by Google / Apple. Cobra Dynamics receives <strong>no payment data</strong> (credit cards, PayPal, etc.).</p>
+<p>Transactions via Google/Apple — no payment data at Cobra Dynamics.</p>
 
-<h3>6. Children's Privacy (COPPA / GDPR-K)</h3>
-<p>Rated <strong>Everyone (PEGI / ESRB)</strong>. No personal data is actively collected from children under 16. No account creation, email, or phone number required.</p>
+<h3>7. Children's Privacy</h3>
+<p>Rated <strong>Everyone (PEGI/ESRB)</strong>. No personal data from children under 16. No account creation, email, or phone required.</p>
 
-<h3>7. Your Rights (GDPR Art. 15–22)</h3>
-<p>Right to access, rectification, erasure, restriction, data portability, objection. Contact: <a href="mailto:dennis.stein@cobradynamics.de">dennis.stein@cobradynamics.de</a> — Response within 30 days.</p>
+<h3>8. Your Rights (GDPR)</h3>
+<ul>
+<li><strong>Access</strong> (Art. 15)</li>
+<li><strong>Rectification</strong> (Art. 16)</li>
+<li><strong>Erasure</strong> (Art. 17)</li>
+<li><strong>Restriction</strong> (Art. 18)</li>
+<li><strong>Data Portability</strong> (Art. 20)</li>
+<li><strong>Objection</strong> (Art. 21)</li>
+</ul>
+<p>Contact: <a href="mailto:dennis.stein@cobradynamics.de">dennis.stein@cobradynamics.de</a> — Response within 30 days.</p>
 
-<h3>8. Open Source</h3>
-<p>Source code available at: <a href="https://github.com/champion63225-gif/Wipulscan-professional">GitHub Repository</a></p>
+<h3>9. Technical Details</h3>
+<ul>
+<li><strong>Capacitor</strong> — Native App Wrapper</li>
+<li><strong>Android WifiManager</strong> — System API for WiFi scanning</li>
+<li><strong>HTML5 Canvas / Web Audio API</strong> — Visualization and sound</li>
+<li><strong>LocalStorage / IndexedDB</strong> — Local data storage</li>
+</ul>
+<p>Source code: <a href="https://github.com/champion63225-gif/Wipulscan-professional">GitHub Repository</a></p>
 
 <div class="contact">
-<p><strong>Kontakt / Contact:</strong><br>
-Cobra Dynamics · Dennis Stein & Christoph Frick<br>
+<p style="color:#ffffff;font-weight:600;margin-bottom:.5rem">📧 Contact / Kontakt</p>
+<p style="color:#9aacbf">Cobra Dynamics · Dennis Stein & Christoph Frick<br>
 Nördliche Ringstraße 75 · 63225 Langen · Germany<br>
-E-Mail: <a href="mailto:dennis.stein@cobradynamics.de">dennis.stein@cobradynamics.de</a><br>
-Web: <a href="https://champion63225-gif.github.io/Wipulscan-professional/">WiFi Hunter Web Demo</a></p>
+Email: <a href="mailto:dennis.stein@cobradynamics.de">dennis.stein@cobradynamics.de</a><br>
+Web: <a href="https://champion63225-gif.github.io/Wipulscan-professional/">WiFi Hunter</a></p>
 </div>
 
-<p style="text-align:center;color:#666;font-size:.9rem;margin-top:3rem">© Cobra Dynamics 2026 · All rights reserved · <a href="https://github.com/champion63225-gif/Wipulscan-professional">GitHub</a> · <a href="https://champion63225-gif.github.io/Wipulscan-professional/">Web App</a></p>
+<p style="text-align:center;color:#5a6a7d;font-size:.85rem;margin-top:2.5rem">© Cobra Dynamics 2026 · All rights reserved · <a href="https://github.com/champion63225-gif/Wipulscan-professional">GitHub</a> · <a href="https://champion63225-gif.github.io/Wipulscan-professional/">Web App</a></p>
+</div>
 </body>
 </html>
