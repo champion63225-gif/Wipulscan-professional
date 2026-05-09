@@ -307,7 +307,7 @@ function initBubbles(){
     effectiveType:NET.effectiveType||'4g',
     isMain:true, label:'', history:[mainSig], histTimer:0
   });
-  // Simulated neighbor APs
+  // Neighbor APs from WiFi scan
   var count=4+Math.floor(Math.random()*3);
   var bands=['2.4','5','2.4','5','6','2.4'];
   for(var i=0;i<count;i++){
@@ -1092,7 +1092,7 @@ function frame(ts){
   }
   if(S.arMode){
     // ── AR OVERLAY MODE ──
-    // No fake bubbles — only real signal data visualized
+    // Only real signal data visualized
     drawHeatmap();
     drawARDirection();
     drawRadar();

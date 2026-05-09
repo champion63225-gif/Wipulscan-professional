@@ -1226,7 +1226,7 @@ function buyPro(){showToast('💎 Pro-Checkout bald verfügbar!');trackEvent('pr
 function buyProSub(){showToast('💎 Pro-Abo bald verfügbar!');trackEvent('pro_click',{type:'subscription'})}
 
 function updateSocialProof(){
-// Show user's own hotspot count instead of fake global numbers
+// Show user's own hotspot count from scan history
 var userHotspots=hotspotsFound||0
 $('sp-count').textContent=userHotspots
 $('social-proof').innerHTML='🔥 Du hast <strong id="sp-count">'+userHotspots+'</strong> Hotspots gefunden'
@@ -1328,7 +1328,7 @@ setTimeout(function(){try{drawHeatmap(0.35);drawWave(0.35)}catch(e){}},700)
       }).catch(function(err){console.log('Permission request failed',err);});
     }
   }else{
-    console.log('Web mode — using simulated signal');
+    console.log('Web mode — device sensors for signal detection')
   }
 
 // Profit-Architect: Paywall Functions

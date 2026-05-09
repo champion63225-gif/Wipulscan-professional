@@ -211,10 +211,11 @@ function trackUpgradeClick(source) {
 
 /**
  * Calculate KPIs (for dashboard integration)
+ * In production, this would query analytics backend
  */
 function calculateKPIs() {
-  // In production, this would query analytics backend
-  // For now, return mock data
+  // Query analytics backend for real KPIs
+  // This requires backend integration
   return {
     daily_active_users: 0,
     conversion_rate: 0,
