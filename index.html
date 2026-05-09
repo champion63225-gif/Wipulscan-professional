@@ -133,6 +133,25 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
 .pro-btn-full{width:100%;padding:12px;border:none;border-radius:16px;background:linear-gradient(135deg,#ff6b6b,#c92a2a);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .2s}
 .pro-btn-full:hover{transform:scale(1.02)}
 
+/* Help Modal */
+.help-section{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(123,197,255,.08)}
+.help-section:last-child{border-bottom:none}
+.help-section h4{font-size:1rem;margin-bottom:.5rem;color:#7bc5ff}
+.help-section p{font-size:.85rem;color:#9aacbf;line-height:1.5}
+
+/* Settings Modal */
+.settings-section{margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(123,197,255,.08)}
+.settings-section:last-child{border-bottom:none}
+.settings-section h4{font-size:1rem;margin-bottom:.8rem;color:#e8ecf1}
+.lang-options{display:flex;gap:12px}
+.lang-btn{flex:1;padding:10px;border:1px solid rgba(123,197,255,.2);border-radius:12px;background:rgba(20,30,45,.5);color:#9aacbf;font-size:.9rem;cursor:pointer;transition:all .2s}
+.lang-btn.active{background:rgba(123,197,255,.15);border-color:#7bc5ff;color:#e8ecf1}
+.lang-btn:hover:not(.active){background:rgba(123,197,255,.08)}
+.setting-toggle{display:flex;align-items:center;gap:12px;cursor:pointer;font-size:.9rem;color:#9aacbf}
+.setting-toggle input{width:18px;height:18px;accent-color:#7bc5ff}
+.danger-btn{width:100%;padding:12px;border:1px solid rgba(255,107,107,.3);border-radius:12px;background:rgba(255,107,107,.1);color:#ff6b6b;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
+.danger-btn:hover{background:rgba(255,107,107,.2);border-color:rgba(255,107,107,.5)}
+
 /* Toast */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);z-index:300;background:rgba(20,30,45,.9);border:1px solid rgba(123,197,255,.2);border-radius:16px;padding:12px 24px;color:#e8ecf1;font-size:.9rem;font-weight:500;backdrop-filter:blur(12px);transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
@@ -222,12 +241,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
   <div style="display:flex;gap:8px">
     <button id="share-btn" onclick="openShare()" title="Teilen">📤</button>
     <button id="ach-btn" onclick="openAchievements()" title="Erfolge">🏆</button>
+    <button id="info-btn" onclick="openHelp()" title="Hilfe">ℹ️</button>
+    <button id="settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
     <button id="pro-btn" onclick="openPro()" title="Pro">💎</button>
   </div>
 </div>
 
 <!-- SOCIAL PROOF -->
-<div id="social-proof">🔥 Heute haben <strong id="sp-count">342</strong> User einen Hotspot gefunden</div>
+<div id="social-proof">🔥 Heute haben <strong id="sp-count">--</strong> User einen Hotspot gefunden</div>
 
 <!-- DAILY REWARD MODAL -->
 <div id="daily-modal" class="modal">
@@ -267,9 +288,80 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
       </div>
       <div class="pro-card" style="background:linear-gradient(135deg,rgba(123,197,255,.1),rgba(62,106,142,.1));border-color:rgba(123,197,255,.25)">
         <h4 style="color:#7bc5ff">Pro Abo</h4>
-        <p>Alle Pro-Features · Neue Themes monatlich · Priorität-Support</p>
-        <div class="pro-price" style="color:#7bc5ff">4,99 €<span style="font-size:.9rem;color:#5a6a7d">/Monat</span></div>
-        <button class="pro-btn-full" style="background:linear-gradient(135deg,#2d4a6e,#3e6a8e)" onclick="buyProSub()">Abo starten</button>
+        <p>Monatlich kündbar · Alle Pro-Features · Prioritäts-Support</p>
+        <div class="pro-price">2,99 €/Monat</div>
+        <button class="pro-btn-full" onclick="buyPro()">Abo starten</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HELP MODAL -->
+<div id="help-modal" class="modal">
+  <div style="position:relative">
+    <button class="modal-close" onclick="closeModal('help-modal')">×</button>
+    <div class="modal-card">
+      <h3>ℹ️ Hilfe & Anleitung</h3>
+      <div style="max-height:400px;overflow-y:auto;padding-right:8px">
+        <div class="help-section">
+          <h4>🎯 Wie funktioniert WiFi Hunter?</h4>
+          <p>WiFi Hunter ist ein präziser WLAN-Signal-Scanner. Der Kompass-Zeiger zeigt zur stärksten Signalquelle. Je höher der Ton, desto näher bist du am Hotspot.</p>
+        </div>
+        <div class="help-section">
+          <h4>🧭 Der Kompass</h4>
+          <p>Der rote Zeiger folgt der Geräteneigung. Drehe dein Gerät und neige es, um das Signal zu lokalisieren. Im Web-Modus simuliert das Gyroskop die Richtung.</p>
+        </div>
+        <div class="help-section">
+          <h4>🔊 Audio-Feedback</h4>
+          <p>Der Sonar-Ton wird lauter und höher, je stärker das Signal. Du kannst das Audio in den Einstellungen deaktivieren.</p>
+        </div>
+        <div class="help-section">
+          <h4>⚡ Punkte & Streaks</h4>
+          <p>Jeder gefundene Hotspot gibt 5 Punkte. Komme jeden Tag zurück für Bonus-Punkte und erhöhe deinen Streak für Multiplikatoren.</p>
+        </div>
+        <div class="help-section">
+          <h4>🏆 Erfolge</h4>
+          <p>Sammle Erfolge durch das Finden von Hotspots, tägliche Logins und das Erreichen von Meilensteinen.</p>
+        </div>
+        <div class="help-section">
+          <h4>📤 Teilen</h4>
+          <p>Teile deine Ergebnisse mit Freunden und erhalte Bonus-Punkte für jeden neuen User, der durch deinen Link kommt.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="settings-modal" class="modal">
+  <div style="position:relative">
+    <button class="modal-close" onclick="closeModal('settings-modal')">×</button>
+    <div class="modal-card">
+      <h3>⚙️ Einstellungen</h3>
+      <div class="settings-section">
+        <h4>🌍 Sprache / Language</h4>
+        <div class="lang-options">
+          <button class="lang-btn active" onclick="setLanguage('de')" id="lang-de">🇩🇪 Deutsch</button>
+          <button class="lang-btn" onclick="setLanguage('en')" id="lang-en">🇬🇧 English</button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h4>🔊 Audio</h4>
+        <label class="setting-toggle">
+          <input type="checkbox" id="audio-toggle" checked onchange="toggleAudio()">
+          <span>Sonar-Töne aktivieren</span>
+        </label>
+      </div>
+      <div class="settings-section">
+        <h4>📳 Vibration</h4>
+        <label class="setting-toggle">
+          <input type="checkbox" id="vibration-toggle" onchange="toggleVibration()">
+          <span>Vibration bei starkem Signal</span>
+        </label>
+      </div>
+      <div class="settings-section">
+        <h4>🧹 Daten</h4>
+        <button class="danger-btn" onclick="clearData()">Alle Daten löschen</button>
       </div>
     </div>
   </div>
@@ -356,22 +448,32 @@ function initAudio(){
 
 var _lastToneTime=0
 function playSignalTone(strength){
+  // Check audio setting
+  if(localStorage.getItem('wfh_audio')==='false')return
   if(!audioCtx||audioCtx.state!=='running')return
   var now=Date.now()
-  if(now-_lastToneTime<350)return // throttle: max ~3 tones/sec
+  if(now-_lastToneTime<400)return // throttle: max ~2.5 tones/sec
   _lastToneTime=now
   var t=audioCtx.currentTime
-  var osc=audioCtx.createOscillator()
+  // Sonar-style: dual oscillators for richer sound
+  var osc1=audioCtx.createOscillator()
+  var osc2=audioCtx.createOscillator()
   var gain=audioCtx.createGain()
-  osc.type='sine'
-  // Smoother frequency curve, less jumpy
-  var freq=180+strength*strength*600
-  osc.frequency.value=freq
-  // Softer, longer tone (0.35s instead of 0.25s)
-  gain.gain.setValueAtTime(0.08*strength,t)
-  gain.gain.exponentialRampToValueAtTime(0.001,t+0.35)
-  osc.connect(gain);gain.connect(audioCtx.destination)
-  osc.start(t);osc.stop(t+0.35)
+  osc1.type='sine'
+  osc2.type='triangle'
+  // Frequency sweep: start low, sweep up based on strength
+  var baseFreq=200+strength*300
+  osc1.frequency.setValueAtTime(baseFreq,t)
+  osc1.frequency.exponentialRampToValueAtTime(baseFreq*1.5,t+0.12)
+  osc2.frequency.setValueAtTime(baseFreq*1.2,t)
+  osc2.frequency.exponentialRampToValueAtTime(baseFreq*1.8,t+0.12)
+  // Volume envelope: sharp attack, longer decay
+  gain.gain.setValueAtTime(0,t)
+  gain.gain.linearRampToValueAtTime(0.12*strength,t+0.02)
+  gain.gain.exponentialRampToValueAtTime(0.001,t+0.25)
+  osc1.connect(gain);osc2.connect(gain);gain.connect(audioCtx.destination)
+  osc1.start(t);osc1.stop(t+0.25)
+  osc2.start(t);osc2.stop(t+0.25)
 }
 
 function playStepTone(){
@@ -636,6 +738,40 @@ function openModal(id){$(id).classList.add('active')}
 function closeModal(id){$(id).classList.remove('active')}
 function openAchievements(){renderAchievements();openModal('ach-modal')}
 function openPro(){openModal('pro-modal')}
+function openHelp(){openModal('help-modal')}
+function openSettings(){openModal('settings-modal');loadSettings()}
+
+// Settings functions
+function loadSettings(){
+  var lang=localStorage.getItem('wfh_lang')||'de'
+  var audio=localStorage.getItem('wfh_audio')!=='false'
+  var vib=localStorage.getItem('wfh_vibration')==='true'
+  document.getElementById('lang-de').className=lang==='de'?'lang-btn active':'lang-btn'
+  document.getElementById('lang-en').className=lang==='en'?'lang-btn active':'lang-btn'
+  document.getElementById('audio-toggle').checked=audio
+  document.getElementById('vibration-toggle').checked=vib
+}
+function setLanguage(lang){
+  localStorage.setItem('wfh_lang',lang)
+  loadSettings()
+  showToast(lang==='de'?'Sprache: Deutsch':'Language: English')
+}
+function toggleAudio(){
+  var enabled=document.getElementById('audio-toggle').checked
+  localStorage.setItem('wfh_audio',enabled)
+  showToast(enabled?'Audio aktiviert':'Audio deaktiviert')
+}
+function toggleVibration(){
+  var enabled=document.getElementById('vibration-toggle').checked
+  localStorage.setItem('wfh_vibration',enabled)
+  showToast(enabled?'Vibration aktiviert':'Vibration deaktiviert')
+}
+function clearData(){
+  if(confirm('Alle Daten löschen? Punkte, Streaks und Erfolge werden zurückgesetzt.')){
+    localStorage.clear()
+    location.reload()
+  }
+}
 
 function renderAchievements(){
 var g=$('ach-grid');if(!g)return;g.innerHTML=''
@@ -720,8 +856,10 @@ function buyPro(){showToast('💎 Pro-Checkout bald verfügbar!');trackEvent('pr
 function buyProSub(){showToast('💎 Pro-Abo bald verfügbar!');trackEvent('pro_click',{type:'subscription'})}
 
 function updateSocialProof(){
-var base=280+Math.floor((Date.now()/3600000)%200)
-$('sp-count').textContent=base
+// Show user's own hotspot count instead of fake global numbers
+var userHotspots=hotspotsFound||0
+$('sp-count').textContent=userHotspots
+$('social-proof').innerHTML='🔥 Du hast <strong id="sp-count">'+userHotspots+'</strong> Hotspots gefunden'
 setTimeout(function(){$('social-proof').classList.add('show')},3000)
 }
 
