@@ -156,6 +156,54 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
 .danger-btn{width:100%;padding:12px;border:1px solid rgba(255,107,107,.3);border-radius:12px;background:rgba(255,107,107,.1);color:#ff6b6b;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
 .danger-btn:hover{background:rgba(255,107,107,.2);border-color:rgba(255,107,107,.5)}
 
+/* Dashboard */
+#dashboard{padding:80px 16px 24px;max-width:600px;margin:0 auto}
+.dash-header{margin-bottom:24px}
+.dash-header h2{font-size:1.5rem;font-weight:700;margin-bottom:16px;color:#e8ecf1}
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat-card{background:rgba(20,30,45,.6);border:1px solid rgba(123,197,255,.15);border-radius:20px;padding:16px;text-align:center}
+.stat-icon{font-size:1.5rem;margin-bottom:8px}
+.stat-value{font-size:1.5rem;font-weight:700;color:#7bc5ff;margin-bottom:4px}
+.stat-label{font-size:.75rem;color:#5a6a7d}
+.dash-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:24px}
+.dash-card{background:rgba(20,30,45,.6);border:1px solid rgba(123,197,255,.15);border-radius:24px;padding:20px}
+.dash-card h3{font-size:1.1rem;font-weight:600;margin-bottom:16px;color:#e8ecf1}
+.heatmap-preview{display:flex;justify-content:center;margin-bottom:12px}
+.heatmap-preview canvas{border-radius:16px;background:rgba(10,15,25,.5)}
+.dash-hint{font-size:.8rem;color:#5a6a7d;text-align:center;margin:0}
+.scan-list{max-height:200px;overflow-y:auto}
+.scan-empty{text-align:center;color:#5a6a7d;font-size:.85rem;padding:20px 0}
+.scan-item{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid rgba(123,197,255,.08)}
+.scan-item:last-child{border-bottom:none}
+.scan-time{font-size:.75rem;color:#5a6a7d;min-width:60px}
+.scan-signal{font-size:.9rem;font-weight:600;color:#7bc5ff}
+.dash-action-btn{width:100%;padding:16px;border:none;border-radius:20px;background:linear-gradient(135deg,#7bc5ff,#00d4aa);color:#03060c;font-weight:700;font-size:1.1rem;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.dash-action-btn:hover{transform:scale(1.02);box-shadow:0 8px 24px rgba(123,197,255,.3)}
+
+/* Pro Features */
+.pro-badge{display:inline-block;background:linear-gradient(135deg,#ff6b6b,#c92a2a);color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:8px;margin-left:8px;vertical-align:middle}
+.pro-lock-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(10,15,25,.7);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.pro-lock{display:flex;flex-direction:column;align-items:center;gap:8px;padding:24px;color:#5a6a7d}
+.lock-icon{font-size:2rem;margin-bottom:4px}
+.pro-feature{background:linear-gradient(135deg,rgba(255,107,107,.05),rgba(201,42,42,.05));border:1px dashed rgba(255,107,107,.3)}
+
+/* Hunt View */
+#hunt-view{padding:80px 16px 24px;max-width:400px;margin:0 auto}
+
+/* Onboarding */
+#onboarding{z-index:250}
+.onboarding-card{max-width:380px;width:100%;background:rgba(20,30,45,.9);border:1px solid rgba(123,197,255,.15);border-radius:32px;padding:32px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.onboarding-step{display:none;text-align:center;animation:fadeInUp .4s ease-out}
+.onboarding-step.active{display:block}
+.onboarding-icon{font-size:3.5rem;margin-bottom:20px}
+.onboarding-card h2{font-size:1.4rem;font-weight:700;margin-bottom:12px;color:#e8ecf1}
+.onboarding-card p{font-size:.95rem;color:#9aacbf;line-height:1.6;margin-bottom:24px}
+.onboarding-btn{width:100%;padding:14px;border:none;border-radius:16px;background:rgba(123,197,255,.15);border:1px solid rgba(123,197,255,.3);color:#7bc5ff;font-weight:600;font-size:1rem;cursor:pointer;transition:all .2s}
+.onboarding-btn:hover{background:rgba(123,197,255,.25);transform:scale(1.02)}
+.onboarding-btn.primary{background:linear-gradient(135deg,#7bc5ff,#00d4aa);border-color:transparent;color:#03060c}
+.onboarding-btn.primary:hover{box-shadow:0 8px 24px rgba(0,212,170,.3)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
 /* Toast */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);z-index:300;background:rgba(20,30,45,.9);border:1px solid rgba(123,197,255,.2);border-radius:16px;padding:12px 24px;color:#e8ecf1;font-size:.9rem;font-weight:500;backdrop-filter:blur(12px);transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
@@ -219,6 +267,36 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
   <h1>WiFi Hunter</h1>
   <p>PREMIUM SIGNAL SCANNER</p>
   <div id="intro-bar"><div id="intro-fill"></div></div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboarding" class="modal">
+  <div class="onboarding-card">
+    <div class="onboarding-step" data-step="1">
+      <div class="onboarding-icon">🎯</div>
+      <h2>Willkommen bei WiFi Hunter</h2>
+      <p>Der professionelle WLAN-Signal-Scanner für dein Gerät. Finde die stärksten Hotspots mit präziser Heatmap-Visualisierung.</p>
+      <button class="onboarding-btn" onclick="nextOnboardingStep()">Weiter</button>
+    </div>
+    <div class="onboarding-step" data-step="2">
+      <div class="onboarding-icon">🧭</div>
+      <h2>Kompass-Navigation</h2>
+      <p>Drehe dein Gerät und neige es. Der rote Zeiger zeigt zur stärksten Signalquelle. Je höher der Sonar-Ton, desto näher bist du.</p>
+      <button class="onboarding-btn" onclick="nextOnboardingStep()">Weiter</button>
+    </div>
+    <div class="onboarding-step" data-step="3">
+      <div class="onboarding-icon">📊</div>
+      <h2>Dashboard & Statistiken</h2>
+      <p>Verfolge deine Scans im Dashboard. Siehe deine Hotspots, Durchschnittssignal und Streaks. Verbessere dich jeden Tag.</p>
+      <button class="onboarding-btn" onclick="nextOnboardingStep()">Weiter</button>
+    </div>
+    <div class="onboarding-step" data-step="4">
+      <div class="onboarding-icon">💎</div>
+      <h2>Upgrade zu Pro</h2>
+      <p>Erweitere deine Möglichkeiten mit erweiterten Statistiken, Cloud-Sync und unbegrenzten Heatmaps.</p>
+      <button class="onboarding-btn primary" onclick="finishOnboarding()">Los geht's!</button>
+    </div>
+  </div>
 </div>
 
 <!-- CONSENT -->
@@ -378,8 +456,59 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
 <!-- TOAST -->
 <div id="toast"></div>
 
-<!-- APP -->
-<div id="app" style="display:none">
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none">
+  <div class="dash-header">
+    <h2>📡 Dashboard</h2>
+    <div class="dash-stats">
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-value" id="dash-hotspots">0</div>
+        <div class="stat-label">Hotspots</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-value" id="dash-avg-signal">0%</div>
+        <div class="stat-label">Ø Signal</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-value" id="dash-streak">0</div>
+        <div class="stat-label">Streak</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+    <div class="dash-card">
+      <h3>🗺️ Heatmap-Übersicht</h3>
+      <div class="heatmap-preview">
+        <canvas id="heatmapPreview" width="280" height="280"></canvas>
+      </div>
+      <p class="dash-hint">Verlauf deiner letzten Scans</p>
+    </div>
+
+    <div class="dash-card">
+      <h3>📋 Letzte Scans</h3>
+      <div id="scan-history" class="scan-list">
+        <div class="scan-empty">Noch keine Scans</div>
+      </div>
+    </div>
+
+    <div class="dash-card pro-feature">
+      <h3>📊 Erweiterte Statistiken <span class="pro-badge">PRO</span></h3>
+      <div class="pro-lock">
+        <div class="lock-icon">🔒</div>
+        <p>Tägliche/Wöchentliche Analysen</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="dash-action-btn" onclick="startHunt()">🎯 Jagd starten</button>
+</div>
+
+<!-- HUNT VIEW -->
+<div id="hunt-view" style="display:none">
   <div id="heatmap-wrap" class="glass pulse">
     <canvas id="heatmapCanvas" width="320" height="320"></canvas>
     <div id="compass">
@@ -411,6 +540,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#03060c;font-family:
 var audioCtx=null,signalStrength=0,targetAngle=0,currentAngle=0,heading=0;
 var huntRunning=false,walkPhase=0,wavePhase=0,animId=null,walkIv=null;
 var hasConsent=false,hasOrientation=false;
+var scanHistory=[];
+var currentView='dashboard';
 
 // ─── DOM HELPERS ─────────────────────────────────────────────
 function $(id){return document.getElementById(id)}
@@ -420,9 +551,7 @@ function clamp(v,mn,mx){return Math.min(Math.max(v,mn),mx)}
 setTimeout(function(){
   var intro=$('intro');
   if(intro){intro.classList.add('fade-out');setTimeout(function(){intro.style.display='none'},850)}
-  var consent=$('consent');
-  if(consent && !localStorage.getItem('wfh_consent')){consent.classList.add('active')}
-  else if(consent){consent.style.display='none';$('app').style.display='flex'}
+  showOnboarding()
 },2800)
 
 // ─── CONSENT ───────────────────────────────────────────────────
@@ -431,7 +560,7 @@ function acceptConsent(){
     localStorage.setItem('wfh_consent','1')
     hasConsent=true
   }catch(e){hasConsent=true}
-  var cc=$('consent');if(cc){cc.classList.remove('active');setTimeout(function(){cc.style.display='none';var ap=$('app');if(ap)ap.style.display='flex'},400)}
+  var cc=$('consent');if(cc){cc.classList.remove('active');setTimeout(function(){cc.style.display='none';switchView('dashboard')},400)}
   try{requestOrientation()}catch(e){}
   try{startIntroAudio()}catch(e){}
 }
@@ -517,21 +646,21 @@ function drawHeatmap(strength){
   var cx=w/2,cy=h/2
   var radius=50+strength*110
   var grd=ctx.createRadialGradient(cx,cy,8,cx,cy,radius)
-  // Color: green(strong) -> yellow -> red(weak) but inverted for display:
-  // High strength = hot colors (red/orange center), low = cool (blue edge)
-  // Actually let's do: center color based on strength
+  // Professional blue/cyan/teal gradient scheme
   if(strength>0.7){
-    grd.addColorStop(0,'rgba(255,100,20,'+(0.4+strength*0.4)+')')
-    grd.addColorStop(0.5,'rgba(255,180,60,'+(0.2+strength*0.2)+')')
-    grd.addColorStop(1,'rgba(0,0,0,0)')
+    grd.addColorStop(0,'rgba(0,212,170,'+(0.5+strength*0.3)+')')
+    grd.addColorStop(0.4,'rgba(123,197,255,'+(0.3+strength*0.2)+')')
+    grd.addColorStop(0.7,'rgba(62,106,142,'+(0.15+strength*0.15)+')')
+    grd.addColorStop(1,'rgba(10,15,25,0)')
   }else if(strength>0.3){
-    grd.addColorStop(0,'rgba(255,220,60,'+(0.3+strength*0.3)+')')
-    grd.addColorStop(0.5,'rgba(200,180,40,'+(0.15+strength*0.15)+')')
-    grd.addColorStop(1,'rgba(0,0,0,0)')
+    grd.addColorStop(0,'rgba(123,197,255,'+(0.4+strength*0.3)+')')
+    grd.addColorStop(0.5,'rgba(62,106,142,'+(0.2+strength*0.2)+')')
+    grd.addColorStop(0.8,'rgba(20,30,45,'+(0.1+strength*0.1)+')')
+    grd.addColorStop(1,'rgba(10,15,25,0)')
   }else{
-    grd.addColorStop(0,'rgba(0,200,255,'+(0.25+strength*0.25)+')')
-    grd.addColorStop(0.5,'rgba(0,150,200,'+(0.1+strength*0.1)+')')
-    grd.addColorStop(1,'rgba(0,0,0,0)')
+    grd.addColorStop(0,'rgba(62,106,142,'+(0.3+strength*0.3)+')')
+    grd.addColorStop(0.6,'rgba(20,30,45,'+(0.15+strength*0.15)+')')
+    grd.addColorStop(1,'rgba(10,15,25,0)')
   }
   ctx.fillStyle=grd
   ctx.fillRect(0,0,w,h)
@@ -541,9 +670,9 @@ function drawHeatmap(strength){
     var by=cy+(Math.random()-.5)*radius*.6
     var br=20+Math.random()*30*strength
     var bgrd=ctx.createRadialGradient(bx,by,2,bx,by,br)
-    if(strength>0.6){bgrd.addColorStop(0,'rgba(255,120,30,.25)');bgrd.addColorStop(1,'rgba(0,0,0,0)')}
-    else if(strength>0.3){bgrd.addColorStop(0,'rgba(255,200,60,.2)');bgrd.addColorStop(1,'rgba(0,0,0,0)')}
-    else{bgrd.addColorStop(0,'rgba(0,180,255,.15)');bgrd.addColorStop(1,'rgba(0,0,0,0)')}
+    if(strength>0.6){bgrd.addColorStop(0,'rgba(0,212,170,.25)');bgrd.addColorStop(1,'rgba(0,0,0,0)')}
+    else if(strength>0.3){bgrd.addColorStop(0,'rgba(123,197,255,.2)');bgrd.addColorStop(1,'rgba(0,0,0,0)')}
+    else{bgrd.addColorStop(0,'rgba(62,106,142,.15)');bgrd.addColorStop(1,'rgba(0,0,0,0)')}
     ctx.fillStyle=bgrd
     ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.fill()
   }
@@ -664,6 +793,7 @@ window.addEventListener('deviceorientation',function(e){window._lastOrientation=
 function startHunt(){
   if(!hasConsent){var cc=$('consent');if(cc)cc.classList.add('active');return}
   if(huntRunning)return
+  switchView('hunt')
   try{
     initAudio()
     if(audioCtx && audioCtx.state==='suspended')audioCtx.resume().catch(function(){})
@@ -679,13 +809,11 @@ function startHunt(){
         window._nativeInterval=setInterval(fetchNativeSignal,1500)
         $('info-text').textContent='📡 Echtes WLAN-Signal aktiv. Bewege dich.'
       }else{
-        $('info-text').textContent='🔊 Simulation aktiv. Erlaube Standort für echtes Signal.'
+        $('info-text').textContent='Web-Modus: Signal simuliert.'
       }
-    }).catch(function(){
-      $('info-text').textContent='🔊 Simulation aktiv. Standort-Berechtigung erforderlich.'
-    })
+    }).catch(function(){$('info-text').textContent='Web-Modus: Signal simuliert.'})
   }else{
-    $('info-text').textContent='🔊 Ton aktiv. Bewege dich. Der Zeiger zeigt den Weg.'
+    $('info-text').textContent='Web-Modus: Signal simuliert.'
   }
   // Walking step sounds
   if(walkIv)clearInterval(walkIv)
@@ -695,13 +823,16 @@ function startHunt(){
 }
 
 function stopHunt(){
+  if(!huntRunning)return
   huntRunning=false
+  saveScan(signalStrength)
+  switchView('dashboard')
+  if(walkIv){clearInterval(walkIv);walkIv=null}
+  if(animId){cancelAnimationFrame(animId);animId=null}
+  if(window._nativeInterval){clearInterval(window._nativeInterval);window._nativeInterval=null}
   $('btn-start').style.display='inline-block'
   $('btn-stop').style.display='none'
-  $('info-text').textContent='Neige dein Gerät. Der Zeiger zeigt zur stärksten Signalquelle. Je höher der Ton, desto näher.'
-  if(animId){cancelAnimationFrame(animId);animId=null}
-  if(walkIv){clearInterval(walkIv);walkIv=null}
-  if(window._nativeInterval){clearInterval(window._nativeInterval);window._nativeInterval=null}
+  $('info-text').textContent='Jagd beendet. Scan gespeichert.'
   if(audioCtx){audioCtx.suspend()}
 }
 
@@ -749,6 +880,73 @@ function openPro(){openModal('pro-modal')}
 function openHelp(){openModal('help-modal')}
 function openSettings(){openModal('settings-modal');loadSettings()}
 
+// Dashboard functions
+function switchView(view){
+  currentView=view
+  if(view==='dashboard'){$('dashboard').style.display='block';$('hunt-view').style.display='none'}
+  else{$('dashboard').style.display='none';$('hunt-view').style.display='block'}
+  updateDashboard()
+}
+function updateDashboard(){
+  $('dash-hotspots').textContent=hotspotsFound||0
+  $('dash-streak').textContent=STREAK||0
+  var avg=scanHistory.length>0?Math.round(scanHistory.reduce(function(a,b){return a+b.signal},0)/scanHistory.length):0
+  $('dash-avg-signal').textContent=avg+'%'
+  renderScanHistory()
+  drawPreviewHeatmap()
+}
+function saveScan(signal){
+  var scan={t:Date.now(),signal:signal}
+  scanHistory.unshift(scan)
+  if(scanHistory.length>50)scanHistory.pop()
+  localStorage.setItem('wfh_history',JSON.stringify(scanHistory))
+}
+function renderScanHistory(){
+  var h=$('scan-history')
+  if(!h)return
+  if(scanHistory.length===0){h.innerHTML='<div class="scan-empty">Noch keine Scans</div>';return}
+  h.innerHTML=''
+  scanHistory.slice(0,10).forEach(function(s){
+    var d=new Date(s.t)
+    var time=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')
+    var el=document.createElement('div')
+    el.className='scan-item'
+    el.innerHTML='<div class="scan-time">'+time+'</div><div class="scan-signal">'+Math.round(s.signal)+'%</div>'
+    h.appendChild(el)
+  })
+}
+function drawPreviewHeatmap(){
+  var c=$('heatmapPreview')
+  if(!c)return
+  var ctx=c.getContext('2d')
+  var w=c.width,h=c.height
+  ctx.clearRect(0,0,w,h)
+  if(scanHistory.length===0){
+    ctx.fillStyle='rgba(123,197,255,.1)'
+    ctx.beginPath()
+    ctx.arc(w/2,h/2,80,0,Math.PI*2)
+    ctx.fill()
+    ctx.fillStyle='#5a6a7d'
+    ctx.font='12px Space Grotesk'
+    ctx.textAlign='center'
+    ctx.fillText('Keine Daten',w/2,h/2)
+    return
+  }
+  scanHistory.slice(0,20).forEach(function(s,i){
+    var angle=(i/20)*Math.PI*2
+    var r=40+s.signal*40
+    var x=w/2+Math.cos(angle)*r
+    var y=h/2+Math.sin(angle)*r
+    var grad=ctx.createRadialGradient(x,y,0,x,y,20)
+    grad.addColorStop(0,'rgba(0,212,170,'+(s.signal*0.6)+')')
+    grad.addColorStop(1,'rgba(0,212,170,0)')
+    ctx.fillStyle=grad
+    ctx.beginPath()
+    ctx.arc(x,y,20,0,Math.PI*2)
+    ctx.fill()
+  })
+}
+
 // Settings functions
 function loadSettings(){
   var lang=localStorage.getItem('wfh_lang')||'de'
@@ -779,6 +977,30 @@ function clearData(){
     localStorage.clear()
     location.reload()
   }
+}
+
+// Onboarding functions
+var onboardingStep=1
+function showOnboarding(){
+  if(localStorage.getItem('wfh_onboarding_done'))return
+  onboardingStep=1
+  updateOnboardingStep()
+  $('onboarding').classList.add('active')
+}
+function nextOnboardingStep(){
+  onboardingStep++
+  updateOnboardingStep()
+}
+function finishOnboarding(){
+  localStorage.setItem('wfh_onboarding_done','1')
+  $('onboarding').classList.remove('active')
+  $('consent').classList.add('active')
+}
+function updateOnboardingStep(){
+  var steps=document.querySelectorAll('.onboarding-step')
+  steps.forEach(function(s){s.classList.remove('active')})
+  var current=document.querySelector('.onboarding-step[data-step="'+onboardingStep+'"]')
+  if(current)current.classList.add('active')
 }
 
 function renderAchievements(){
@@ -905,6 +1127,8 @@ setTimeout(function(){openModal('daily-modal')},4500)
 })()
 
 // ─── INIT ──────────────────────────────────────────────────────
+// Load scan history
+try{scanHistory=JSON.parse(localStorage.getItem('wfh_history')||'[]')}catch(e){scanHistory=[]}
 // Hide loader if still visible after main script loads
 setTimeout(function(){var l=document.getElementById('loader');if(l)l.classList.add('done');},500)
 // Draw initial visualizations
